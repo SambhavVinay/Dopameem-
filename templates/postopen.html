@@ -106,7 +106,7 @@
   border: none;
   padding: 6px 12px;
   border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: 0.85rem;   
   cursor: pointer;
 }
 a.comment-link {
@@ -130,10 +130,15 @@ a.comment-link {
 
 
     <img src="{{ post.post }}" alt="Post Image" class="post-image">
-
+    {% if post.post_caption %}
     <div class="post-caption">
       <b>{{ post_author.name }}</b>: {{ post.post_caption }}
     </div>
+    {% else %}
+    <div class="post-caption">
+      <span style="color: #979494;">No Caption</span>
+    </div>
+    {% endif %}
     <a href="/comments/{{post.post_id}}" class="comment-link">
   <button class="comment-btn"><b>Comment</b></button>
 </a>
@@ -141,9 +146,11 @@ a.comment-link {
     
 
     <div class="comment-section">
+      
       {% for comment in comments %}
+      {% set comment_user = user %}
         <div class="comment">
-          <b>{{ comment.user_name }}</b>{{ comment.comment_text }}
+          <b>{{ comment_user.name }}:</b>{{ comment.comment_text }}
         </div>
       {% else %}
         <div class="comment" style="color:#999;">No comments yet.</div>

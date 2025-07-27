@@ -18,22 +18,27 @@
     }
 
     .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background-color: white;
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #dbdbdb;
-      z-index: 1000;
-    }
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: flex-end; /* push links to the right */
+  align-items: center;
+  border-bottom: 1px solid #dbdbdb;
+  z-index: 1000;
+}
 
-    .navbar h1 {
-      font-size: 1.6rem;
-      color: #262626;
-    }
+.navbar h1 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.8rem;
+  color: #262626;
+  margin: 0;
+}
+
 
     .navbar a {
       margin-left: 20px;

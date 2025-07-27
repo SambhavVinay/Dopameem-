@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ user.user_name }} • Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #fef9f8, #f3f8ff);
+      color: #222;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+
+    .profile-header {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #ddd;
+      flex-shrink: 0;
+    }
+
+    .profile-pic img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-info {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .profile-info h2 {
+      font-size: 1.8rem;
+      margin-bottom: 4px;
+    }
+
+    .profile-info p {
+      margin-bottom: 6px;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .profile-info .subtle {
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    .action-buttons {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .action-buttons button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .btn-main {
+      background-color: #6c5ce7;
+      color: #fff;
+    }
+
+    .btn-main:hover {
+      background-color: #5843c9;
+    }
+
+    .btn-soft {
+      background-color: #f1f1f1;
+      color: #444;
+    }
+
+    .btn-soft:hover {
+      background-color: #e4e4e4;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 40px 0 16px;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .add-post-btn {
+      background-color: #6c5ce7;
+      color: white;
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+
+    .add-post-btn:hover {
+      background-color: #5946c7;
+    }
+
+    .posts-grid, .post-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 1rem;
+    }
+
+    .post-item {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #eee;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .post-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .post-caption, .post-item span {
+      padding: 10px;
+      font-size: 0.85rem;
+      text-align: center;
+      color: #333;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #ff4d4f;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.8rem;
+    }
+
+    .dashboard-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #e0e0ff;
+      color: #2d2d2d;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 500;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .dashboard-btn:hover {
+      background-color: #ccc8f9;
+    }
+    a {
+  text-decoration: none;
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="profile-header">
+      <div class="profile-pic">
+        <a href="/dp">
+          <img src="{{ user.dp }}" alt="Profile Picture">
+        </a>
+      </div>
+      <div class="profile-info">
+        <h2>{{ user.name }}</h2>
+        <p>@{{ user.user_name }}</p>
+        <p class="subtle">Born on {{ user.DOB }}</p>
+        <div class="action-buttons">
+          <button class="btn-main">Contact</button>
+          <button class="btn-soft">Portfolio</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">User Posts</div>
+      <a href="/post1" class="add-post-btn">Add Post</a>
+    </div>
+
+    <div class="posts-grid">
+      {% for post in posts %}
+        <div class="post-item">
+          <a href="/post/{{ post.post_id }}">
+            <img src="{{ post.post }}" alt="Post image">
+            <div class="post-caption">{{ post.post_caption }}</div>
+          </a>
+          <a href="/deletepost/{{ post.post_id }}"
+             class="delete-btn"
+             onclick="return confirm('Are you sure you want to delete this post?');">
+            Delete
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if images %}
+      <div class="post-grid">
+        {% for post in images %}
+          <div class="post-item">
+            <a href="/post/{{ post.post_id }}">
+              <img src="{{ post.post }}" alt="Post image" />
+              <span>{{ post.post_caption }}</span>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <a href="/dashboard" class="dashboard-btn">Dashboard</a>
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Post • {{ post.user_name }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+
+    .post-header {
+      padding: 12px 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+    }
+
+    .post-header img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      margin-right: 10px;
+      object-fit: cover;
+    }
+
+    .post-image {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .post-caption {
+      padding: 12px 16px;
+      border-top: 1px solid #eee;
+      font-size: 0.95rem;
+    }
+
+    .post-caption b {
+      margin-right: 4px;
+    }
+
+    .comment-btn {
+        text-decoration: none;
+    
+      display: block;
+      margin: 10px 16px 0;
+      background-color: #3db4f2;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .comment-section {
+      padding: 12px 16px;
+    }
+
+    .comment {
+      font-size: 0.88rem;
+      padding: 6px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .comment:last-child {
+      border-bottom: none;
+    }
+
+    .comment b {
+      margin-right: 4px;
+      color: #333;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #aaa;
+      margin-top: 20px;
+    }
+.top-btn {
+  background-color: #3b82f6;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+a.comment-link {
+  text-decoration: none;
+  display: inline-block; /* optional, to wrap button neatly */
+}
+
+
+  </style>
+</head>
+<body>
+ 
+  <div class="post-card">
+    <div class="post-header">
+  <img src="{{ post_author.dp }}" alt="User DP">
+  <div style="flex: 1;">{{ post_author.name }}</div>
+  <a href="/dashboard">
+    <button class="top-btn">Dashboard</button>
+  </a>
+</div>
+
+
+    <img src="{{ post.post }}" alt="Post Image" class="post-image">
+
+    <div class="post-caption">
+      <b>{{ post_author.name }}</b>: {{ post.post_caption }}
+    </div>
+    <a href="/comments/{{post.post_id}}" class="comment-link">
+  <button class="comment-btn"><b>Comment</b></button>
+</a>
+
+    
+
+    <div class="comment-section">
+      {% for comment in comments %}
+        <div class="comment">
+          <b>{{ comment.user_name }}</b>{{ comment.comment_text }}
+        </div>
+      {% else %}
+        <div class="comment" style="color:#999;">No comments yet.</div>
+      {% endfor %}
+    </div>
+  </div>
+  
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>New Post • Goongram</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fafafa;
+      color: #262626;
+      padding: 10px;
+    }
+
+    .navbar {
+      background-color: #fff;
+      border-bottom: 1px solid #dbdbdb;
+      padding: 15px 20px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 20px;
+      color: #262626;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 550px;
+      margin: 40px auto;
+      background-color: #fff;
+      border: 1px solid #dbdbdb;
+      border-radius: 12px;
+      padding: 25px 20px;
+    }
+
+    .post-upload {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .post-upload label {
+      font-size: 16px;
+      color: #555;
+    }
+
+    .post-upload input[type="file"],
+    .post-upload input[type="text"] {
+      padding: 12px;
+      border: 1px solid #dbdbdb;
+      border-radius: 6px;
+      background-color: #fafafa;
+      font-size: 15px;
+    }
+
+    .post-upload input[type="text"]::placeholder {
+      color: #aaa;
+    }
+
+    .post-upload button {
+      background-color: #3897f0;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .post-upload button:hover {
+      background-color: #2f82d6;
+    }
+
+    .preview {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .preview p {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 10px;
+    }
+
+    .preview img {
+      width: 100%;
+      max-height: 400px;
+      border-radius: 8px;
+      border: 1px solid #dbdbdb;
+      object-fit: cover;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      font-size: 13px;
+      color: #999;
+    }
+
+    @media (max-width: 600px) {
+      .navbar {
+        font-size: 18px;
+        padding: 12px;
+      }
+
+      .container {
+        margin: 20px auto;
+        padding: 20px 15px;
+      }
+
+      .post-upload button {
+        font-size: 15px;
+        padding: 10px;
+      }
+
+      .preview img {
+        max-height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">Add Post</div>
+
+  <div class="container">
+    <form class="post-upload" action="/post1" method="POST" enctype="multipart/form-data">
+      <label for="post1">Select a post image</label>
+      <input type="file" name="post1" id="post1" required />
+
+      <label for="caption">Write a caption</label>
+      <input type="text" name="caption" id="caption" placeholder="Say something..." maxlength="200" />
+
+      <button type="submit">Share</button>
+    </form>
+
+    {% if image_url %}
+    <div class="preview">
+      <p>Preview</p>
+      <img src="{{ image_url }}" alt="Uploaded image" />
+    </div>
+    {% endif %}
+  </div>
+
+  <footer>&copy; 2025 NoirFeed</footer>
+
+</body>
+</html>

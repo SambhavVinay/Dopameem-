@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Profile Picture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #fafafa;
+      color: #262626;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      padding: 40px 30px;
+      border: 1px solid #dbdbdb;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      width: 320px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 25px;
+      color: #262626;
+    }
+
+    input[type="file"] {
+      margin-bottom: 20px;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #0095f6;
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 0;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #007cd1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Upload Profile Picture</h2>
+    <form method="POST" enctype="multipart/form-data">
+      <input type="file" name="img" accept="image/*" required><br>
+      <button type="submit">Upload</button>
+    </form>
+  </div>
+</body>
+</html>

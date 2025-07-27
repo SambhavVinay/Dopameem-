@@ -25,22 +25,32 @@
       background-color: white;
       padding: 15px 20px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #dbdbdb;
       z-index: 1000;
-      flex-wrap: wrap;
+    }
+
+    .navbar-left,
+    .navbar-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-center {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .navbar h1 {
-      flex-grow: 1;
-      text-align: center;
       font-size: 1.8rem;
       color: #262626;
     }
 
-    .navbar div {
-      display: flex;
+    .navbar-right {
+      justify-content: flex-end;
       gap: 15px;
     }
 
@@ -176,7 +186,7 @@
 
     @media (max-width: 768px) {
       .navbar h1 {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
       }
 
       .post-header img {
@@ -209,19 +219,23 @@
 
     @media (max-width: 480px) {
       .navbar {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-wrap: wrap;
       }
 
-      .navbar div {
+      .navbar-left,
+      .navbar-right,
+      .navbar-center {
+        flex: 1 1 100%;
         justify-content: center;
-        width: 100%;
-        margin-top: 10px;
+        margin-bottom: 8px;
+      }
+
+      .navbar-right {
+        justify-content: center;
+        gap: 10px;
       }
 
       .navbar h1 {
-        text-align: left;
-        width: 100%;
         font-size: 1.3rem;
       }
 
@@ -234,8 +248,11 @@
 <body>
 
   <div class="navbar">
-    <h1>Dopameme</h1>
-    <div>
+    <div class="navbar-left"></div>
+    <div class="navbar-center">
+      <h1>Dopameme</h1>
+    </div>
+    <div class="navbar-right">
       <a href="/profile">Profile</a>
       <a href="/search">Search</a>
     </div>

@@ -46,7 +46,7 @@ class Gooners(db.Model):
 class Posts(db.Model):
     post_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     post = db.Column(db.String(200))
-    post_caption = db.Column(db.String(200))
+    post_caption = db.Column(db.String(1000))
     user_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
 
     # In your Post model

@@ -243,8 +243,8 @@ def register():
             db.session.add(new_gooner)
             db.session.commit()
 
-        client_message = f"Dear {user_name}, Welcome to NoirFeed, Post Away!"
-        admin_message = f"Greetings BatMan, {user_name} has just taken part in the NoirFeed initiative!"
+        client_message = f"Dear {user_name}, Welcome to Dopameme, Post Away!"
+        admin_message = f"Greetings BatMan, {user_name} has just taken part in the Dopameme initiative!"
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls()
         server.login(EMAIL_USER, EMAIL_PASS)

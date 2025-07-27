@@ -17,27 +17,25 @@
       background-color: #fafafa;
     }
 
-    .navbar {
+   .navbar {
   position: fixed;
   top: 0;
   width: 100%;
   background-color: white;
   padding: 15px 20px;
   display: flex;
-  justify-content: flex-end; /* push links to the right */
+  justify-content: space-between; /* Title left, links right */
   align-items: center;
   border-bottom: 1px solid #dbdbdb;
   z-index: 1000;
 }
 
 .navbar h1 {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   font-size: 1.8rem;
   color: #262626;
   margin: 0;
 }
+
 
 
     .navbar a {
@@ -192,12 +190,13 @@
 <body>
 
   <div class="navbar">
-    <h1>Dopameme</h1>
-    <div>
-      <a href="/profile">Profile</a>
-      <a href="/search">Search</a>
-    </div>
+  <h1>Dopameme</h1>
+  <div>
+    <a href="/profile">Profile</a>
+    <a href="/search">Search</a>
   </div>
+</div>
+
 
   <!-- Story Bar -->
   <div class="story-bar">

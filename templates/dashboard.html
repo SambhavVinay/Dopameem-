@@ -18,43 +18,30 @@
     }
 
     .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background-color: white;
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid #dbdbdb;
-      z-index: 1000;
-    }
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: flex-end; /* push links to the right */
+  align-items: center;
+  border-bottom: 1px solid #dbdbdb;
+  z-index: 1000;
+}
 
-    .navbar-left,
-    .navbar-right {
-      flex: 1;
-      display: flex;
-      align-items: center;
-    }
+.navbar h1 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.8rem;
+  color: #262626;
+  margin: 0;
+}
 
-    .navbar-center {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .navbar h1 {
-      font-size: 1.8rem;
-      color: #262626;
-    }
-
-    .navbar-right {
-      justify-content: flex-end;
-      gap: 15px;
-    }
 
     .navbar a {
+      margin-left: 20px;
       text-decoration: none;
       font-weight: 600;
       color: #0095f6;
@@ -62,7 +49,7 @@
     }
 
     .story-bar {
-      margin-top: 75px;
+      margin-top: 70px;
       padding: 10px 15px;
       display: flex;
       overflow-x: auto;
@@ -89,12 +76,11 @@
       display: block;
       margin-top: 5px;
       color: #262626;
-      word-break: break-word;
     }
 
     .feed {
       max-width: 600px;
-      margin: 90px auto 60px;
+      margin: 30px auto 60px;
       padding: 0 15px;
     }
 
@@ -147,34 +133,8 @@
       color: #262626;
     }
 
-    .caption {
-      font-size: 1rem;
-      color: #262626;
-      line-height: 1.4;
-      margin-bottom: 6px;
-    }
-
-    .caption b {
-      font-weight: 600;
-      margin-right: 6px;
-    }
-
-    .comment-btn {
-      display: inline-block;
-      background-color: #4bd2ff;
-      color: #ffffff;
-      padding: 8px 16px;
-      font-weight: bold;
-      text-decoration: none;
-      border: none;
-      border-radius: 4px;
-      font-size: 14px;
-      transition: background-color 0.2s ease;
-    }
-
-    .comment-btn:hover {
-      background-color: #9ccbe1;
-      cursor: pointer;
+    .post-caption strong {
+      margin-right: 5px;
     }
 
     .tagline {
@@ -184,75 +144,56 @@
       font-size: 0.9rem;
     }
 
-    @media (max-width: 768px) {
-      .navbar h1 {
-        font-size: 1.5rem;
-      }
-
+    @media (max-width: 600px) {
       .post-header img {
-        width: 35px;
-        height: 35px;
+        width: 32px;
+        height: 32px;
       }
 
       .story img {
         width: 50px;
         height: 50px;
       }
-
-      .story-bar {
-        padding: 10px 8px;
-      }
-
-      .post-caption {
-        font-size: 0.85rem;
-      }
-
-      .comment-btn {
-        padding: 6px 12px;
-        font-size: 13px;
-      }
-
-      .feed {
-        margin-top: 100px;
-      }
     }
+    .caption {
+  font-size: 1rem;
+  color: #262626;
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
 
-    @media (max-width: 480px) {
-      .navbar {
-        flex-wrap: wrap;
-      }
+.caption b {
+  font-weight: 600;
+  margin-right: 6px;
+}
+.comment-btn {
+  display: inline-block;
+  background-color: #4bd2ff; /* Light blue */
+  color: #ffffff;
+  padding: 8px 16px;
+  font-weight: bold;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px; /* Small border-radius for rectangular feel */
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
 
-      .navbar-left,
-      .navbar-right,
-      .navbar-center {
-        flex: 1 1 100%;
-        justify-content: center;
-        margin-bottom: 8px;
-      }
+.comment-btn:hover {
+  background-color: #9ccbe1; /* Slightly darker on hover */
+  cursor: pointer;
+}
 
-      .navbar-right {
-        justify-content: center;
-        gap: 10px;
-      }
 
-      .navbar h1 {
-        font-size: 1.3rem;
-      }
 
-      .post img.post-image {
-        height: auto;
-      }
-    }
+
   </style>
 </head>
 <body>
 
   <div class="navbar">
-    <div class="navbar-left"></div>
-    <div class="navbar-center">
-      <h1>Dopameme</h1>
-    </div>
-    <div class="navbar-right">
+    <h1>Dopameme</h1>
+    <div>
       <a href="/profile">Profile</a>
       <a href="/search">Search</a>
     </div>
@@ -269,44 +210,50 @@
   </div>
 
   <!-- Feed -->
-  <div class="feed">
-    {% if posts %}
-      {% for post in posts %}
-        {% set post_user = user | selectattr('user_id', 'equalto', post.user_id) | list | first %}
-        <div class="post">
-          <div class="post-header">
-            <img src="{{ post_user.dp }}" alt="Profile Picture">
-            <a href="/profile/{{ post_user.user_id }}">
-              <div class="username">{{ post_user.name }}</div>
-            </a>
-          </div>
-
-          <img src="{{ post.post }}" class="post-image" alt="Post">
-
-          <div class="post-caption">
-            {% if post.post_caption %}
-              <div class="caption"><b>{{ post_user.name }}</b>: {{ post.post_caption }}</div>
-            {% endif %}
-            <br>
-            <a href="/comments/{{ post.post_id }}" class="comment-btn">Comment</a>
-          </div>
-
-          <!-- Comment section under each post -->
-          <div class="post-caption" style="margin-top: 10px;">
-            {% for comment in comments %}
-              {% if comment.post_id == post.post_id %}
-                <div style="margin-top: 5px;">
-                  <strong>{{ comment.user.name }}</strong>: {{ comment.comment_text }}
-                </div>
-              {% endif %}
-            {% endfor %}
-          </div>
+<div class="feed">
+  {% if posts %}
+    {% for post in posts %}
+      {% set post_user = user | selectattr('user_id', 'equalto', post.user_id) | list | first %}
+      <div class="post">
+        <div class="post-header">
+          <img src="{{ post_user.dp }}" alt="Profile Picture">
+          <a href="/profile/{{ post_user.user_id }}">
+            <div class="username">{{ post_user.name }}</div>
+          </a>
         </div>
-      {% endfor %}
-    {% else %}
-      <p style="text-align: center; color: #888;">No posts to show yet.</p>
+
+        <img src="{{ post.post }}" class="post-image" alt="Post">
+
+        <div class="post-caption">
+          {% if post.post_caption %}
+          <div class="caption"><b>{{post_user.name}}</b> : {{post.post_caption}}</div>
+          {% endif %}
+          <br>
+  <a href="/comments/{{ post.post_id }}" class="comment-btn">Comment</a>
+
+
+</div>
+
+<!-- Comment section under each post -->
+<div class="post-caption" style="margin-top: 10px;">
+  
+  {% for comment in comments %}
+    {% if comment.post_id == post.post_id %}
+      <div style="margin-top: 5px;">
+        <strong>{{ comment.user.name }}</strong>: {{ comment.comment_text }}
+      </div>
     {% endif %}
-  </div>
+  {% endfor %}
+</div>
+
+
+      </div>
+    {% endfor %}
+  {% else %}
+    <p style="text-align: center; color: #888;">No posts to show yet.</p>
+  {% endif %}
+</div>
+
 
   <div class="tagline">Welcome to your dashboard</div>
 

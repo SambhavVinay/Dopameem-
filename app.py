@@ -235,13 +235,14 @@ def register():
     if request.method == "POST":
         user_name = request.form["user_name"]
         user_password = request.form["user_password"]
-        if user_name in session:
+        
+        existing_user = Gooners.query.filter_by(user_name=user_name).first()
+        if existing_user:
             return redirect("/login")
-        if user_name and user_password:
-            new_gooner = Gooners(user_password=user_password, user_name=user_name)
-            db.session.add(new_gooner)
-            db.session.commit()
-
+        
+        new_gooner = Gooners(user_password=user_password, user_name=user_name)
+        db.session.add(new_gooner)
+        db.session.commit()
         client_message = f"Dear {user_name}, Welcome to Dopameme, Post Away!"
         admin_message = f"Greetings BatMan, {user_name} has just taken part in the Dopameme initiative!"
         server = smtplib.SMTP("smtp.gmail.com", 587)

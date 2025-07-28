@@ -182,6 +182,25 @@
   cursor: pointer;
 }
 
+.comment-row {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.comment-profile-pic {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.comment-text {
+  font-size: 0.9rem;
+  color: #262626;
+  line-height: 1.3;
+}
 
 
 
@@ -235,15 +254,18 @@
 
 <!-- Comment section under each post -->
 <div class="post-caption" style="margin-top: 10px;">
-  
   {% for comment in comments %}
     {% if comment.post_id == post.post_id %}
-      <div style="margin-top: 5px;">
-        <strong>{{ comment.user.name }}</strong>: {{ comment.comment_text }}
+      <div class="comment-row">
+        <img src="{{ comment.user.dp }}" class="comment-profile-pic">
+        <div class="comment-text">
+          <a href="/profile/{{comment.user.user_id}}" style="color: black"><strong>{{ comment.user.name }}</strong></a> {{ comment.comment_text }}
+        </div>
       </div>
     {% endif %}
   {% endfor %}
 </div>
+
 
 
       </div>

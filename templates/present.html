@@ -33,70 +33,74 @@
     }
 
     .card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 10px;
-}
-
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
 
     .profile-card {
       background: #fff;
-      border-radius: 15px;
+      border-radius: 12px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      padding: 20px;
-      text-align: center;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .profile-card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      transform: scale(1.01);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .profile-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
 
     .profile-pic {
-  width: 80px;
-  height: 80px;
-  background-color: #ddd;
-  border-radius: 50%;
-  margin: 0 auto 15px;
-  overflow: hidden;
-}
+      width: 60px;
+      height: 60px;
+      background-color: #ddd;
+      border-radius: 50%;
+      overflow: hidden;
+    }
 
-.profile-pic img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+    .profile-pic img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
+    .text-info {
+      display: flex;
+      flex-direction: column;
+    }
 
     .display-name {
       font-size: 16px;
       font-weight: 600;
-      margin-bottom: 4px;
     }
 
     .username {
       font-size: 14px;
-      color: #555;
-      margin-bottom: 14px;
-      word-break: break-word;
+      color: #666;
     }
 
     .view-btn {
       background-color: #007bff;
       color: white;
       text-decoration: none;
-      padding: 8px 14px;
+      padding: 8px 16px;
       border-radius: 6px;
       font-size: 14px;
       font-weight: 500;
       transition: background-color 0.2s ease;
-      display: inline-block;
     }
 
     .view-btn:hover {
@@ -116,17 +120,21 @@
       text-decoration: underline;
     }
 
-    /* Mobile-first responsiveness */
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 20px;
-      }
+    @media (max-width: 600px) {
       .profile-card {
-        padding: 16px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 12px;
       }
-      .profile-pic {
-        width: 70px;
-        height: 70px;
+
+      .profile-left {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .view-btn {
+        width: 100%;
       }
     }
   </style>
@@ -138,11 +146,15 @@
   <div class="card-container">
     {% for x in present %}
       <div class="profile-card">
-        <div class="profile-pic">
-          <img src="{{x.dp}}">
+        <div class="profile-left">
+          <div class="profile-pic">
+            <img src="{{x.dp}}">
+          </div>
+          <div class="text-info">
+            <div class="display-name">{{ x.name }}</div>
+            <div class="username">@{{ x.user_name }}</div>
+          </div>
         </div>
-        <div class="display-name">{{ x.name }}</div>
-        <div class="username">@{{ x.user_name }}</div>
         <a href="/profile/{{ x.user_id }}" class="view-btn">View Profile</a>
       </div>
     {% endfor %}

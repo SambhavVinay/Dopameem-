@@ -133,11 +133,11 @@ def dp():
     if request.method == "POST":
         file = request.files["img"]
         if file:
-            # ✅ Upload to Cloudinary instead of local folder
+            
             result = cloudinary.uploader.upload(file, folder="goongram/dp")
             image_url = result['secure_url']  # permanent URL
 
-            # ✅ Save URL in DB
+            
             gooner = Gooners.query.filter_by(user_name=user_name).first()
             gooner.dp = image_url
             session["image_url"] = image_url
@@ -274,7 +274,7 @@ def suggest():
 def profile_open(user_id):
     user = Gooners.query.get_or_404(user_id)
     images = Posts.query.filter_by(user_id = user_id).order_by(Posts.post_id.desc()).all()
-    return render_template("profile.html",user = user,images = images)
+    return render_template("profileopen.html",user = user,images = images)
 
 @app.route("/delete/<int:user_id>")
 def delete(user_id):

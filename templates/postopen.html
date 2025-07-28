@@ -148,9 +148,8 @@ a.comment-link {
     <div class="comment-section">
       
       {% for comment in comments %}
-      {% set comment_user = user %}
         <div class="comment">
-          <b>{{ comment_user.name }}:</b>{{ comment.comment_text }}
+          <b>{{ comment.user.name }}:</b>{{ comment.comment_text }}
         </div>
       {% else %}
         <div class="comment" style="color:#999;">No comments yet.</div>

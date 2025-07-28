@@ -163,10 +163,9 @@ def postopen(post_id):
     user_id = session.get("user_id")
     post = Posts.query.get_or_404(post_id)
     comments = Comments.query.filter_by(post_id=post_id).all()
-    user = Gooners.query.get_or_404(user_id)
+    user = Gooners.query.filter_by(user_id=user_id).first()
     post_author = post.user
     return render_template("postopen.html", post=post, comments=comments,user = user,post_author = post_author)
-
 
 @app.route("/name", methods=["POST", "GET"])
 def name():

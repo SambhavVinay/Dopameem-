@@ -22,12 +22,15 @@ EMAIL_PASS = os.getenv("EMAIL_PASS")
 
 app = Flask(__name__)
 UPLOAD_FOLDER_POST = 'static/posts'
+UPLOAD_FOLDER_DOPS = 'static/dops'
 UPLOAD_FOLDER = 'static/dp'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['UPLOAD_FOLDER_POST'] = UPLOAD_FOLDER_POST
+app.config['UPLOAD_FOLDER_DOPS'] = UPLOAD_FOLDER_DOPS
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(UPLOAD_FOLDER_POST, exist_ok=True)
+os.makedirs(UPLOAD_FOLDER_DOPS, exist_ok=True)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 app.secret_key = os.getenv("SECRET_KEY", "fallback-secret")
@@ -42,15 +45,16 @@ class Gooners(db.Model):
     dp = db.Column(db.String(200))
 
     posts = db.relationship('Posts',backref = 'user', lazy = True)
+    dops = db.relationship('Dops',backref = 'user', lazy = True)
 
 class Posts(db.Model):
     post_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     post = db.Column(db.String(200))
     post_caption = db.Column(db.String(1000))
+    
     user_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
 
-    # In your Post model
-    comments = db.relationship("Comments", backref="post", cascade="all, delete-orphan")
+    comments = db.relationship("Comments", backref="post", cascade="all, delete-orphan")  # define here
 
 
 class Comments(db.Model):
@@ -58,13 +62,34 @@ class Comments(db.Model):
     comment_text = db.Column(db.String(300), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
-    
     user_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.post_id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.post_id'), nullable=True)
+
+    user = db.relationship('Gooners', backref='comments', lazy=True)
 
     
-    user = db.relationship('Gooners', backref='comments', lazy=True)
+class Dops(db.Model):
+    dops_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    dops = db.Column(db.String(200))
+    dops_caption = db.Column(db.String(1000))
+
+    user_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
     
+
+    comments = db.relationship("DopsComments", backref="dop", cascade="all, delete-orphan")
+
+class DopsComments(db.Model):
+    comment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    comment_text = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
+    dops_id = db.Column(db.Integer, db.ForeignKey('dops.dops_id'), nullable=False)
+
+    user = db.relationship('Gooners', backref='dops_comments')
+    
+
+
 
 @app.route("/comments/<int:post_id>", methods=["POST", "GET"])
 def comments(post_id):
@@ -83,6 +108,19 @@ def comments(post_id):
     return render_template("comments.html", comment=comment, post_id = post_id)
 
 
+@app.route("/dopcomments/<int:dops_id>", methods=["POST","GET"])
+def dopscomments(dops_id):
+    user_id = session.get("user_id")
+    if request.method == "POST":
+        comment = request.form["comments"]
+        new_comment = DopsComments(comment_text = comment, dops_id =dops_id, user_id = user_id)
+
+        db.session.add(new_comment)
+        db.session.commit()
+        return redirect(f"/dops/{dops_id}")
+    comments = DopsComments.query.filter_by(dops_id=dops_id).order_by(DopsComments.timestamp.desc()).all()
+    return render_template("dopscomments.html",comments=comments,dops_id=dops_id)
+
 @app.route("/deletecomment/<int:comment_id>", methods=["POST", "GET"])
 def commentdelete(comment_id):
     user_id = session.get("user_id")
@@ -95,6 +133,25 @@ def commentdelete(comment_id):
     else:
         return redirect(f"/post/{delete_comment.post_id}")
 
+@app.route("/dops",methods=["POST","GET"])
+def dops():
+ user_id = session.get("user_id")
+ if not user_id:
+     return redirect("/login")
+ if request.method == "POST":
+     file = request.files["dops"]
+     caption = request.form["caption"]
+     if file:
+         result = cloudinary.uploader.upload(file, folder="goongram/dops", resource_type="video")
+         image_url = result['secure_url']
+         user = Gooners.query.filter_by(user_id = user_id).first()
+         new_dop = Dops(dops=image_url,dops_caption = caption,user_id = user.user_id)
+         db.session.add(new_dop)
+         db.session.commit()
+         return redirect("/profile")
+ return render_template("dops.html")        
+ 
+         
 @app.route("/post1", methods=["POST", "GET"])
 def post1():
     user_name = session.get("user_name")
@@ -123,6 +180,23 @@ def deletepost(post_id):
     db.session.delete(id)
     db.session.commit()
     return redirect("/profile")
+
+@app.route("/deletedops/<int:dops_id>")
+def deletedops(dops_id):
+    id = Dops.query.get_or_404(dops_id)
+    db.session.delete(id)
+    db.session.commit()
+    return redirect("/profile")
+
+@app.route("/dops/<int:dops_id>")
+def opendops(dops_id):
+    user_id = session.get("user_id")
+    comments = DopsComments.query.filter_by(dops_id=dops_id).order_by(DopsComments.comment_id).all()
+    user = Gooners.query.filter_by(user_id=user_id).first()
+    dops = Dops.query.get_or_404(dops_id)
+    
+    return render_template("dopsopen.html",comments=comments,user=user,dops=dops)
+
 
 @app.route("/dp", methods=["POST", "GET"])
 def dp():
@@ -156,7 +230,8 @@ def profile():
         return redirect("/login")
     user = Gooners.query.get(session["user_id"])
     posts = Posts.query.filter_by(user_id = user_id).order_by(Posts.post_id.desc()).all()
-    return render_template("profile.html", user=user,posts = posts)
+    dops = Dops.query.filter_by(user_id = user_id).order_by(Dops.dops_id.desc()).all()
+    return render_template("profile.html", user=user,posts = posts,dops=dops)
 
 @app.route("/post/<int:post_id>", methods=["GET", "POST"])
 def postopen(post_id):
@@ -291,10 +366,11 @@ def delete(user_id):
 def dashboard():
     user_name = session.get("user_name")
     user_id = session.get("user_id")
+    dops = Dops.query.order_by(Dops.dops_id.desc()).all()
     posts = Posts.query.order_by(Posts.post_id.desc()).all()
     user = Gooners.query.order_by(Gooners.dateadded).all()
     comments = Comments.query.order_by(Comments.comment_id.desc()).all()
-    return render_template("dashboard.html", posts = posts, user = user,comments = comments)
+    return render_template("dashboard.html", posts = posts, user = user,comments = comments,dops=dops)
 
 @app.route("/gooners")
 def gooners():

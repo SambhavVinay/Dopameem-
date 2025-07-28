@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>{{ user.user_name }} • Profile</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display&family=Poppins&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -29,9 +29,9 @@
       border-radius: 16px;
       padding: 24px;
       display: flex;
-      align-items: center;
       flex-wrap: wrap;
       gap: 24px;
+      align-items: center;
       box-shadow: 0 8px 20px rgba(0,0,0,0.05);
     }
 
@@ -111,6 +111,8 @@
       justify-content: space-between;
       align-items: center;
       margin: 40px 0 16px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .section-title {
@@ -121,25 +123,26 @@
     .add-post-btn {
       background-color: #bcbbbb;
       font-family: 'Poppins', sans-serif;
-      color: rgb(255, 255, 255);
+      color: #fff;
       padding: 10px 16px;
       font-size: 0.9rem;
       border-radius: 8px;
       text-decoration: none;
+      white-space: nowrap;
     }
 
     .add-post-btn:hover {
       background-color: #179cee;
     }
 
-    .posts-grid, .post-grid {
+    .posts-grid, .dops-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
       margin-top: 1rem;
     }
 
-    .post-item {
+    .post-item, .dop-card {
       background: #fff;
       border-radius: 12px;
       overflow: hidden;
@@ -150,14 +153,14 @@
       position: relative;
     }
 
-    .post-item img {
+    .post-item img, .dop-card video {
       width: 100%;
-      height: 180px;
+      height: 200px;
       object-fit: cover;
       display: block;
     }
 
-    .post-caption, .post-item span {
+    .post-caption, .caption {
       padding: 10px;
       font-size: 0.85rem;
       text-align: center;
@@ -175,7 +178,8 @@
       text-decoration: none;
       font-size: 0.8rem;
     }
-    .delete-btn:hover{
+
+    .delete-btn:hover {
       background-color: red;
     }
 
@@ -195,10 +199,43 @@
     .dashboard-btn:hover {
       background-color: #ccc8f9;
     }
-    a {
-  text-decoration: none;
-}
 
+    a {
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      .profile-pic {
+        margin: auto;
+      }
+
+      .profile-header {
+        text-align: center;
+        justify-content: center;
+      }
+
+      .profile-info h2 {
+        font-size: 1.5rem;
+      }
+
+      .action-buttons {
+        justify-content: center;
+      }
+
+      .post-item img, .dop-card video {
+        height: clamp(150px, 40vw, 220px);
+      }
+
+      .dashboard-btn {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+      }
+
+      .add-post-btn {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -207,7 +244,8 @@
     <div class="profile-header">
       <div class="profile-pic">
         <a href="/dp">
-          <img src="{{ user.dp }}"   alt="add pic"      </a>
+          <img src="{{ user.dp }}" alt="add pic" />
+        </a>
       </div>
       <div class="profile-info">
         <h2>{{ user.name }}</h2>
@@ -241,7 +279,30 @@
       {% endfor %}
     </div>
 
-  <a href="/dashboard" class="dashboard-btn">Dashboard</a>
+    <div class="section-header" style="margin-top: 60px;">
+      <div class="section-title">User Dops</div>
+      <a href="/dops" class="add-post-btn">Add Dop</a>
+    </div>
 
+    <div class="dops-grid">
+      {% for dop in dops %}
+        <div class="dop-card">
+          <a href="/dops/{{ dop.dops_id }}">
+            <video autoplay loop muted playsinline>
+              <source src="{{ dop.dops }}" type="video/mp4">
+            </video>
+            <p class="caption">{{ dop.dops_caption }}</p>
+          </a>
+          <a href="/deletedops/{{ dop.dops_id }}"
+             class="delete-btn"
+             onclick="return confirm('Are you sure you want to delete this dop?');">
+            Delete
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+
+    <a href="/dashboard" class="dashboard-btn">Dashboard</a>
+  </div>
 </body>
 </html>

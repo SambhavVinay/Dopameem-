@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dopameme • Reel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --insta-blue: #0095f6;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #fff;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .reel-box {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 9 / 16;
+      background-color: black;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0));
+      z-index: 2;
+    }
+
+    .caption {
+      font-size: 0.75rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .comment-btn {
+      display: inline-block;
+      padding: 4px 10px;
+      background-color: #ffffff22;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+      backdrop-filter: blur(6px);
+    }
+
+    .comment-btn:hover {
+      background-color: #ffffff44;
+    }
+
+    .comments-section {
+      margin-top: 6px;
+      max-height: 100px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+    }
+
+    /* Custom scrollbar for webkit (Chrome, Safari) */
+    .comments-section::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .comments-section::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .comments-section::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+    }
+
+    .comment-bubble {
+      background-color: rgba(255, 255, 255, 0.08);
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 0.65rem;
+      color: #f0f0f0;
+      line-height: 1.2;
+      backdrop-filter: blur(4px);
+    }
+
+    .comment-bubble strong {
+      font-weight: 500;
+      color: #fff;
+      font-size: 0.68rem;
+    }
+
+    .comment-bubble.empty {
+      font-style: italic;
+      color: #aaa;
+    }
+
+    .custom-controls {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      z-index: 3;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .custom-controls button {
+      pointer-events: auto;
+      background: rgba(0, 0, 0, 0.4);
+      border: none;
+      color: white;
+      font-size: 0.7rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: background 0.2s ease;
+    }
+
+    .custom-controls button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .insta-back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: var(--insta-blue);
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 8px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      z-index: 9999;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.2s ease;
+    }
+
+    .insta-back-btn:hover {
+      background-color: #007acc;
+    }
+
+    @media (max-width: 500px) {
+      .reel-box {
+        border-radius: 0;
+        max-width: 100%;
+        aspect-ratio: 9 / 16;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<a href="/profile/{{ dops.user_id }}" class="insta-back-btn">Back</a>
+
+<div class="reel-box">
+  <video id="dopVideo" loop playsinline>
+    <source src="{{ dops.dops }}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="custom-controls">
+    <button class="mute-btn" onclick="toggleMute()">Mute</button>
+    <button class="pause-btn" onclick="togglePlay()">Play</button>
+  </div>
+
+  <div class="overlay">
+    <div class="caption">{{ dops.dops_caption }}</div>
+    <a class="comment-btn" href="/dopcomments/{{ dops.dops_id }}">Comment</a>
+
+    <div class="comments-section">
+      {% for comment in comments %}
+        <div class="comment-bubble">
+          <strong>{{ comment.user.name }}</strong>: {{ comment.comment_text }}
+        </div>
+      {% else %}
+        <div class="comment-bubble empty">No comments yet. Be the first 💬</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  const video = document.getElementById("dopVideo");
+  const muteBtn = document.querySelector(".mute-btn");
+  const pauseBtn = document.querySelector(".pause-btn");
+
+  video.volume = 1;
+  video.muted = false;
+  video.play();
+
+  function toggleMute() {
+    video.muted = !video.muted;
+    muteBtn.textContent = video.muted ? "Unmute" : "Mute";
+  }
+
+  function togglePlay() {
+    if (video.paused) {
+      video.play();
+      pauseBtn.textContent = "Pause";
+    } else {
+      video.pause();
+      pauseBtn.textContent = "Play";
+    }
+  }
+</script>
+
+</body>
+</html>

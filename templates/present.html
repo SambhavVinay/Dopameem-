@@ -27,7 +27,7 @@
 
     h1 {
       text-align: center;
-      font-size: 24px;
+      font-size: clamp(18px, 5vw, 24px);
       font-weight: 600;
       margin-bottom: 30px;
     }
@@ -49,6 +49,7 @@
       align-items: center;
       justify-content: space-between;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      min-height: 80px;
     }
 
     .profile-card:hover {
@@ -59,15 +60,18 @@
     .profile-left {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 12px;
+      min-width: 0;
+      flex: 1;
     }
 
     .profile-pic {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       background-color: #ddd;
       border-radius: 50%;
       overflow: hidden;
+      flex-shrink: 0;
     }
 
     .profile-pic img {
@@ -80,27 +84,36 @@
     .text-info {
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
 
     .display-name {
-      font-size: 16px;
+      font-size: clamp(14px, 4vw, 16px);
       font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .username {
-      font-size: 14px;
+      font-size: clamp(12px, 3.5vw, 14px);
       color: #666;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .view-btn {
       background-color: #007bff;
       color: white;
       text-decoration: none;
-      padding: 8px 16px;
+      padding: 6px 14px;
       border-radius: 6px;
-      font-size: 14px;
+      font-size: clamp(12px, 3vw, 14px);
       font-weight: 500;
       transition: background-color 0.2s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .view-btn:hover {
@@ -120,21 +133,14 @@
       text-decoration: underline;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 500px) {
       .profile-card {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 12px;
+        padding: 10px 14px;
       }
 
-      .profile-left {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .view-btn {
-        width: 100%;
+      .profile-pic {
+        width: 44px;
+        height: 44px;
       }
     }
   </style>
@@ -148,14 +154,14 @@
       <div class="profile-card">
         <div class="profile-left">
           <div class="profile-pic">
-            <img src="{{x.dp}}">
+            <img src="{{x.dp}}" alt="profile">
           </div>
           <div class="text-info">
             <div class="display-name">{{ x.name }}</div>
             <div class="username">@{{ x.user_name }}</div>
           </div>
         </div>
-        <a href="/profile/{{ x.user_id }}" class="view-btn">View Profile</a>
+        <a href="/profile/{{ x.user_id }}" class="view-btn">View</a>
       </div>
     {% endfor %}
   </div>

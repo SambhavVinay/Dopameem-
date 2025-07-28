@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Upload Profile Picture</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -14,7 +19,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
+      padding: 20px;
     }
 
     .container {
@@ -23,7 +29,8 @@
       border: 1px solid #dbdbdb;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      width: 320px;
+      width: 100%;
+      max-width: 400px;
       text-align: center;
     }
 
@@ -38,7 +45,6 @@
       border: none;
       padding: 10px;
       width: 100%;
-      cursor: pointer;
       font-size: 14px;
     }
 
@@ -50,12 +56,27 @@
       border-radius: 8px;
       padding: 10px 0;
       width: 100%;
+      font-size: 16px;
       cursor: pointer;
       transition: background-color 0.2s ease;
     }
 
     button:hover {
       background-color: #007cd1;
+    }
+
+    @media (max-width: 400px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+
+      button {
+        font-size: 15px;
+      }
     }
   </style>
 </head>

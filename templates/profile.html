@@ -7,235 +7,264 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display&family=Poppins&display=swap" rel="stylesheet">
   <style>
     * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+}
 
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to right, #fef9f8, #f3f8ff);
-      color: #222;
-    }
+body {
+  background: linear-gradient(to right, #fef9f8, #f3f8ff);
+  color: #222;
+  min-height: 100vh;
+}
 
-    .container {
-      max-width: 1080px;
-      margin: auto;
-      padding: 30px 20px;
-    }
+a {
+  text-decoration: none;
+  color: inherit;
+}
 
-    .profile-header {
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 16px;
-      padding: 24px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 24px;
-      align-items: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-    }
+.container {
+  max-width: 1080px;
+  margin: auto;
+  padding: 30px 20px;
+}
 
-    .profile-pic {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 2px solid #ddd;
-      flex-shrink: 0;
-    }
+.profile-header {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
 
-    .profile-pic img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #ddd;
+  flex-shrink: 0;
+}
 
-    .profile-info {
-      flex: 1;
-      min-width: 200px;
-    }
+.profile-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
-    .profile-info h2 {
-      font-size: 1.8rem;
-      margin-bottom: 4px;
-    }
+.profile-info {
+  flex: 1;
+  min-width: 200px;
+}
 
-    .profile-info p {
-      margin-bottom: 6px;
-      font-size: 1rem;
-      color: #555;
-    }
+.profile-info h2 {
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+  word-wrap: break-word;
+}
 
-    .profile-info .subtle {
-      color: #888;
-      font-size: 0.9rem;
-    }
+.profile-info p {
+  margin-bottom: 6px;
+  font-size: 1rem;
+  color: #555;
+  word-wrap: break-word;
+}
 
-    .action-buttons {
-      margin-top: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+.profile-info .subtle {
+  color: #888;
+  font-size: 0.9rem;
+}
 
-    .action-buttons button {
-      padding: 8px 16px;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
+.action-buttons {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
-    .btn-main {
-      background-color: #179cee;
-      color: #fff;
-    }
+.action-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
 
-    .btn-main:hover {
-      background-color: #5843c9;
-    }
+.btn-main {
+  background-color: #179cee;
+  color: #fff;
+}
 
-    .btn-soft {
-      background-color: #f1f1f1;
-      color: #444;
-    }
+.btn-main:hover {
+  background-color: #5843c9;
+}
 
-    .btn-soft:hover {
-      background-color: #e4e4e4;
-    }
+.btn-soft {
+  background-color: #f1f1f1;
+  color: #444;
+}
 
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 40px 0 16px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+.btn-soft:hover {
+  background-color: #e4e4e4;
+}
 
-    .section-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 40px 0 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
-    .add-post-btn {
-      background-color: #bcbbbb;
-      font-family: 'Poppins', sans-serif;
-      color: #fff;
-      padding: 10px 16px;
-      font-size: 0.9rem;
-      border-radius: 8px;
-      text-decoration: none;
-      white-space: nowrap;
-    }
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
 
-    .add-post-btn:hover {
-      background-color: #179cee;
-    }
+.add-post-btn {
+  background-color: #6c5ce7;
+  color: white;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: 'Poppins', sans-serif;
+}
 
-    .posts-grid, .dops-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 16px;
-      margin-top: 1rem;
-    }
+.add-post-btn:hover {
+  background-color: #5946c7;
+}
 
-    .post-item, .dop-card {
-      background: #fff;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #eee;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
+.posts-grid, .dops-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 1rem;
+}
 
-    .post-item img, .dop-card video {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      display: block;
-    }
+.post-item, .dop-card {
+  background: #fff;
+  border-radius: 10px;
+  height: auto;
+  overflow: hidden;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.2s ease;
+}
 
-    .post-caption, .caption {
-      padding: 10px;
-      font-size: 0.85rem;
-      text-align: center;
-      color: #333;
-    }
+.post-item:hover, .dop-card:hover {
+  transform: scale(1.02);
+}
 
-    .delete-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: #e28889;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 0.8rem;
-    }
+.post-item img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
 
-    .delete-btn:hover {
-      background-color: red;
-    }
+.dop-card video {
+  width: 100%;
+  height: 460px;
+  object-fit: cover;
+  display: block;
+  border-radius: 0 0 12px 12px;
+}
 
-    .dashboard-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #179cee;
-      color: #ffffff;
-      padding: 10px 16px;
-      border-radius: 10px;
-      font-weight: 500;
-      text-decoration: none;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-    }
+.post-caption, .caption {
+  padding: 10px;
+  font-size: 0.9rem;
+  text-align: center;
+  color: #333;
+}
 
-    .dashboard-btn:hover {
-      background-color: #ccc8f9;
-    }
+.delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff4d4f;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.8rem;
+}
 
-    a {
-      text-decoration: none;
-    }
+.delete-btn:hover {
+  background-color: red;
+}
 
-    @media (max-width: 600px) {
-      .profile-pic {
-        margin: auto;
-      }
+.dashboard-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #179cee;
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  z-index: 100;
+}
 
-      .profile-header {
-        text-align: center;
-        justify-content: center;
-      }
+.dashboard-btn:hover {
+  background-color: #ccc8f9;
+}
 
-      .profile-info h2 {
-        font-size: 1.5rem;
-      }
+@media (max-width: 600px) {
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-      .action-buttons {
-        justify-content: center;
-      }
+  .profile-pic {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+  }
 
-      .post-item img, .dop-card video {
-        height: clamp(150px, 40vw, 220px);
-      }
+  .profile-info h2 {
+    font-size: 1.5rem;
+  }
 
-      .dashboard-btn {
-        padding: 8px 14px;
-        font-size: 0.85rem;
-      }
+  .action-buttons {
+    justify-content: center;
+  }
 
-      .add-post-btn {
-        font-size: 0.85rem;
-        padding: 8px 12px;
-      }
-    }
+  .post-item img {
+    height: clamp(150px, 40vw, 220px);
+  }
+
+  .dop-card video {
+    height: clamp(300px, 60vw, 460px);
+  }
+
+  .dashboard-btn {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .add-post-btn {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -259,7 +288,7 @@
     </div>
 
     <div class="section-header">
-      <div class="section-title">User Posts</div>
+      <div class="section-title">{{user.name}}'s Posts</div>
       <a href="/post1" class="add-post-btn">Add Post</a>
     </div>
 
@@ -280,7 +309,7 @@
     </div>
 
     <div class="section-header" style="margin-top: 60px;">
-      <div class="section-title">User Dops</div>
+      <div class="section-title">{{user.name}}'s Dops</div>
       <a href="/dops" class="add-post-btn">Add Dop</a>
     </div>
 

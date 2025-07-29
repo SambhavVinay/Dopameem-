@@ -349,7 +349,8 @@ def suggest():
 def profile_open(user_id):
     user = Gooners.query.get_or_404(user_id)
     images = Posts.query.filter_by(user_id = user_id).order_by(Posts.post_id.desc()).all()
-    return render_template("profileopen.html",user = user,images = images)
+    dops = Dops.query.filter_by(user_id=user_id).order_by(Dops.dops_id.desc()).all()
+    return render_template("profileopen.html",user = user,images = images,dops=dops)
 
 @app.route("/delete/<int:user_id>")
 def delete(user_id):
@@ -385,4 +386,4 @@ def database():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    #app.run(debug=True)
+    app.run(debug=True)

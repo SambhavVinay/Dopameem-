@@ -7,220 +7,228 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display&display=swap" rel="stylesheet">
   <style>
     * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+}
 
-    body {
-      background: linear-gradient(to right, #fef9f8, #f3f8ff);
-      color: #222;
-      min-height: 100vh;
-    }
+body {
+  background: linear-gradient(to right, #fef9f8, #f3f8ff);
+  color: #222;
+  min-height: 100vh;
+}
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+a {
+  text-decoration: none;
+  color: inherit;
+}
 
-    .container {
-      max-width: 1080px;
-      margin: auto;
-      padding: 30px 16px;
-    }
+.container {
+  max-width: 1080px;
+  margin: auto;
+  padding: 30px 16px;
+}
 
-    .profile-header {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 16px;
-      padding: 24px;
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-    }
+.profile-header {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
 
-    .profile-pic {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 2px solid #ddd;
-      flex-shrink: 0;
-    }
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #ddd;
+  flex-shrink: 0;
+}
 
-    .profile-pic img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+.profile-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
-    .profile-info {
-      flex: 1;
-      min-width: 200px;
-    }
+.profile-info {
+  flex: 1;
+  min-width: 200px;
+}
 
-    .profile-info h2 {
-      font-size: 1.8rem;
-      margin-bottom: 4px;
-      word-wrap: break-word;
-    }
+.profile-info h2 {
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+  word-wrap: break-word;
+}
 
-    .profile-info p {
-      margin-bottom: 6px;
-      font-size: 1rem;
-      color: #555;
-      word-wrap: break-word;
-    }
+.profile-info p {
+  margin-bottom: 6px;
+  font-size: 1rem;
+  color: #555;
+  word-wrap: break-word;
+}
 
-    .subtle {
-      color: #888;
-      font-size: 0.9rem;
-    }
+.subtle {
+  color: #888;
+  font-size: 0.9rem;
+}
 
-    .action-buttons {
-      margin-top: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+.action-buttons {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
-    .btn-main {
-      background-color: #179cee;
-      color: #fff;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
+.btn-main {
+  background-color: #179cee;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
 
-    .btn-main:hover {
-      background-color: #5843c9;
-    }
+.btn-main:hover {
+  background-color: #5843c9;
+}
 
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 40px 0 16px;
-      flex-wrap: wrap;
-    }
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 40px 0 16px;
+  flex-wrap: wrap;
+}
 
-    .section-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
 
-    .add-post-btn {
-      background-color: #6c5ce7;
-      color: white;
-      padding: 10px 16px;
-      font-size: 0.9rem;
-      border-radius: 8px;
-    }
+.add-post-btn {
+  background-color: #6c5ce7;
+  color: white;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+}
 
-    .add-post-btn:hover {
-      background-color: #5946c7;
-    }
+.add-post-btn:hover {
+  background-color: #5946c7;
+}
 
-    .posts-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 20px;
-    }
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
 
-    .post-item {
-      background: #fff;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #eee;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      transition: transform 0.2s ease;
-    }
+.post-item, .dop-card {
+  background: #fff;
+  border-radius: 10px;
+  height: auto;
+  overflow: hidden;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.2s ease;
+}
 
-    .post-item:hover {
-      transform: scale(1.02);
-    }
+.post-item:hover, .dop-card:hover {
+  transform: scale(1.02);
+}
 
-    .post-item img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      display: block;
-    }
+/* ✅ Only images for posts stay short */
+.post-item img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
 
-    .post-caption {
-      padding: 10px;
-      font-size: 0.9rem;
-      text-align: center;
-      color: #333;
-    }
+/* ✅ Only videos for dops become tall like TikToks */
+.dop-card video {
+  width: 100%;
+  height: 460px;
+  object-fit: cover;
+  display: block;
+  border-radius: 0 0 12px 12px;
+}
 
-    .delete-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: #ff4d4f;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 0.8rem;
-    }
+.post-caption, .caption {
+  padding: 10px;
+  font-size: 0.9rem;
+  text-align: center;
+  color: #333;
+}
 
-    .dashboard-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #179cee;
-      color: #ffffff;
-      padding: 10px 16px;
-      border-radius: 10px;
-      font-weight: 500;
-      text-decoration: none;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      z-index: 100;
-    }
+.delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff4d4f;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.8rem;
+}
 
-    .dashboard-btn:hover {
-      background-color: #ccc8f9;
-    }
+.dashboard-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #179cee;
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  z-index: 100;
+}
 
-    /* Responsive tweaks */
-    @media (max-width: 600px) {
-      .profile-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+.dashboard-btn:hover {
+  background-color: #ccc8f9;
+}
 
-      .profile-pic {
-        width: 100px;
-        height: 100px;
-      }
+/* 📱 Responsive tweaks */
+@media (max-width: 600px) {
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-      .profile-info h2 {
-        font-size: 1.5rem;
-      }
+  .profile-pic {
+    width: 100px;
+    height: 100px;
+  }
 
-      .post-item img {
-        height: 160px;
-      }
+  .profile-info h2 {
+    font-size: 1.5rem;
+  }
 
-      .dashboard-btn {
-        bottom: 16px;
-        right: 16px;
-        font-size: 0.85rem;
-        padding: 8px 12px;
-      }
-    }
+  .dashboard-btn {
+    bottom: 16px;
+    right: 16px;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -251,6 +259,23 @@
           <a href="/post/{{ post.post_id }}">
             <img src="{{ post.post }}" alt="Post image">
             <div class="post-caption">{{ post.post_caption }}</div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="section-header" style="margin-top: 60px;">
+      <div class="section-title">{{ user.name }}'s Dops</div>
+    </div>
+
+    <div class="posts-grid">
+      {% for dop in dops %}
+        <div class="dop-card">
+          <a href="/dops/{{ dop.dops_id }}">
+            <video autoplay loop muted playsinline>
+              <source src="{{ dop.dops }}" type="video/mp4">
+            </video>
+            <div class="caption">{{ dop.dops_caption }}</div>
           </a>
         </div>
       {% endfor %}

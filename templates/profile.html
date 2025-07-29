@@ -7,268 +7,275 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display&family=Poppins&display=swap" rel="stylesheet">
   <style>
     * {
-  box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
-}
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-body {
-  background: linear-gradient(to right, #fef9f8, #f3f8ff);
-  color: #222;
-  min-height: 100vh;
-}
+    body {
+      background: linear-gradient(to right, #fef9f8, #f3f8ff);
+      color: #222;
+      min-height: 100vh;
+    }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-.container {
-  max-width: 1080px;
-  margin: auto;
-  padding: 30px 20px;
-}
+    .container {
+      max-width: 1080px;
+      margin: auto;
+      padding: 30px 20px;
+    }
 
-.profile-header {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 16px;
-  padding: 24px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  align-items: center;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-}
+    .profile-header {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    }
 
-.profile-pic {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid #ddd;
-  flex-shrink: 0;
-}
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #ddd;
+      flex-shrink: 0;
+    }
 
-.profile-pic img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+    .profile-pic img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
-.profile-info {
-  flex: 1;
-  min-width: 200px;
-}
+    .profile-info {
+      flex: 1;
+      min-width: 200px;
+    }
 
-.profile-info h2 {
-  font-size: 1.8rem;
-  margin-bottom: 4px;
-  word-wrap: break-word;
-}
+    .profile-info h2 {
+      font-size: 1.8rem;
+      margin-bottom: 4px;
+      word-wrap: break-word;
+    }
 
-.profile-info p {
-  margin-bottom: 6px;
-  font-size: 1rem;
-  color: #555;
-  word-wrap: break-word;
-}
+    .profile-info p {
+      margin-bottom: 6px;
+      font-size: 1rem;
+      color: #555;
+      word-wrap: break-word;
+    }
 
-.profile-info .subtle {
-  color: #888;
-  font-size: 0.9rem;
-}
+    .profile-info .subtle {
+      color: #888;
+      font-size: 0.9rem;
+    }
 
-.action-buttons {
-  margin-top: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
+    .action-buttons {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
 
-.action-buttons button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
+    .action-buttons button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
 
-.btn-main {
-  background-color: #179cee;
-  color: #fff;
-}
+    .btn-main {
+      background-color: #179cee;
+      color: #fff;
+    }
 
-.btn-main:hover {
-  background-color: #5843c9;
-}
+    .btn-main:hover {
+      background-color: #5843c9;
+    }
 
-.btn-soft {
-  background-color: #f1f1f1;
-  color: #444;
-}
+    .btn-soft {
+      background-color: #f1f1f1;
+      color: #444;
+    }
 
-.btn-soft:hover {
-  background-color: #e4e4e4;
-}
+    .btn-soft:hover {
+      background-color: #e4e4e4;
+    }
 
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 40px 0 16px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
+    .post-dop-controls {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
 
-.section-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-}
+    .add-post-btn {
+      background-color: #6c5ce7;
+      color: white;
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      text-decoration: none;
+      white-space: nowrap;
+      font-family: 'Poppins', sans-serif;
+    }
 
-.add-post-btn {
-  background-color: #6c5ce7;
-  color: white;
-  padding: 10px 16px;
-  font-size: 0.9rem;
-  border-radius: 8px;
-  text-decoration: none;
-  white-space: nowrap;
-  font-family: 'Poppins', sans-serif;
-}
+    .add-post-btn:hover {
+      background-color: #5946c7;
+    }
 
-.add-post-btn:hover {
-  background-color: #5946c7;
-}
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 32px 0 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
 
-.posts-grid, .dops-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
-  margin-top: 1rem;
-}
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
 
-.post-item, .dop-card {
-  background: #fff;
-  border-radius: 10px;
-  height: auto;
-  overflow: hidden;
-  border: 1px solid #eee;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  transition: transform 0.2s ease;
-}
+    .posts-grid, .dops-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+      margin-top: 1rem;
+    }
 
-.post-item:hover, .dop-card:hover {
-  transform: scale(1.02);
-}
+    .post-item, .dop-card {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #eee;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.2s ease;
+    }
 
-.post-item img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  display: block;
-}
+    .post-item:hover, .dop-card:hover {
+      transform: scale(1.02);
+    }
 
-.dop-card video {
-  width: 100%;
-  height: 460px;
-  object-fit: cover;
-  display: block;
-  border-radius: 0 0 12px 12px;
-}
+    .post-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
 
-.post-caption, .caption {
-  padding: 10px;
-  font-size: 0.9rem;
-  text-align: center;
-  color: #333;
-}
+    .dop-card video {
+      width: 100%;
+      height: 460px;
+      object-fit: cover;
+      display: block;
+    }
 
-.delete-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: #ff4d4f;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 0.8rem;
-}
+    .post-caption, .caption {
+      padding: 10px;
+      font-size: 0.9rem;
+      text-align: center;
+      color: #333;
+    }
 
-.delete-btn:hover {
-  background-color: red;
-}
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #ff4d4f;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+    }
 
-.dashboard-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #179cee;
-  color: #ffffff;
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-weight: 500;
-  text-decoration: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  z-index: 100;
-}
+    .delete-btn:hover {
+      background-color: red;
+    }
 
-.dashboard-btn:hover {
-  background-color: #ccc8f9;
-}
+    .dashboard-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #179cee;
+      color: #ffffff;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 500;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      z-index: 100;
+    }
 
-@media (max-width: 600px) {
-  .profile-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+    .dashboard-btn:hover {
+      background-color: #ccc8f9;
+    }
 
-  .profile-pic {
-    width: 100px;
-    height: 100px;
-    margin: auto;
-  }
+    @media (max-width: 600px) {
+      .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
 
-  .profile-info h2 {
-    font-size: 1.5rem;
-  }
+      .profile-pic {
+        width: 100px;
+        height: 100px;
+        margin: auto;
+      }
 
-  .action-buttons {
-    justify-content: center;
-  }
+      .profile-info h2 {
+        font-size: 1.5rem;
+      }
 
-  .post-item img {
-    height: clamp(150px, 40vw, 220px);
-  }
+      .action-buttons {
+        justify-content: center;
+      }
 
-  .dop-card video {
-    height: clamp(300px, 60vw, 460px);
-  }
+      .post-item img {
+        height: clamp(150px, 40vw, 220px);
+      }
 
-  .dashboard-btn {
-    padding: 8px 14px;
-    font-size: 0.85rem;
-    bottom: 16px;
-    right: 16px;
-  }
+      .dop-card video {
+        height: clamp(300px, 60vw, 460px);
+      }
 
-  .add-post-btn {
-    font-size: 0.85rem;
-    padding: 8px 12px;
-  }
-}
+      .dashboard-btn {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+        bottom: 16px;
+        right: 16px;
+      }
 
+      .add-post-btn {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+      }
+
+      .post-dop-controls {
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>
-
   <div class="container">
     <div class="profile-header">
       <div class="profile-pic">
@@ -287,9 +294,13 @@ a {
       </div>
     </div>
 
-    <div class="section-header">
-      <div class="section-title">{{user.name}}'s Posts</div>
+    <div class="post-dop-controls">
       <a href="/post1" class="add-post-btn">Add Post</a>
+      <a href="/dops" class="add-post-btn">Add Dop</a>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">{{ user.name }}'s Posts</div>
     </div>
 
     <div class="posts-grid">
@@ -309,8 +320,7 @@ a {
     </div>
 
     <div class="section-header" style="margin-top: 60px;">
-      <div class="section-title">{{user.name}}'s Dops</div>
-      <a href="/dops" class="add-post-btn">Add Dop</a>
+      <div class="section-title">{{ user.name }}'s Dops</div>
     </div>
 
     <div class="dops-grid">

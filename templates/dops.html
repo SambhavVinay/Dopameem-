@@ -3,15 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <title>Upload Dop • Goongram</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
       background: #f0f2f5;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
+      padding: 20px;
     }
 
     .upload-box {
@@ -27,15 +33,22 @@
     h2 {
       margin-bottom: 20px;
       font-weight: 500;
+      font-size: 1.5rem;
     }
 
-    input[type="file"], textarea {
+    input[type="file"],
+    textarea {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
+      padding: 12px;
+      margin: 12px 0;
       border-radius: 10px;
       border: 1px solid #ccc;
       font-size: 14px;
+      resize: vertical;
+    }
+
+    textarea {
+      min-height: 100px;
     }
 
     button {
@@ -46,17 +59,41 @@
       border-radius: 10px;
       font-size: 16px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: background 0.3s ease;
+      width: 100%;
+      margin-top: 10px;
     }
 
     button:hover {
       background: #333;
     }
+
+    @media (max-width: 480px) {
+      .upload-box {
+        padding: 20px;
+        border-radius: 12px;
+      }
+
+      h2 {
+        font-size: 1.25rem;
+      }
+
+      input[type="file"],
+      textarea {
+        font-size: 13px;
+        padding: 10px;
+      }
+
+      button {
+        font-size: 15px;
+        padding: 10px 16px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="upload-box">
-    <h2>Upload Your Dop (Video)</h2>
+    <h2>Post Dops!</h2>
     <form method="POST" enctype="multipart/form-data">
       <input type="file" name="dops" accept="video/*" required />
       <textarea name="caption" rows="4" placeholder="Write a caption..." required></textarea>

@@ -345,6 +345,14 @@ def suggest():
     suggestions = [{"name": u.name, "user_name": u.user_name} for u in results]
     return jsonify(suggestions)
 
+@app.route("/dopsdisplay")
+def dopsdisplay():
+    user_id = session.get("user_id")
+    user = Gooners.query.filter_by(user_id=user_id).first()
+    dops = Dops.query.order_by(Dops.dops_id.desc()).all()
+    comments = DopsComments.query.order_by(DopsComments.comment_id.desc()).all()
+    return render_template("dopsdisplay.html",user=user,dops=dops,comments=comments)
+
 @app.route("/profile/<int:user_id>")
 def profile_open(user_id):
     user = Gooners.query.get_or_404(user_id)

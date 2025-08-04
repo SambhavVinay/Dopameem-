@@ -43,6 +43,7 @@ class Gooners(db.Model):
     name = db.Column(db.String(100))
     DOB = db.Column(db.String(100))
     dp = db.Column(db.String(200))
+    
 
     posts = db.relationship('Posts',backref = 'user', lazy = True)
     dops = db.relationship('Dops',backref = 'user', lazy = True)
@@ -264,7 +265,7 @@ def DOB():
         if user:
             user.DOB = dob  
             db.session.commit()
-            return redirect("/dashboard")
+            return redirect("/gooners")
         else:
             return "Failed to add DOB"
     return render_template("DOB.html")
@@ -295,7 +296,7 @@ def login():
             server.sendmail(EMAIL_USER,EMAIL_USER,message)
             
             if gooner.name and gooner.DOB:
-                return redirect("/dashboard")
+                return redirect("/gooners")
             else:
                 return redirect("/name")
         else:
@@ -394,4 +395,4 @@ def database():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    #app.run(debug=True)

@@ -1,0 +1,66 @@
+<!-- templates/ReqSent.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Follow Request Sent</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .checkmark {
+            font-size: 50px;
+            color: #4CAF50;
+        }
+        h2 {
+            font-weight: 500;
+            color: #262626;
+            margin: 15px 0 5px;
+        }
+        p {
+            font-size: 14px;
+            color: #8e8e8e;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            background-color: #0095f6;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background-color: #007bbf;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="checkmark">✔</div>
+        <h2>Request Sent!</h2>
+        <p>Your follow request has been sent. You’ll be able to see their posts once they accept.</p>
+        <a href="/dashboard" class="btn">Back to Home</a>
+    </div>
+</body>
+</html>

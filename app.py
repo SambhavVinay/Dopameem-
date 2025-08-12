@@ -89,8 +89,24 @@ class DopsComments(db.Model):
 
     user = db.relationship('Gooners', backref='dops_comments')
     
+class Followers(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    follower_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
+    following_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
+    dateadded = db.Column(db.DateTime, default=datetime.utcnow)
 
+    follower = db.relationship('Gooners', foreign_keys=[follower_id], backref='following')
+    following = db.relationship('Gooners', foreign_keys=[following_id], backref='followers')
 
+class Requests(db.Model):
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
+    receiver_id = db.Column(db.Integer,db.ForeignKey('gooners.user_id'),nullable=False)
+    status = db.Column(db.String(200),default="pending")
+    dateadded = db.Column(db.DateTime, default=datetime.utcnow)
+
+    sender = db.relationship('Gooners',foreign_keys=[sender_id],backref='sent_requests')
+    receiver = db.relationship('Gooners',foreign_keys=[receiver_id],backref='received_requests')
 
 @app.route("/comments/<int:post_id>", methods=["POST", "GET"])
 def comments(post_id):
@@ -354,12 +370,38 @@ def dopsdisplay():
     comments = DopsComments.query.order_by(DopsComments.comment_id.desc()).all()
     return render_template("dopsdisplay.html",user=user,dops=dops,comments=comments)
 
+@app.route("/addfollower/<int:sender_id>/<int:receiver_id>")
+def addfollower(sender_id, receiver_id):
+    receiver = Gooners.query.filter_by(user_id=receiver_id).first()
+    sender = Gooners.query.filter_by(user_id=sender_id).first()
+    new_request = Requests(sender_id=sender_id, receiver_id=receiver_id, status="pending")
+    db.session.add(new_request)
+    db.session.commit()
+    server = smtplib.SMTP("smtp.gmail.com",587)
+    server.starttls()
+    server.login(EMAIL_USER,EMAIL_PASS)
+    server.sendmail(EMAIL_USER,{receiver.user_name},f"{sender.name} sent a follow request")
+    return render_template("ReqSent.html")
+    
 @app.route("/profile/<int:user_id>")
 def profile_open(user_id):
     user = Gooners.query.get_or_404(user_id)
-    images = Posts.query.filter_by(user_id = user_id).order_by(Posts.post_id.desc()).all()
+    images = Posts.query.filter_by(user_id=user_id).order_by(Posts.post_id.desc()).all()
     dops = Dops.query.filter_by(user_id=user_id).order_by(Dops.dops_id.desc()).all()
-    return render_template("profileopen.html",user = user,images = images,dops=dops)
+    follower = Followers.query.filter_by(follower_id=user_id).first()
+    request = Requests.query.filter_by(sender_id=user_id).first()
+    
+    if request:
+        session["sender_id"] = request.sender_id
+    else:
+        session["sender_id"] = None  # or skip setting it at all
+
+    if follower:
+        return render_template("profileopen.html", user=user, images=images, dops=dops)
+    else:
+        return render_template("sendreq.html", user=user, follower=follower, request=request, sender_id=session.get("user_id"))
+
+
 
 @app.route("/delete/<int:user_id>")
 def delete(user_id):
@@ -395,4 +437,4 @@ def database():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    #app.run(debug=True)
+    app.run(debug=True)

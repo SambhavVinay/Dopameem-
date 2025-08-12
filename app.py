@@ -94,7 +94,8 @@ class Followers(db.Model):
     follower_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
     following_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
     dateadded = db.Column(db.DateTime, default=datetime.utcnow)
-
+    final_status = db.Column(db.String(200), default="pending")
+    
     follower = db.relationship('Gooners', foreign_keys=[follower_id], backref='following')
     following = db.relationship('Gooners', foreign_keys=[following_id], backref='followers')
 
@@ -382,7 +383,29 @@ def addfollower(sender_id, receiver_id):
     server.login(EMAIL_USER,EMAIL_PASS)
     server.sendmail(EMAIL_USER,{receiver.user_name},f"{sender.name} sent a follow request")
     return render_template("ReqSent.html")
-    
+
+@app.route("/approvefollower/<int:sender_id>/<int:receiver_id>")
+def approvefollower(sender_id, receiver_id):
+    receiver = Gooners.query.filter_by(user_id=receiver_id).first()
+    sender = Gooners.query.filter_by(user_id=sender_id).first()
+    new_follower = Followers(follower_id=sender_id,following_id=receiver_id,final_status="accepted")
+    db.session.add(new_follower)
+    db.session.commit()
+    return render_template("approvefollower.html")
+
+@app.route("/all_requests")
+def all_requests():
+    user = Gooners.query.order_by(Gooners.user_id.desc()).all()
+    requests = Requests.query.order_by(Requests.id.desc()).all()
+    return render_template("requests.html",requests=requests,user = user)
+
+@app.route("/all_followers")
+def all_followers():
+    #user_id = session.get("user_id")
+    followers = Followers.query.order_by(Followers.id.desc()).all()
+    return render_template("followers.html",followers=followers)
+
+
 @app.route("/profile/<int:user_id>")
 def profile_open(user_id):
     user = Gooners.query.get_or_404(user_id)

@@ -292,22 +292,10 @@ def allreq():
     reqs = Requests.query.order_by(Requests.id.desc()).all()
     return render_template("adminreqs.html",reqs=reqs)
 
-@app.route("/intro")
-def intro():
-    return render_template("intro.html")
 
 @app.route("/")
 def home():
-    print(">>> Entered / route")  # to see if we even reach here
-    try:
-        # Your original code here
-        return render_template("index.html")
-    except Exception as e:
-        import traceback
-        print("ERROR in / route:", e)
-        traceback.print_exc()
-        return f"Error: {e}", 500
-
+    return render_template("index.html")
 
 @app.route("/login", methods=["POST", "GET"])
 def login():

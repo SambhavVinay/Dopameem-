@@ -276,7 +276,8 @@
   </style>
 </head>
 <body>
-  <a href="/all_requests">See Requests</a>
+  <a href="/allreq">AdminReqs</a><br>
+  <a href="/all_requests">See Requests</a><br>
   <a href="/all_followers/{{user.user_id}}">Followers</a>
   <div class="container">
     <div class="profile-header">
@@ -305,43 +306,46 @@
       <div class="section-title">{{ user.name }}'s Posts</div>
     </div>
 
-    <div class="posts-grid">
-      {% for post in posts %}
-        <div class="post-item">
-          <a href="/post/{{ post.post_id }}">
-            <img src="{{ post.post }}" alt="Post image">
-            <div class="post-caption">{{ post.post_caption }}</div>
-          </a>
-          <a href="/deletepost/{{ post.post_id }}"
-             class="delete-btn"
-             onclick="return confirm('Are you sure you want to delete this post?');">
-            Delete
-          </a>
-        </div>
-      {% endfor %}
+ <div class="posts-grid">
+  {% for post in posts %}
+    <div class="post-item">
+      <a href="/post/{{ post.post_id }}">
+        <img 
+          src="{{ post.post | replace('/upload/', '/upload/f_auto,q_auto/') }}" 
+          alt="Post image" 
+          loading="lazy">
+        <div class="post-caption">{{ post.post_caption }}</div>
+      </a>
+      <a href="/deletepost/{{ post.post_id }}"
+         class="delete-btn"
+         onclick="return confirm('Are you sure you want to delete this post?');">
+        Delete
+      </a>
     </div>
+  {% endfor %}
+</div>
 
     <div class="section-header" style="margin-top: 60px;">
       <div class="section-title">{{ user.name }}'s Dops</div>
     </div>
 
-    <div class="dops-grid">
-      {% for dop in dops %}
-        <div class="dop-card">
-          <a href="/dops/{{ dop.dops_id }}">
-            <video autoplay loop muted playsinline>
-              <source src="{{ dop.dops }}" type="video/mp4">
-            </video>
-            <p class="caption">{{ dop.dops_caption }}</p>
-          </a>
-          <a href="/deletedops/{{ dop.dops_id }}"
-             class="delete-btn"
-             onclick="return confirm('Are you sure you want to delete this dop?');">
-            Delete
-          </a>
-        </div>
-      {% endfor %}
+   <div class="dops-grid">
+  {% for dop in dops %}
+    <div class="dop-card">
+      <a href="/dops/{{ dop.dops_id }}">
+        <video autoplay loop muted playsinline loading="lazy">
+          <source src="{{ dop.dops | replace('/upload/', '/upload/q_auto/') }}" type="video/mp4">
+        </video>
+        <p class="caption">{{ dop.dops_caption }}</p>
+      </a>
+      <a href="/deletedops/{{ dop.dops_id }}"
+         class="delete-btn"
+         onclick="return confirm('Are you sure you want to delete this dop?');">
+        Delete
+      </a>
     </div>
+  {% endfor %}
+</div>
 
     <a href="/dashboard" class="dashboard-btn">Dashboard</a>
   </div>

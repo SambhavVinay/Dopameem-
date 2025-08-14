@@ -287,6 +287,10 @@ def DOB():
             return "Failed to add DOB"
     return render_template("DOB.html")
 
+@app.route("/allreq")
+def allreq():
+    reqs = Requests.query.order_by(Requests.id.desc()).all()
+    return render_template("adminreqs.html",reqs=reqs)
 
 @app.route("/intro")
 def intro():
@@ -481,4 +485,4 @@ def database():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    #app.run(debug=True)

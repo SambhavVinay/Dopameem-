@@ -298,7 +298,16 @@ def intro():
 
 @app.route("/")
 def home():
-    return redirect("/intro")
+    print(">>> Entered / route")  # to see if we even reach here
+    try:
+        # Your original code here
+        return render_template("index.html")
+    except Exception as e:
+        import traceback
+        print("ERROR in / route:", e)
+        traceback.print_exc()
+        return f"Error: {e}", 500
+
 
 @app.route("/login", methods=["POST", "GET"])
 def login():

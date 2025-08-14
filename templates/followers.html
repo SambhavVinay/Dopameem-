@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Followers</title>
+</head>
+<body>
+    <h1>Followers</h1>
+
+    {% if followers %}
+        <ul>
+            {% for f in followers %}
+                <li>
+                    {{ f.follower.name if f.follower.name else "Unknown User" }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No followers found for this account.</p>
+    {% endif %}
+</body>
+</html>

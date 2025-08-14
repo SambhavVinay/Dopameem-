@@ -375,54 +375,75 @@ def dopsdisplay():
 def addfollower(sender_id, receiver_id):
     receiver = Gooners.query.filter_by(user_id=receiver_id).first()
     sender = Gooners.query.filter_by(user_id=sender_id).first()
-    new_request = Requests(sender_id=sender_id, receiver_id=receiver_id, status="pending")
-    db.session.add(new_request)
-    db.session.commit()
-    server = smtplib.SMTP("smtp.gmail.com",587)
-    server.starttls()
-    server.login(EMAIL_USER,EMAIL_PASS)
-    server.sendmail(EMAIL_USER,{receiver.user_name},f"{sender.name} sent a follow request")
+    request = Requests.query.filter_by(sender_id=sender_id,receiver_id=receiver_id).first()
+
+    if not request:
+        new_request = Requests(sender_id=sender_id, receiver_id=receiver_id, status="pending")
+        db.session.add(new_request)
+        db.session.commit()
+        server = smtplib.SMTP("smtp.gmail.com",587)
+        server.starttls()
+        server.login(EMAIL_USER,EMAIL_PASS)
+        server.sendmail(EMAIL_USER,{receiver.user_name},f"{sender.name} sent a follow request")
     return render_template("ReqSent.html")
 
 @app.route("/approvefollower/<int:sender_id>/<int:receiver_id>")
 def approvefollower(sender_id, receiver_id):
+
+    remove = Requests.query.filter_by(sender_id=sender_id, receiver_id=receiver_id).first_or_404()    
     receiver = Gooners.query.filter_by(user_id=receiver_id).first()
     sender = Gooners.query.filter_by(user_id=sender_id).first()
-    new_follower = Followers(follower_id=sender_id,following_id=receiver_id,final_status="accepted")
-    db.session.add(new_follower)
-    db.session.commit()
+    follower = Followers.query.filter_by(follower_id=sender_id,following_id=receiver_id).first()
+    if not follower:
+        new_follower = Followers(follower_id=sender_id,following_id=receiver_id,final_status="accepted")
+        db.session.add(new_follower)
+        db.session.delete(remove)
+        db.session.commit()
     return render_template("approvefollower.html")
+
 
 @app.route("/all_requests")
 def all_requests():
-    user = Gooners.query.order_by(Gooners.user_id.desc()).all()
-    requests = Requests.query.order_by(Requests.id.desc()).all()
-    return render_template("requests.html",requests=requests,user = user)
+    receiver_id = session["user_id"]
+    requests = Requests.query.filter_by(receiver_id=receiver_id).order_by(Requests.id.desc()).all()
+    return render_template("requests.html", requests=requests)
 
-@app.route("/all_followers")
-def all_followers():
-    #user_id = session.get("user_id")
-    followers = Followers.query.order_by(Followers.id.desc()).all()
-    return render_template("followers.html",followers=followers)
+@app.route("/all_followers/<int:user_id>")
+def all_followers(user_id):
+    followers = Followers.query.filter_by(following_id=user_id).order_by(Followers.id.desc()).all()
+    return render_template("followers.html", followers=followers)
+
 
 
 @app.route("/profile/<int:user_id>")
 def profile_open(user_id):
+    if "user_id" not in session:
+        return redirect("/login")
+
+    current_user_id = session["user_id"]
+
     user = Gooners.query.get_or_404(user_id)
     images = Posts.query.filter_by(user_id=user_id).order_by(Posts.post_id.desc()).all()
     dops = Dops.query.filter_by(user_id=user_id).order_by(Dops.dops_id.desc()).all()
-    follower = Followers.query.filter_by(follower_id=user_id).first()
-    request = Requests.query.filter_by(sender_id=user_id).first()
+
     
-    if request:
-        session["sender_id"] = request.sender_id
-    else:
-        session["sender_id"] = None  # or skip setting it at all
+    follower = Followers.query.filter_by(
+        follower_id=current_user_id, 
+        following_id=user_id
+    ).first()
+
+    request = Requests.query.filter_by(
+        sender_id=current_user_id, 
+        receiver_id=user_id
+    ).first()
 
     if follower:
+
         return render_template("profileopen.html", user=user, images=images, dops=dops)
     else:
-        return render_template("sendreq.html", user=user, follower=follower, request=request, sender_id=session.get("user_id"))
+        
+        return render_template("sendreq.html", user=user, follower=follower, request=request, sender_id=current_user_id)
+
 
 
 

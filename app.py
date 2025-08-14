@@ -292,6 +292,10 @@ def allreq():
     reqs = Requests.query.order_by(Requests.id.desc()).all()
     return render_template("adminreqs.html",reqs=reqs)
 
+@app.route("/folls")
+def folls():
+    folls = Followers.query.order_by(Followers.id.desc()).all()
+    return render_template("folls.html",folls=folls)
 
 @app.route("/")
 def home():
@@ -322,6 +326,7 @@ def login():
     
 
     return render_template("login.html")
+
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
@@ -400,7 +405,23 @@ def approvefollower(sender_id, receiver_id):
         db.session.add(new_follower)
         db.session.delete(remove)
         db.session.commit()
+        return redirect("/all_requests")
     return render_template("approvefollower.html")
+    
+
+@app.route("/deleterequests/<int:id>")
+def deleterequests(id):
+    request = Requests.query.filter_by(id=id).first()
+    db.session.delete(request)
+    db.session.commit()
+    return redirect("/all_requests")
+
+@app.route("/deletefollowers/<int:id>")
+def deletefollowers(id):
+    followers = Followers.query.filter_by(id=id).first()
+    db.session.delete(followers)
+    db.session.commit()
+    return render_template("followers.html")
 
 
 @app.route("/all_requests")

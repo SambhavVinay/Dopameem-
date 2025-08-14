@@ -169,10 +169,13 @@
               </td>
               <td>
                 {% if req.status == "pending" %}
+                                <a href="/deleterequests/{{req.id}}" class="btn btn-blue">Remove</a>
+
                   <a class="btn btn-blue" href="/approvefollower/{{ req.sender_id }}/{{ req.receiver_id }}">
                     Accept
                   </a>
                 {% else %}
+                  
                   <span class="status accepted">Accepted</span>
                 {% endif %}
               </td>

@@ -226,6 +226,7 @@
 
   <!-- Feed -->
   <div class="feed">
+    
     {% if posts %}
       {% for post in posts %}
         {% set post_user = user | selectattr('user_id', 'equalto', post.user_id) | list | first %}
@@ -272,6 +273,7 @@
     {% else %}
       <p style="text-align: center; color: #888;">No posts to show yet.</p>
     {% endif %}
+    
   </div>
 
   <div class="tagline">Welcome to your dashboard</div>

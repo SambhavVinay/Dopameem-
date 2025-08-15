@@ -395,18 +395,33 @@ def addfollower(sender_id, receiver_id):
 
 @app.route("/approvefollower/<int:sender_id>/<int:receiver_id>")
 def approvefollower(sender_id, receiver_id):
+    
+    remove = Requests.query.filter_by(sender_id=sender_id, receiver_id=receiver_id).first_or_404()
 
-    remove = Requests.query.filter_by(sender_id=sender_id, receiver_id=receiver_id).first_or_404()    
-    receiver = Gooners.query.filter_by(user_id=receiver_id).first()
-    sender = Gooners.query.filter_by(user_id=sender_id).first()
-    follower = Followers.query.filter_by(follower_id=sender_id,following_id=receiver_id).first()
-    if not follower:
-        new_follower = Followers(follower_id=sender_id,following_id=receiver_id,final_status="accepted")
-        db.session.add(new_follower)
-        db.session.delete(remove)
-        db.session.commit()
-        return redirect("/all_requests")
-    return render_template("approvefollower.html")
+    
+    follower1 = Followers.query.filter_by(follower_id=sender_id, following_id=receiver_id).first()
+    if not follower1:
+        db.session.add(Followers(
+            follower_id=sender_id,
+            following_id=receiver_id,
+            final_status="accepted"
+        ))
+
+    
+    follower2 = Followers.query.filter_by(follower_id=receiver_id, following_id=sender_id).first()
+    if not follower2:
+        db.session.add(Followers(
+            follower_id=receiver_id,
+            following_id=sender_id,
+            final_status="accepted"
+        ))
+
+    
+    db.session.delete(remove)
+    db.session.commit()
+
+    return redirect("/all_requests")
+
     
 
 @app.route("/deleterequests/<int:id>")
@@ -480,15 +495,35 @@ def delete(user_id):
         return f"Failed to Delete Gooner id {user_id}"
     return redirect("/database")
 
-@app.route("/dashboard")    
+@app.route("/dashboard")
 def dashboard():
-    user_name = session.get("user_name")
     user_id = session.get("user_id")
-    dops = Dops.query.order_by(Dops.dops_id.desc()).all()
-    posts = Posts.query.order_by(Posts.post_id.desc()).all()
-    user = Gooners.query.order_by(Gooners.dateadded).all()
+    if not user_id:
+        return redirect("/login")
+
+    # Step 1: Get all users current user follows
+    follows = Followers.query.filter_by(follower_id=user_id, final_status="accepted").all()
+    following_ids = {f.following_id for f in follows}
+
+    # Step 2: Get all users who follow the current user
+    followers = Followers.query.filter_by(following_id=user_id, final_status="accepted").all()
+    follower_ids = {f.follower_id for f in followers}
+
+    # Step 3: Mutual follows = intersection
+    mutual_follow_ids = following_ids & follower_ids
+
+    # Step 4: Include yourself in the dashboard posts
+    allowed_ids = list(mutual_follow_ids) + [user_id]
+
+    # Step 5: Filter posts & dops from allowed users
+    posts = Posts.query.filter(Posts.user_id.in_(allowed_ids)).order_by(Posts.post_id.desc()).all()
+    dops = Dops.query.filter(Dops.user_id.in_(allowed_ids)).order_by(Dops.dops_id.desc()).all()
+
     comments = Comments.query.order_by(Comments.comment_id.desc()).all()
-    return render_template("dashboard.html", posts = posts, user = user,comments = comments,dops=dops)
+    users = Gooners.query.order_by(Gooners.dateadded).all()
+
+    return render_template("dashboard.html", posts=posts, user=users, comments=comments, dops=dops)
+
 
 @app.route("/gooners")
 def gooners():

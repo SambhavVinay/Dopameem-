@@ -282,7 +282,7 @@ def DOB():
         if user:
             user.DOB = dob  
             db.session.commit()
-            return redirect("/welcome")
+            return redirect("/T&C")
         else:
             return "Failed to add DOB"
     return render_template("DOB.html")
@@ -322,7 +322,7 @@ def login():
             server.sendmail(EMAIL_USER,EMAIL_USER,message)
             
             if gooner.name and gooner.DOB:
-                return redirect("/welcome")
+                return redirect("/T&C")
             else:
                 return redirect("/name")
         else:
@@ -573,6 +573,9 @@ def dashboard():
 
     return render_template("dashboard.html", posts=posts, user=users, comments=comments, dops=dops)
 
+@app.route("/T&C")
+def tc():
+    return render_template("tc.html")
 
 @app.route("/gooners")
 def gooners():

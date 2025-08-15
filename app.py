@@ -372,10 +372,32 @@ def suggest():
 @app.route("/dopsdisplay")
 def dopsdisplay():
     user_id = session.get("user_id")
+    if not user_id:
+        return redirect("/login")
+
     user = Gooners.query.filter_by(user_id=user_id).first()
-    dops = Dops.query.order_by(Dops.dops_id.desc()).all()
+
+    # Step 1: Users current user follows
+    follows = Followers.query.filter_by(follower_id=user_id, final_status="accepted").all()
+    following_ids = {f.following_id for f in follows}
+
+    # Step 2: Users who follow current user
+    followers = Followers.query.filter_by(following_id=user_id, final_status="accepted").all()
+    follower_ids = {f.follower_id for f in followers}
+
+    # Step 3: Mutual follow IDs
+    mutual_follow_ids = following_ids & follower_ids
+
+    # Step 4: Allowed IDs = mutual follows + yourself
+    allowed_ids = list(mutual_follow_ids) + [user_id]
+
+    # Step 5: Filter Dops
+    dops = Dops.query.filter(Dops.user_id.in_(allowed_ids)).order_by(Dops.dops_id.desc()).all()
+
     comments = DopsComments.query.order_by(DopsComments.comment_id.desc()).all()
-    return render_template("dopsdisplay.html",user=user,dops=dops,comments=comments)
+
+    return render_template("dopsdisplay.html", user=user, dops=dops, comments=comments)
+
 
 @app.route("/addfollower/<int:sender_id>/<int:receiver_id>")
 def addfollower(sender_id, receiver_id):
@@ -538,4 +560,4 @@ def database():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    #app.run(debug=True)
+    app.run(debug=True)

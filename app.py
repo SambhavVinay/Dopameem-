@@ -486,7 +486,7 @@ def profile_open(user_id):
     current_user_id = session["user_id"]
 
     user = Gooners.query.get_or_404(user_id)
-    images = Posts.query.filter_by(user_id=user_id).order_by(Posts.post_id.desc()).all()
+    posts = Posts.query.filter_by(user_id=user_id).order_by(Posts.post_id.desc()).all()
     dops = Dops.query.filter_by(user_id=user_id).order_by(Dops.dops_id.desc()).all()
 
     
@@ -502,7 +502,9 @@ def profile_open(user_id):
 
     if follower:
 
-        return render_template("profileopen.html", user=user, images=images, dops=dops)
+        return render_template("profileopen.html", user=user, posts=posts, dops=dops)
+    elif current_user_id==user_id:
+        return render_template("profile.html",user=user,posts=posts,dops=dops)
     else:
         
         return render_template("sendreq.html", user=user, follower=follower, request=request, sender_id=current_user_id)

@@ -1,9 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Followers</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --blue: #0095f6;
+            --blue-dark: #0077cc;
+            --border: #dbdbdb;
+            --muted: #888;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #fff;
@@ -12,26 +21,50 @@
             color: #000;
         }
 
+        /* Dashboard button */
+        .dashboard-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background-color: var(--blue);
+            color: #fff;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: clamp(13px, 1.8vw, 14px);
+            font-weight: 500;
+            transition: 0.2s ease-in-out;
+            z-index: 1000;
+        }
+
+        .dashboard-btn:hover {
+            background-color: var(--blue-dark);
+        }
+
         header {
             background-color: #fff;
-            border-bottom: 1px solid #dbdbdb;
+            border-bottom: 1px solid var(--border);
             padding: 15px 20px;
-            font-size: 20px;
+            font-size: clamp(18px, 2vw, 20px);
             font-weight: 600;
             color: #000;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            text-align: center; /* Centers header text */
         }
 
         .container {
-            max-width: 500px;
-            margin: 30px auto;
+            max-width: 600px;
+            margin: 20px auto;
             background-color: #fff;
-            border: 1px solid #dbdbdb;
+            border: 1px solid var(--border);
             border-radius: 8px;
             padding: 20px;
         }
 
         h1 {
-            font-size: 22px;
+            font-size: clamp(18px, 2.5vw, 22px);
             margin-bottom: 15px;
             color: #000;
         }
@@ -39,6 +72,7 @@
         ul {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
         li {
@@ -47,6 +81,8 @@
             align-items: center;
             padding: 12px 0;
             border-bottom: 1px solid #eee;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         li:last-child {
@@ -54,33 +90,58 @@
         }
 
         .username {
-            font-size: 16px;
+            font-size: clamp(14px, 2vw, 16px);
             font-weight: 500;
+            word-break: break-word;
+            flex: 1;
         }
 
         a.remove-btn {
-            background-color: #0095f6;
+            background-color: var(--blue);
             color: #fff;
             padding: 6px 12px;
             text-decoration: none;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: clamp(13px, 1.8vw, 14px);
             font-weight: 500;
             transition: 0.2s ease-in-out;
+            flex-shrink: 0;
         }
 
         a.remove-btn:hover {
-            background-color: #0077cc;
+            background-color: var(--blue-dark);
         }
 
         p {
             text-align: center;
-            font-size: 16px;
-            color: #888;
+            font-size: clamp(14px, 2vw, 16px);
+            color: var(--muted);
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            li {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            a.remove-btn {
+                width: 100%;
+                text-align: center;
+                margin-top: 8px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Dashboard button -->
+    <a href="/dashboard" class="dashboard-btn">Dashboard</a>
+
     <header>Followers</header>
 
     <div class="container">

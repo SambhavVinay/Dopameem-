@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ user.user_name }} • Profile</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>{{ user.user_name }} • Instagram</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --font-sm: clamp(10px, 1.8vw, 12px);
   --font-base: clamp(12px, 2vw, 14px);
-  --font-lg: clamp(14px, 2.5vw, 16px);
-  --font-xl: clamp(18px, 3vw, 20px);
-  --accent: #0095f6;
-  --accent-hover: #007bbf;
-  --light-gray: #8e8e8e;
-  --border: #dbdbdb;
+  --font-lg: clamp(16px, 2.5vw, 18px);
+  --font-xl: clamp(20px, 3vw, 28px);
 }
 
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   font-family: 'Inter', sans-serif;
 }
 
 body {
-  background: #fafafa;
+  background-color: #fafafa;
   color: #262626;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 .container {
@@ -35,21 +36,23 @@ body {
   padding: 20px;
 }
 
-/* Profile Header */
+/* Profile header */
 .profile-header {
   display: flex;
+  gap: 30px;
+  padding-bottom: 44px;
+  border-bottom: 1px solid #dbdbdb;
   flex-wrap: wrap;
-  gap: 20px;
-  padding-bottom: 40px;
-  border-bottom: 1px solid var(--border);
+  align-items: center;
 }
 
 .profile-pic {
-  width: 150px;
-  height: 150px;
+  flex: 0 0 clamp(100px, 20vw, 150px);
+  height: clamp(100px, 20vw, 150px);
   border-radius: 50%;
   overflow: hidden;
-  flex-shrink: 0;
+  border: 2px solid #dbdbdb;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 .profile-pic img {
@@ -60,20 +63,19 @@ body {
 
 .profile-info {
   flex: 1;
-  min-width: 200px;
+  min-width: 220px;
 }
 
-.profile-top {
+.username-row {
   display: flex;
   align-items: center;
+  gap: 8px;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 15px;
 }
 
-.profile-top h2 {
+.username-row h2 {
   font-size: var(--font-xl);
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .verified-badge {
@@ -81,184 +83,224 @@ body {
   height: 20px;
 }
 
-.btn-main {
-  background-color: var(--accent);
-  color: white;
-  padding: 5px 9px;
-  border-radius: 4px;
-  font-size: var(--font-sm);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.btn-main:hover {
-  background-color: var(--accent-hover);
-}
-
-.profile-stats {
+/* Buttons */
+.action-buttons {
   display: flex;
-  gap: 20px;
-  font-size: var(--font-base);
-  margin-bottom: 10px;
+  gap: 8px;
+  margin-top: 12px;
   flex-wrap: wrap;
 }
 
-.profile-stats span {
+.btn {
+  padding: 6px 12px;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  background-color: #efefef;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background-color: #e4e4e4;
+}
+
+.btn.blue {
+  background-color: #0095f6;
+  color: white;
+  border: none;
+}
+
+.btn.blue:hover {
+  background-color: #007fd1;
+}
+
+/* Stats */
+.stats {
+  display: flex;
+  gap: 20px;
+  margin-top: 16px;
+  font-size: var(--font-base);
+  flex-wrap: wrap;
+}
+
+.stats span {
   font-weight: 600;
 }
 
-.profile-bio {
-  font-size: var(--font-base);
+/* Bio */
+.bio {
+  margin-top: 16px;
 }
 
-.profile-bio b {
-  display: block;
+.bio .name {
+  font-weight: 600;
 }
 
 /* Tabs */
 .tabs {
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: clamp(20px, 8vw, 60px);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  margin-top: 20px;
+  border-top: 1px solid #dbdbdb;
+  margin-top: 30px;
   font-size: var(--font-sm);
   font-weight: 600;
   letter-spacing: 1px;
   flex-wrap: wrap;
 }
 
-.tab {
-  padding: 15px 0;
-  cursor: pointer;
-  color: var(--light-gray);
+.tabs div {
   display: flex;
   align-items: center;
   gap: 6px;
-}
-
-.tab.active {
-  border-top: 1px solid #000;
-  color: #000;
-}
-
-/* Posts Grid */
-.posts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: 3px;
-  margin-top: 3px;
-}
-
-.post-item {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1/1;
-  background: #000;
-}
-
-.post-item img, 
-.post-item video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.delete-btn {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  background: #ff3b30;
-  color: white;
-  padding: 3px 6px;
-  font-size: 10px;
-  border-radius: 3px;
+  padding: 12px 0;
   cursor: pointer;
 }
 
-/* Small Screens */
-@media (max-width: 600px) {
-  .profile-pic {
-    width: 120px;
-    height: 120px;
-    margin: auto;
-  }
+/* Dynamic Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.post-item img,
+.dop-card video {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-item img:hover,
+.dop-card video:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.delete-btn {
+  display: inline-block;
+  background-color: #ed4956;
+  color: white;
+  padding: 4px 8px;
+  font-size: 10px;
+  border-radius: 6px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  text-transform: uppercase;
+  transition: background 0.2s ease;
+}
+
+.delete-btn:hover {
+  background-color: #d63b47;
+}
+
+.post-item,
+.dop-card {
+  position: relative;
+}
+
+/* Mobile adjustments */
+@media (max-width: 735px) {
   .profile-header {
+    justify-content: center;
     text-align: center;
-    flex-direction: column;
-    align-items: center;
   }
   .profile-info {
-    margin-left: 0;
+    text-align: center;
   }
-  .profile-stats {
+  .stats {
     justify-content: center;
   }
+  .bio {
+    text-align: center;
+  }
 }
+.dashboard-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 6px 12px;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  background-color: #efefef;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 999; /* stays above everything */
+}
+
+.dashboard-btn:hover {
+  background-color: #e4e4e4;
+}
+
 </style>
 </head>
 <body>
-<div class="container">
+  <a href="/dashboard" class="dashboard-btn">Dashboard</a>
 
+<div class="container">
+  <!-- Profile header -->
   <div class="profile-header">
     <div class="profile-pic">
-      <img src="{{ user.dp }}" alt="Profile Picture" loading="lazy">
+      <a href="/dp">
+        <img src="{{ user.dp }}" alt="{{ user.name }}">
+      </a>
     </div>
     <div class="profile-info">
-      <div class="profile-top">
+      <div class="username-row">
         <h2>{{ user.name }}</h2>
         <img class="verified-badge" src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg" alt="Verified">
       </div>
-      <div class="profile-stats">
-        <div><span>{{ images|length }}</span> posts</div>
+      
+      <div class="stats">
+        <div><span>{{ posts|length }}</span> posts</div>
         <div><span>{{ dops|length }}</span> dops</div>
       </div>
-      <div class="profile-bio">
-        <b>{{ user.user_name }}</b>
-        Born on {{ user.DOB }}
+      <div class="bio">
+        <div class="name">{{ user.user_name }}</div>
+        <div>Born on {{ user.DOB }}</div>
       </div>
     </div>
   </div>
 
+  <!-- Tabs -->
   <div class="tabs">
-    <div class="tab active" data-tab="posts">📷 POSTS</div>
-    <div class="tab" data-tab="dops">🎥 DOPS</div>
+    <div>📷 POSTS</div>
+    <div>🎥 DOPS</div>
   </div>
 
-  <div id="posts" class="posts-grid">
-    {% for post in images %}
-    <a href="/post/{{post.post_id}}"><div class="post-item">
-      <img src="{{ post.post }}" alt="Post" loading="lazy">
-      <div class="delete-btn">DELETE</div>
-    </div></a>
+  <!-- Posts Grid -->
+  <div class="grid">
+    {% for post in posts %}
+    <div class="post-item">
+      <a href="/post/{{ post.post_id }}">
+        <img src="{{ post.post | replace('/upload/', '/upload/f_auto,q_auto/') }}" alt="Post image" loading="lazy">
+      </a>
+      
+    </div>
     {% endfor %}
   </div>
 
-  <div id="dops" class="posts-grid" style="display:none;">
+  <!-- Dops Grid -->
+  <div class="grid" style="margin-top: 40px;">
     {% for dop in dops %}
-    <a href="/dops/{{dop.dops_id}}"><div class="post-item">
-      <video autoplay loop muted playsinline preload="metadata" loading="lazy">
-    <source src="{{ dop.dops }}" type="video/mp4">
-</video>
-      <div class="delete-btn">DELETE</div>
-    </div></a>
+    <div class="dop-card">
+      <a href="/dops/{{ dop.dops_id }}">
+        <video autoplay loop muted playsinline loading="lazy">
+          <source src="{{ dop.dops | replace('/upload/', '/upload/q_auto/') }}" type="video/mp4">
+        </video>
+      </a>
+    </div>
     {% endfor %}
   </div>
-
+  <a href="/dashboard">Dashboard</a>
 </div>
-
-<script>
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-
-    document.getElementById('posts').style.display = tab.dataset.tab === 'posts' ? 'grid' : 'none';
-    document.getElementById('dops').style.display = tab.dataset.tab === 'dops' ? 'grid' : 'none';
-  });
-});
-</script>
 </body>
 </html>

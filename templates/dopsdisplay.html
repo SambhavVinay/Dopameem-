@@ -11,8 +11,9 @@
       --font-sm: clamp(0.75rem, 1vw, 0.95rem);
       --font-md: clamp(0.9rem, 1.3vw, 1.1rem);
       --font-lg: clamp(1.05rem, 1.6vw, 1.25rem);
-      --video-width: clamp(90%, 32vw, 360px);
-      --video-height: calc(var(--video-width) * 1.78);
+      --video-width: clamp(250px, 28vw, 320px);  /* narrower */
+--video-height: calc(var(--video-width) * 16 / 9); /* 9:16 ratio */
+
     }
 
     * {
@@ -215,16 +216,18 @@
         </div>
 
         <div class="overlay">
-          <div class="user-info">
+          <a href="/profile/{{user.user_id}}" style="text-decoration: none ; color: white;"><div class="user-info">
             <img src="{{ dop.user.dp }}" alt="Profile Picture">
             <strong>{{ dop.user.name }}</strong>
-          </div>
+          </div></a>
+          
           <div class="caption">{{ dop.dops_caption }}</div>
           <div class="comments">
             <a href="/dopcomments/{{ dop.dops_id }}">Comment</a>
             {% for comment in comments %}
               {% if comment.dops_id == dop.dops_id %}
-                <div><strong>{{ comment.user.name }}</strong>: {{ comment.comment_text }}</div>
+              
+                <div><a href="/profile/{{user.user_id}}" style="text-decoration: none;color: white"><strong>{{ comment.user.name }}</strong></a>: {{ comment.comment_text }}</div>
               {% endif %}
             {% endfor %}
           </div>

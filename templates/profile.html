@@ -221,9 +221,30 @@ a {
     text-align: center;
   }
 }
+.dashboard-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 6px 12px;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  background-color: #efefef;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 999; /* stays above everything */
+}
+
+.dashboard-btn:hover {
+  background-color: #e4e4e4;
+}
+
 </style>
 </head>
 <body>
+  <a href="/dashboard" class="dashboard-btn">Dashboard</a>
+
 <div class="container">
   <!-- Profile header -->
   <div class="profile-header">
@@ -285,6 +306,7 @@ a {
     </div>
     {% endfor %}
   </div>
+  
 </div>
 </body>
 </html>

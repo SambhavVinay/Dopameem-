@@ -175,7 +175,7 @@
       </a>
     </div>
 
-    <img src="{{ post.post }}" alt="Post Image" class="post-image">
+    <img src="{{ post.post }}" alt="Post Image" class="post-image" loading="lazy">
 
     {% if post.post_caption %}
       <div class="post-caption">
@@ -194,7 +194,7 @@
     <div class="comment-section">
       {% for comment in comments %}
         <div class="comment-row">
-          <img src="{{ comment.user.dp }}" class="comment-profile-pic" alt="User DP">
+          <img src="{{ comment.user.dp }}" class="comment-profile-pic" alt="User DP" loading="lazy">
           <div class="comment-text">
             <a href="/profile/{{comment.user.user_id}}"><b>{{ comment.user.name }}</b></a> {{ comment.comment_text }}
           </div>

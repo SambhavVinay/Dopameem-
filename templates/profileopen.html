@@ -1,293 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{{ user.user_name }} • Profile</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --font-sm: clamp(0.85rem, 1vw, 1rem);
-      --font-base: clamp(1rem, 1.5vw, 1.2rem);
-      --font-lg: clamp(1.2rem, 2vw, 1.5rem);
-      --font-xl: clamp(1.5rem, 3vw, 2rem);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ user.user_name }} • Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font-sm: clamp(10px, 1.8vw, 12px);
+  --font-base: clamp(12px, 2vw, 14px);
+  --font-lg: clamp(14px, 2.5vw, 16px);
+  --font-xl: clamp(18px, 3vw, 20px);
+  --accent: #0095f6;
+  --accent-hover: #007bbf;
+  --light-gray: #8e8e8e;
+  --border: #dbdbdb;
+}
 
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
 
-    body {
-      background: linear-gradient(to right, #fef9f8, #f3f8ff);
-      color: #222;
-      min-height: 100vh;
-      font-size: var(--font-base);
-    }
+body {
+  background: #fafafa;
+  color: #262626;
+}
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+.container {
+  max-width: 935px;
+  margin: auto;
+  padding: 20px;
+}
 
-    .container {
-      max-width: 1080px;
-      margin: auto;
-      padding: 30px 16px;
-    }
+/* Profile Header */
+.profile-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--border);
+}
 
-    .profile-header {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 16px;
-      padding: 24px;
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-    }
+.profile-pic {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
 
-    .profile-pic {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 2px solid #ddd;
-      flex-shrink: 0;
-    }
+.profile-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    .profile-pic img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+.profile-info {
+  flex: 1;
+  min-width: 200px;
+}
 
-    .profile-info {
-      flex: 1;
-      min-width: 200px;
-    }
+.profile-top {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
 
-    .profile-info h2 {
-      font-size: var(--font-xl);
-      margin-bottom: 4px;
-      word-wrap: break-word;
-    }
+.profile-top h2 {
+  font-size: var(--font-xl);
+  font-weight: 400;
+}
 
-    .profile-info p {
-      margin-bottom: 6px;
-      font-size: var(--font-base);
-      color: #555;
-      word-wrap: break-word;
-    }
+.verified-badge {
+  width: 20px;
+  height: 20px;
+}
 
-    .subtle {
-      color: #888;
-      font-size: var(--font-sm);
-    }
+.btn-main {
+  background-color: var(--accent);
+  color: white;
+  padding: 5px 9px;
+  border-radius: 4px;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
 
-    .action-buttons {
-      margin-top: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+.btn-main:hover {
+  background-color: var(--accent-hover);
+}
 
-    .btn-main {
-      background-color: #179cee;
-      color: #fff;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 8px;
-      font-size: var(--font-sm);
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
+.profile-stats {
+  display: flex;
+  gap: 20px;
+  font-size: var(--font-base);
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
 
-    .btn-main:hover {
-      background-color: #5843c9;
-    }
+.profile-stats span {
+  font-weight: 600;
+}
 
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 40px 0 16px;
-      flex-wrap: wrap;
-    }
+.profile-bio {
+  font-size: var(--font-base);
+}
 
-    .section-title {
-      font-size: var(--font-lg);
-      font-weight: 600;
-    }
+.profile-bio b {
+  display: block;
+}
 
-    .add-post-btn {
-      background-color: #6c5ce7;
-      color: white;
-      padding: 10px 16px;
-      font-size: var(--font-sm);
-      border-radius: 8px;
-    }
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(20px, 8vw, 60px);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-top: 20px;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  letter-spacing: 1px;
+  flex-wrap: wrap;
+}
 
-    .add-post-btn:hover {
-      background-color: #5946c7;
-    }
+.tab {
+  padding: 15px 0;
+  cursor: pointer;
+  color: var(--light-gray);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
-    .posts-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 20px;
-    }
+.tab.active {
+  border-top: 1px solid #000;
+  color: #000;
+}
 
-    .post-item, .dop-card {
-      background: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid #eee;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      transition: transform 0.2s ease;
-    }
+/* Posts Grid */
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 3px;
+  margin-top: 3px;
+}
 
-    .post-item:hover, .dop-card:hover {
-      transform: scale(1.02);
-    }
+.post-item {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  background: #000;
+}
 
-    .post-item img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      display: block;
-    }
+.post-item img, 
+.post-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    .dop-card video {
-      width: 100%;
-      height: 460px;
-      object-fit: cover;
-      display: block;
-      border-radius: 0 0 12px 12px;
-    }
+.delete-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #ff3b30;
+  color: white;
+  padding: 3px 6px;
+  font-size: 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
 
-    .post-caption, .caption {
-      padding: 10px;
-      font-size: var(--font-sm);
-      text-align: center;
-      color: #333;
-    }
-
-    .delete-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: #ff4d4f;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 0.8rem;
-    }
-
-    .dashboard-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #179cee;
-      color: #ffffff;
-      padding: 10px 16px;
-      border-radius: 10px;
-      font-weight: 500;
-      text-decoration: none;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      z-index: 100;
-      font-size: var(--font-sm);
-    }
-
-    .dashboard-btn:hover {
-      background-color: #ccc8f9;
-    }
-
-    @media (max-width: 600px) {
-      .profile-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .profile-pic {
-        width: 100px;
-        height: 100px;
-      }
-
-      .profile-info h2 {
-        font-size: var(--font-lg);
-      }
-
-      .dashboard-btn {
-        bottom: 16px;
-        right: 16px;
-        font-size: var(--font-sm);
-        padding: 8px 12px;
-      }
-    }
-  </style>
+/* Small Screens */
+@media (max-width: 600px) {
+  .profile-pic {
+    width: 120px;
+    height: 120px;
+    margin: auto;
+  }
+  .profile-header {
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+  }
+  .profile-info {
+    margin-left: 0;
+  }
+  .profile-stats {
+    justify-content: center;
+  }
+}
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="profile-header">
-      <div class="profile-pic">
-        <a href="/dp">
-          <img src="{{ user.dp }}" alt="Profile Picture" />
-        </a>
-      </div>
-      <div class="profile-info">
+<div class="container">
+
+  <div class="profile-header">
+    <div class="profile-pic">
+      <img src="{{ user.dp }}" alt="Profile Picture" loading="lazy">
+    </div>
+    <div class="profile-info">
+      <div class="profile-top">
         <h2>{{ user.name }}</h2>
-        <p>@{{ user.user_name }}</p>
-        <p class="subtle">Born on {{ user.DOB }}</p>
-        <div class="action-buttons">
-          <button class="btn-main">Contact</button>
-        </div>
+        <img class="verified-badge" src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg" alt="Verified">
       </div>
-    </div>
-
-    <div class="section-header">
-      <div class="section-title">{{ user.name }}'s Posts</div>
-      <a href="/post1" class="add-post-btn">Add Post</a>
-    </div>
-
-    <div class="posts-grid">
-      {% for post in images %}
-        <div class="post-item">
-          <a href="/post/{{ post.post_id }}">
-            <img src="{{ post.post }}" alt="Post image">
-            <div class="post-caption">{{ post.post_caption }}</div>
-          </a>
-        </div>
-      {% endfor %}
-    </div>
-
-    <div class="section-header" style="margin-top: 60px;">
-      <div class="section-title">{{ user.name }}'s Dops</div>
-      <a href="/dops" class="add-post-btn">Add Dop</a>
-    </div>
-
-    <div class="posts-grid">
-      {% for dop in dops %}
-        <div class="dop-card">
-          <a href="/dops/{{ dop.dops_id }}">
-            <video autoplay loop muted playsinline>
-              <source src="{{ dop.dops }}" type="video/mp4">
-            </video>
-            <div class="caption">{{ dop.dops_caption }}</div>
-          </a>
-        </div>
-      {% endfor %}
+      <div class="profile-stats">
+        <div><span>{{ images|length }}</span> posts</div>
+        <div><span>{{ dops|length }}</span> dops</div>
+      </div>
+      <div class="profile-bio">
+        <b>{{ user.user_name }}</b>
+        Born on {{ user.DOB }}
+      </div>
     </div>
   </div>
 
-  <a href="/dashboard" class="dashboard-btn">Dashboard</a>
+  <div class="tabs">
+    <div class="tab active" data-tab="posts">📷 POSTS</div>
+    <div class="tab" data-tab="dops">🎥 DOPS</div>
+  </div>
+
+  <div id="posts" class="posts-grid">
+    {% for post in images %}
+    <a href="/post/{{post.post_id}}"><div class="post-item">
+      <img src="{{ post.post }}" alt="Post" loading="lazy">
+      <div class="delete-btn">DELETE</div>
+    </div></a>
+    {% endfor %}
+  </div>
+
+  <div id="dops" class="posts-grid" style="display:none;">
+    {% for dop in dops %}
+    <a href="/dops/{{dop.dops_id}}"><div class="post-item">
+      <video autoplay loop muted playsinline preload="metadata" loading="lazy">
+    <source src="{{ dop.dops }}" type="video/mp4">
+</video>
+      <div class="delete-btn">DELETE</div>
+    </div></a>
+    {% endfor %}
+  </div>
+
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    document.getElementById('posts').style.display = tab.dataset.tab === 'posts' ? 'grid' : 'none';
+    document.getElementById('dops').style.display = tab.dataset.tab === 'dops' ? 'grid' : 'none';
+  });
+});
+</script>
 </body>
 </html>

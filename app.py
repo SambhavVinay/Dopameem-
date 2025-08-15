@@ -282,7 +282,7 @@ def DOB():
         if user:
             user.DOB = dob  
             db.session.commit()
-            return redirect("/gooners")
+            return redirect("/welcome")
         else:
             return "Failed to add DOB"
     return render_template("DOB.html")
@@ -301,6 +301,10 @@ def folls():
 def home():
     return render_template("index.html")
 
+@app.route("/welcome")
+def welcome():
+    return render_template("welcome.html")
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
     
@@ -318,7 +322,7 @@ def login():
             server.sendmail(EMAIL_USER,EMAIL_USER,message)
             
             if gooner.name and gooner.DOB:
-                return redirect("/gooners")
+                return redirect("/welcome")
             else:
                 return redirect("/name")
         else:
@@ -560,4 +564,4 @@ def database():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    #app.run(debug=True)

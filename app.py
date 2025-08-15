@@ -334,7 +334,6 @@ def login():
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
-    user_name = session.get("user_name")
     if request.method == "POST":
         user_name = request.form["user_name"]
         user_password = request.form["user_password"]
@@ -343,9 +342,29 @@ def register():
         if existing_user:
             return redirect("/login")
         
+        # Create new user
         new_gooner = Gooners(user_password=user_password, user_name=user_name)
         db.session.add(new_gooner)
         db.session.commit()
+
+        # Find Dopameme account
+        dopameme = Gooners.query.filter_by(name="TeamDopameme").first()
+        if dopameme:
+            # Make Dopameme follow new user
+            db.session.add(Followers(
+                follower_id=dopameme.user_id,
+                following_id=new_gooner.user_id,
+                final_status="accepted"
+            ))
+            # Make new user follow Dopameme
+            db.session.add(Followers(
+                follower_id=new_gooner.user_id,
+                following_id=dopameme.user_id,
+                final_status="accepted"
+            ))
+            db.session.commit()
+
+        # Send emails
         client_message = f"Dear {user_name}, Welcome to Dopameme, Post Away!"
         admin_message = f"Greetings BatMan, {user_name} has just taken part in the Dopameme initiative!"
         server = smtplib.SMTP("smtp.gmail.com", 587)
@@ -353,9 +372,11 @@ def register():
         server.login(EMAIL_USER, EMAIL_PASS)
         server.sendmail(EMAIL_USER, user_name, client_message)
         server.sendmail(EMAIL_USER, EMAIL_USER, admin_message)
+
         return redirect("/login")
 
     return render_template("register.html")
+
 
 @app.route("/search",methods = ["POST","GET"])
 def search():

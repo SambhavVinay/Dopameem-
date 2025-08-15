@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>New Post • Goongram</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -25,7 +21,6 @@
       text-align: center;
       font-weight: bold;
       font-size: 20px;
-      color: #262626;
     }
 
     .container {
@@ -104,25 +99,43 @@
       color: #999;
     }
 
+    /* Loading screen styles */
+    .loading-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 22px;
+      font-weight: bold;
+      color: #333;
+      z-index: 9999;
+      display: none;
+      flex-direction: column;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3897f0;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     @media (max-width: 600px) {
-      .navbar {
-        font-size: 18px;
-        padding: 12px;
-      }
-
-      .container {
-        margin: 20px auto;
-        padding: 20px 15px;
-      }
-
-      .post-upload button {
-        font-size: 15px;
-        padding: 10px;
-      }
-
-      .preview img {
-        max-height: 300px;
-      }
+      .navbar { font-size: 18px; padding: 12px; }
+      .container { margin: 20px auto; padding: 20px 15px; }
+      .post-upload button { font-size: 15px; padding: 10px; }
+      .preview img { max-height: 300px; }
     }
   </style>
 </head>
@@ -131,7 +144,7 @@
   <div class="navbar">Add Post</div>
 
   <div class="container">
-    <form class="post-upload" action="/post1" method="POST" enctype="multipart/form-data">
+    <form class="post-upload" action="/post1" method="POST" enctype="multipart/form-data" id="uploadForm">
       <label for="post1">Select a post image</label>
       <input type="file" name="post1" id="post1" required />
 
@@ -150,6 +163,21 @@
   </div>
 
   <footer>&copy; 2025 Dopameme</footer>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    Uploading...
+  </div>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+
+    form.addEventListener('submit', function() {
+      loadingOverlay.style.display = 'flex';
+    });
+  </script>
 
 </body>
 </html>

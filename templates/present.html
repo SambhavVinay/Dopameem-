@@ -121,17 +121,24 @@
     }
 
     .home-link {
-      display: block;
-      text-align: center;
-      margin-top: 30px;
-      color: #007bff;
-      text-decoration: none;
-      font-size: 14px;
-    }
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transition: background-color 0.2s ease;
+}
 
-    .home-link:hover {
-      text-decoration: underline;
-    }
+.home-link:hover {
+  background-color: #005ec9;
+}
+
 
     @media (max-width: 500px) {
       .profile-card {

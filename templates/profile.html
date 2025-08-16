@@ -221,6 +221,8 @@ a {
     text-align: center;
   }
 }
+
+/* Dashboard button */
 .dashboard-btn {
   position: fixed;
   top: 20px;
@@ -233,17 +235,68 @@ a {
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  z-index: 999; /* stays above everything */
+  z-index: 999;
 }
 
 .dashboard-btn:hover {
   background-color: #e4e4e4;
 }
 
+/* Logout Overlay */
+#logoutOverlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  backdrop-filter: blur(2px);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#logoutOverlay .logout-box {
+  background: rgba(255,255,255,0.95);
+  padding: 40px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+#logoutOverlay .logout-box p {
+  margin-bottom: 20px;
+  font-size: var(--font-base);
+  color: #333;
+  line-height: 1.5;
+}
+
+#logoutOverlay .logout-box .btn {
+  min-width: 100px;
+}
+/* Logout button at top-right of profile header */
+.logout-btn {
+  position: absolute;
+  top: 20px;
+  right: 0;
+  padding: 6px 12px;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  background-color: #efefef;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #e4e4e4;
+}
+
 </style>
 </head>
 <body>
-  <a href="/dashboard" class="dashboard-btn">Dashboard</a>
+<a href="/dashboard" class="dashboard-btn">Dashboard</a>
 
 <div class="container">
   <!-- Profile header -->
@@ -272,6 +325,7 @@ a {
         <div class="name">{{ user.user_name }}</div>
         <div>Born on {{ user.DOB }}</div>
       </div>
+      <button id="logoutBtn" class="logout-btn">Logout</button>
     </div>
   </div>
 
@@ -306,7 +360,41 @@ a {
     </div>
     {% endfor %}
   </div>
-  
+
+  <!-- Logout Button -->
+
+
+  <!-- Logout Confirmation Overlay -->
+  <div id="logoutOverlay">
+    <div class="logout-box">
+      <p><strong>Are you sure you want to logout?</strong></p>
+      <p>Logging out will end your current session. You will need to login again to access your posts, dops, and profile. Make sure you have saved any unsaved changes before proceeding.</p>
+      <div style="display:flex; justify-content:space-between; gap:10px; margin-top:20px;">
+        <button id="confirmLogout" class="btn blue">Yes, Logout</button>
+        <button id="cancelLogout" class="btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
 </div>
+
+<script>
+  const logoutBtn = document.getElementById("logoutBtn");
+  const logoutOverlay = document.getElementById("logoutOverlay");
+  const confirmLogout = document.getElementById("confirmLogout");
+  const cancelLogout = document.getElementById("cancelLogout");
+
+  logoutBtn.addEventListener("click", () => {
+    logoutOverlay.style.display = "flex";
+  });
+
+  cancelLogout.addEventListener("click", () => {
+    logoutOverlay.style.display = "none";
+  });
+
+  confirmLogout.addEventListener("click", () => {
+    window.location.href = "/logout";
+  });
+</script>
 </body>
 </html>

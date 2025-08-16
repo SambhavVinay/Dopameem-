@@ -8,6 +8,9 @@ from flask import jsonify
 import cloudinary
 import cloudinary.uploader
 from flask_migrate import Migrate
+from datetime import timedelta
+
+
 
 load_dotenv()
 
@@ -21,6 +24,7 @@ EMAIL_USER = os.getenv("EMAIL_USER")
 EMAIL_PASS = os.getenv("EMAIL_PASS")
 
 app = Flask(__name__)
+app.permanent_session_lifetime = timedelta(days=30)
 UPLOAD_FOLDER_POST = 'static/posts'
 UPLOAD_FOLDER_DOPS = 'static/dops'
 UPLOAD_FOLDER = 'static/dp'
@@ -307,29 +311,45 @@ def welcome():
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    
+    # Redirect already logged-in users
+    if "user_id" in session:
+        return redirect("/dashboard")
+
     if request.method == "POST":
         user_name = request.form["user_name"]
         user_password = request.form["user_password"]
-        session["user_name"] = user_name
+        
         gooner = Gooners.query.filter_by(user_name=user_name, user_password=user_password).first()
         if gooner:
-            message = f"{user_name} Just logged in"
             session["user_id"] = gooner.user_id
-            server = smtplib.SMTP("smtp.gmail.com",587)
-            server.starttls()
-            server.login(EMAIL_USER,EMAIL_PASS)
-            server.sendmail(EMAIL_USER,EMAIL_USER,message)
-            
+            session["user_name"] = gooner.user_name
+            session.permanent = True  # now session will persist
+
+            # Send login email (optional, wrapped in try/except)
+            message = f"{user_name} just logged in"
+            try:
+                server = smtplib.SMTP("smtp.gmail.com", 587)
+                server.starttls()
+                server.login(EMAIL_USER, EMAIL_PASS)
+                server.sendmail(EMAIL_USER, EMAIL_USER, message)
+                server.quit()
+            except Exception as e:
+                print("Email failed:", e)
+
+            # Redirect depending on profile setup
             if gooner.name and gooner.DOB:
                 return redirect("/T&C")
             else:
                 return redirect("/name")
         else:
-            return "Invalid Credentials (or) Gooner Not Registered !!!"
-    
+            return "Invalid Credentials (or) User Not Registered !!!"
 
     return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
 
 
 @app.route("/register", methods=["POST", "GET"])

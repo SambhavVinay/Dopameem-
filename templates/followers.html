@@ -21,7 +21,6 @@
             color: #000;
         }
 
-        /* Dashboard button */
         .dashboard-btn {
             position: fixed;
             top: 15px;
@@ -51,7 +50,7 @@
             position: sticky;
             top: 0;
             z-index: 10;
-            text-align: center; /* Centers header text */
+            text-align: center;
         }
 
         .container {
@@ -61,12 +60,6 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 20px;
-        }
-
-        h1 {
-            font-size: clamp(18px, 2.5vw, 22px);
-            margin-bottom: 15px;
-            color: #000;
         }
 
         ul {
@@ -93,7 +86,17 @@
             font-size: clamp(14px, 2vw, 16px);
             font-weight: 500;
             word-break: break-word;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             flex: 1;
+        }
+
+        .username img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
         }
 
         a.remove-btn {
@@ -118,7 +121,6 @@
             color: var(--muted);
         }
 
-        /* Mobile adjustments */
         @media (max-width: 480px) {
             .container {
                 margin: 10px;
@@ -139,9 +141,7 @@
     </style>
 </head>
 <body>
-    <!-- Dashboard button -->
     <a href="/dashboard" class="dashboard-btn">Dashboard</a>
-
     <header>Followers</header>
 
     <div class="container">
@@ -150,9 +150,10 @@
                 {% for f in followers %}
                     <li>
                         <span class="username">
-                            {{ f.follower.name if f.follower.name else "Unknown User" }}
+                           <img src="{{ f.follower.dp }}" alt="{{ f.follower.name if f.follower.name else 'Unknown User' }}'s profile">
+                           {{ f.follower.name if f.follower.name else "Unknown User" }}
                         </span>
-                        <a class="remove-btn" href="/deletefollowers/{{f.id}}">Remove</a>
+                        <a class="remove-btn" href="/deletefollowers/{{ f.id }}">Remove</a>
                     </li>
                 {% endfor %}
             </ul>

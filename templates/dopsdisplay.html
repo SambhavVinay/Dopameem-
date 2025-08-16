@@ -251,6 +251,22 @@
         button.textContent = video.muted ? "🔈" : "🔇";
       });
     });
+    const reels = document.querySelectorAll(".reel");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const video = entry.target.querySelector("video");
+      if (video) {
+        if (entry.isIntersecting) {
+          video.play();
+        } else {
+          video.pause();
+        }
+      }
+    });
+  }, { threshold: 0.75 }); // triggers when 75% of the reel is visible
+
+  reels.forEach(reel => observer.observe(reel));
   </script>
 </body>
 </html>

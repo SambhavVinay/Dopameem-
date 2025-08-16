@@ -47,71 +47,82 @@ class Gooners(db.Model):
     name = db.Column(db.String(100))
     DOB = db.Column(db.String(100))
     dp = db.Column(db.String(200))
-    
 
-    posts = db.relationship('Posts',backref = 'user', lazy = True)
-    dops = db.relationship('Dops',backref = 'user', lazy = True)
+    posts = db.relationship('Posts', back_populates='user', cascade="all, delete-orphan", lazy=True)
+    dops = db.relationship('Dops', back_populates='user', cascade="all, delete-orphan", lazy=True)
+    comments = db.relationship('Comments', back_populates='user', cascade="all, delete-orphan", lazy=True)
+    dops_comments = db.relationship('DopsComments', back_populates='user', cascade="all, delete-orphan", lazy=True)
+
+    sent_requests = db.relationship('Requests', back_populates='sender', cascade="all, delete-orphan", foreign_keys='Requests.sender_id')
+    received_requests = db.relationship('Requests', back_populates='receiver', cascade="all, delete-orphan", foreign_keys='Requests.receiver_id')
+
+    following = db.relationship('Followers', back_populates='follower', cascade="all, delete-orphan", foreign_keys='Followers.follower_id')
+    followers = db.relationship('Followers', back_populates='following', cascade="all, delete-orphan", foreign_keys='Followers.following_id')
+
 
 class Posts(db.Model):
     post_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     post = db.Column(db.String(200))
     post_caption = db.Column(db.String(1000))
-    
     user_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
 
-    comments = db.relationship("Comments", backref="post", cascade="all, delete-orphan")  # define here
+    user = db.relationship('Gooners', back_populates='posts')
+    comments = db.relationship('Comments', back_populates='post', cascade="all, delete-orphan", lazy=True)
 
 
 class Comments(db.Model):
     comment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     comment_text = db.Column(db.String(300), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-
     user_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('posts.post_id'), nullable=True)
 
-    user = db.relationship('Gooners', backref='comments', lazy=True)
+    user = db.relationship('Gooners', back_populates='comments')
+    post = db.relationship('Posts', back_populates='comments')
 
-    
+
 class Dops(db.Model):
     dops_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     dops = db.Column(db.String(200))
     dops_caption = db.Column(db.String(1000))
-
     user_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
-    
 
-    comments = db.relationship("DopsComments", backref="dop", cascade="all, delete-orphan")
+    user = db.relationship('Gooners', back_populates='dops')
+    comments = db.relationship('DopsComments', back_populates='dop', cascade="all, delete-orphan", lazy=True)
+
 
 class DopsComments(db.Model):
     comment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     comment_text = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-
     user_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
     dops_id = db.Column(db.Integer, db.ForeignKey('dops.dops_id'), nullable=False)
 
-    user = db.relationship('Gooners', backref='dops_comments')
-    
+    user = db.relationship('Gooners', back_populates='dops_comments')
+    dop = db.relationship('Dops', back_populates='comments')
+
+
 class Followers(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     follower_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
     following_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
     dateadded = db.Column(db.DateTime, default=datetime.utcnow)
     final_status = db.Column(db.String(200), default="pending")
-    
-    follower = db.relationship('Gooners', foreign_keys=[follower_id], backref='following')
-    following = db.relationship('Gooners', foreign_keys=[following_id], backref='followers')
+
+    follower = db.relationship('Gooners', foreign_keys=[follower_id], back_populates='following')
+    following = db.relationship('Gooners', foreign_keys=[following_id], back_populates='followers')
+
 
 class Requests(db.Model):
-    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
-    receiver_id = db.Column(db.Integer,db.ForeignKey('gooners.user_id'),nullable=False)
-    status = db.Column(db.String(200),default="pending")
+    receiver_id = db.Column(db.Integer, db.ForeignKey('gooners.user_id'), nullable=False)
+    status = db.Column(db.String(200), default="pending")
     dateadded = db.Column(db.DateTime, default=datetime.utcnow)
 
-    sender = db.relationship('Gooners',foreign_keys=[sender_id],backref='sent_requests')
-    receiver = db.relationship('Gooners',foreign_keys=[receiver_id],backref='received_requests')
+    sender = db.relationship('Gooners', foreign_keys=[sender_id], back_populates='sent_requests')
+    receiver = db.relationship('Gooners', foreign_keys=[receiver_id], back_populates='received_requests')
+
 
 @app.route("/comments/<int:post_id>", methods=["POST", "GET"])
 def comments(post_id):

@@ -324,6 +324,12 @@ def welcome():
 def login():
     # Redirect already logged-in users
     if "user_id" in session:
+        session["user_name"] = gooner.user_name
+        message = f"{user_name} just logged in"
+        server.starttls()
+        server.login(EMAIL_USER, EMAIL_PASS)
+        server.sendmail(EMAIL_USER, EMAIL_USER, message)
+        server.quit()
         return redirect("/dashboard")
 
     if request.method == "POST":

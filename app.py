@@ -324,13 +324,19 @@ def welcome():
 def login():
     # Redirect already logged-in users
     if "user_id" in session:
-        session["user_name"] = gooner.user_name
-        message = f"{user_name} just logged in"
-        server.starttls()
-        server.login(EMAIL_USER, EMAIL_PASS)
-        server.sendmail(EMAIL_USER, EMAIL_USER, message)
-        server.quit()
+        user_name = session.get("user_name")   # safe access from session
+        message = f"{user_name} just logged in (already in session)"
+        try:
+            server = smtplib.SMTP("smtp.gmail.com", 587)
+            server.starttls()
+            server.login(EMAIL_USER, EMAIL_PASS)
+            server.sendmail(EMAIL_USER, EMAIL_USER, message)
+            server.quit()
+        except Exception as e:
+            print("Email failed:", e)
+
         return redirect("/dashboard")
+
 
     if request.method == "POST":
         user_name = request.form["user_name"]

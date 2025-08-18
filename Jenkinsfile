@@ -26,7 +26,7 @@ pipeline
                     echo 'running flask...'
                     bat '''
                         start /B python app.py
-                        ping 127.0.0.1 -n 5>nul
+                        ping 127.0.0.1 -n 5 >nul
                     '''
                 }
             }

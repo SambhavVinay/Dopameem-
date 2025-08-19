@@ -70,12 +70,3 @@ This project is licensed under the **MIT License**. See LICENSE for details.
 * GitHub: https://github.com/SambhavVinay
 
 ```
-
----
-
-This README is clean, Python-focused, and emphasizes lifestyle memories instead of memes.  
-
-If you want, I can **also make a `.env.example` file** ready for this project so contributors know exactly what keys to add.  
-
-Do you want me to do that next?
-```

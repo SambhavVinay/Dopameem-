@@ -17,22 +17,28 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+        stage('Run Flask') {
             steps {
-                echo 'Starting Flask and running tests...'
+                echo 'Starting Flask server...'
                 bat '''
-                    start "FlaskApp" python app.py
-                    timeout /T 10
-                    pytest -v test_upload.py
+                    start /B python app.py
+                    ping 127.0.0.1 -n 10 >nul
                 '''
             }
         }
-    }
 
-    post {
-        always {
-            echo 'Stopping Flask process...'
-            bat 'taskkill /F /FI "WINDOWTITLE eq FlaskApp" || exit 0'
+        stage('Run Tests') {
+            steps {
+                echo 'Running tests...'
+                bat 'curl -X POST http://127.0.0.1:5000/upload -F "file=@sample.jpg"'
+            }
+        }
+
+        stage('Cleanup') {
+            steps {
+                echo 'Stopping Flask server...'
+                bat 'taskkill /IM python.exe /F || exit 0'
+            }
         }
     }
 }

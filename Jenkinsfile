@@ -5,7 +5,7 @@ pipeline {
         stage('Clone Repo') {
             steps {
                 echo 'Cloning repository...'
-                git branch: 'master', url: 'https://github.com/YourUsername/YourRepo.git'
+                git branch: 'master', url: 'https://github.com/SambhavVinay/Dopameem-'
             }
         }
 

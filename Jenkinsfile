@@ -17,33 +17,21 @@ pipeline {
             }
         }
 
-        stage('Start Flask App') {
+        stage('Run Tests') {
             steps {
-                echo 'Starting Flask app in background...'
-                bat 'start /B python app.py'
-                sleep 5  // wait for Flask server to start
-            }
-        }
-
-        stage('Test File Upload with curl') {
-            steps {
-                echo 'Testing /post1 endpoint using curl...'
-
-                // Replace COOKIE_VALUE with a valid session cookie for a logged-in user
+                echo 'Running tests against Flask app...'
                 bat '''
-curl -X POST http://127.0.0.1:5000/post1 ^
-  -H "Cookie: session=sambhavvinay20054@gmail.com" ^
-  -F "post1=@test_image.jpg" ^
-  -F "caption=Test Caption"
-'''
+                    start /B python app.py
+                    timeout /T 5
+                    pytest -v test_upload.py
+                '''
             }
         }
     }
-
     post {
         always {
-            echo 'Stopping Flask server...'
-            bat 'taskkill /IM python.exe /F || exit 0'
+            echo 'Killing leftover Flask process...'
+            bat 'taskkill /F /IM python.exe || exit 0'
         }
     }
 }

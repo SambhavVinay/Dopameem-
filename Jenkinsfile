@@ -19,19 +19,20 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                echo 'Running tests against Flask app...'
+                echo 'Starting Flask and running tests...'
                 bat '''
-                    start /B python app.py
-                    timeout /T 5
+                    start "FlaskApp" python app.py
+                    timeout /T 10
                     pytest -v test_upload.py
                 '''
             }
         }
     }
+
     post {
         always {
-            echo 'Killing leftover Flask process...'
-            bat 'taskkill /F /IM python.exe || exit 0'
+            echo 'Stopping Flask process...'
+            bat 'taskkill /F /FI "WINDOWTITLE eq FlaskApp" || exit 0'
         }
     }
 }

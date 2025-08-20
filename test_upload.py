@@ -6,7 +6,7 @@ from app import app, db, Gooners
 def client():
     # Configure app for testing
     app.config["TESTING"] = True
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:test.db"
     app.config["WTF_CSRF_ENABLED"] = False  # Disable CSRF for tests if using Flask-WTF
 
     with app.test_client() as client:

@@ -1,1 +1,272 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <title>Dops • Reels</title> <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet"/> <style> :root { --font-xs: clamp(0.65rem, 0.9vw, 0.8rem); --font-sm: clamp(0.75rem, 1vw, 0.95rem); --font-md: clamp(0.9rem, 1.3vw, 1.1rem); --font-lg: clamp(1.05rem, 1.6vw, 1.25rem); --video-width: clamp(250px, 28vw, 320px); /* narrower */ --video-height: calc(var(--video-width) * 16 / 9); /* 9:16 ratio */ } * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; } html, body { height: 100%; background-color: #000; overflow: hidden; } .reels-container { height: 100vh; width: 100vw; overflow-y: scroll; scroll-snap-type: y mandatory; } .reel { scroll-snap-align: start; width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; position: relative; background-color: black; padding: 0 5px; } .video-box { width: var(--video-width); height: var(--video-height); max-height: 95vh; position: relative; border-radius: 18px; overflow: hidden; box-shadow: 0 0 25px rgba(255, 255, 255, 0.06); cursor: pointer; } video { width: 100%; height: 100%; object-fit: cover; } .overlay { position: absolute; bottom: 0; left: 0; padding: 0.8rem; width: 100%; background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent 80%); color: white; pointer-events: none; z-index: 1; } .user-info { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; } .user-info img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid white; } .caption { font-size: var(--font-xs); line-height: 1.3; margin-bottom: 0.4rem; } .comments { font-size: var(--font-xs); max-height: 80px; overflow-y: auto; } .comments a { display: inline-block; margin-bottom: 0.4rem; font-weight: 500; font-size: var(--font-xs); text-decoration: none; color: #000; background: rgba(255, 255, 255, 0.7); padding: 4px 10px; border-radius: 5px; pointer-events: all; transition: background 0.2s ease; } .comments a:hover { background: rgba(255, 255, 255, 0.9); } .right-controls { position: absolute; right: 10px; bottom: 90px; display: flex; flex-direction: column; gap: 12px; z-index: 2; pointer-events: auto; } .control-btn { background: rgba(255, 255, 255, 0.15); border: none; color: white; padding: 10px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; pointer-events: all; transition: transform 0.2s, background 0.3s ease; } .control-btn:hover { background: rgba(255, 255, 255, 0.25); transform: scale(1.1); } .control-btn:active { transform: scale(0.95); } .dashboard-btn { position: fixed; top: 18px; left: 18px; background: rgba(255, 255, 255, 0.75); color: black; text-decoration: none; font-weight: 500; font-size: var(--font-sm); padding: 6px 14px; border-radius: 5px; z-index: 999; pointer-events: all; transition: background 0.2s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.2); } .dashboard-btn:hover { background: rgba(255, 255, 255, 0.9); } @media (max-width: 480px) { :root { --video-width: 100%; --video-height: calc(var(--video-width) * 1.78); } .user-info img { width: 28px; height: 28px; } .control-btn { padding: 8px; } } @media (max-height: 550px) { .right-controls { bottom: 50px; } .overlay { padding: 0.4rem; } } </style> </head> <body> <a href="/dashboard" class="dashboard-btn">Dashboard</a> <div class="reels-container"> {% for dop in dops %} <div class="reel"> <div class="video-box" onclick="togglePlayPause('{{ dop.dops_id }}')"> <video autoplay loop playsinline id="video-{{ dop.dops_id }}" loading="lazy"> <source src="{{ dop.dops | replace('/upload/', '/upload/q_auto/') }}" type="video/mp4" /> </video> <div class="right-controls"> <button class="control-btn mute-btn" data-id="{{ dop.dops_id }}">🔈</button> <button class="control-btn" onclick="window.location.href='/dopcomments/{{ dop.dops_id }}'">🗯️</button> </div> <div class="overlay"> <a href="/profile/{{user.user_id}}" style="text-decoration: none ; color: white;"><div class="user-info"> <img src="{{ dop.user.dp }}" alt="Profile Picture"> <strong>{{ dop.user.name }}</strong> </div></a> <div class="caption">{{ dop.dops_caption }}</div> <div class="comments"> <a href="/dopcomments/{{ dop.dops_id }}">Comment</a> {% for comment in comments %} {% if comment.dops_id == dop.dops_id %} <div><a href="/profile/{{comment.user.user_id}}" style="text-decoration: none;color: white"><strong>{{ comment.user.name }}</strong></a>: {{ comment.comment_text }}</div> {% endif %} {% endfor %} </div> </div> </div> </div> {% endfor %} </div> <script> function togglePlayPause(videoId) { const video = document.getElementById("video-" + videoId); video.paused ? video.play() : video.pause(); } document.querySelectorAll(".mute-btn").forEach(button => { button.addEventListener("click", (e) => { e.stopPropagation(); const video = document.getElementById("video-" + button.dataset.id); video.muted = !video.muted; button.textContent = video.muted ? "🔈" : "🔇"; }); }); const reels = document.querySelectorAll(".reel"); const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { const video = entry.target.querySelector("video"); if (video) { if (entry.isIntersecting) { video.play(); } else { video.pause(); } } }); }, { threshold: 0.75 }); // triggers when 75% of the reel is visible reels.forEach(reel => observer.observe(reel)); </script> </body> </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dops • Reels</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --font-xs: clamp(0.65rem, 0.9vw, 0.8rem);
+      --font-sm: clamp(0.75rem, 1vw, 0.95rem);
+      --font-md: clamp(0.9rem, 1.3vw, 1.1rem);
+      --font-lg: clamp(1.05rem, 1.6vw, 1.25rem);
+      --video-width: clamp(250px, 28vw, 320px);  /* narrower */
+--video-height: calc(var(--video-width) * 16 / 9); /* 9:16 ratio */
+
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      background-color: #000;
+      overflow: hidden;
+    }
+
+    .reels-container {
+      height: 100vh;
+      width: 100vw;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+    }
+
+    .reel {
+      scroll-snap-align: start;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      background-color: black;
+      padding: 0 5px;
+    }
+
+    .video-box {
+      width: var(--video-width);
+      height: var(--video-height);
+      max-height: 95vh;
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.06);
+      cursor: pointer;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 0.8rem;
+      width: 100%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent 80%);
+      color: white;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .user-info img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+    }
+
+    .caption {
+      font-size: var(--font-xs);
+      line-height: 1.3;
+      margin-bottom: 0.4rem;
+    }
+
+    .comments {
+      font-size: var(--font-xs);
+      max-height: 80px;
+      overflow-y: auto;
+    }
+
+    .comments a {
+      display: inline-block;
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+      font-size: var(--font-xs);
+      text-decoration: none;
+      color: #000;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 4px 10px;
+      border-radius: 5px;
+      pointer-events: all;
+      transition: background 0.2s ease;
+    }
+
+    .comments a:hover {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .right-controls {
+      position: absolute;
+      right: 10px;
+      bottom: 90px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 2;
+      pointer-events: auto;
+    }
+
+    .control-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: white;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.1rem;
+      pointer-events: all;
+      transition: transform 0.2s, background 0.3s ease;
+    }
+
+    .control-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.1);
+    }
+
+    .control-btn:active {
+      transform: scale(0.95);
+    }
+
+    .dashboard-btn {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      background: rgba(255, 255, 255, 0.75);
+      color: black;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: var(--font-sm);
+      padding: 6px 14px;
+      border-radius: 5px;
+      z-index: 999;
+      pointer-events: all;
+      transition: background 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .dashboard-btn:hover {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    @media (max-width: 480px) {
+      :root {
+        --video-width: 100%;
+        --video-height: calc(var(--video-width) * 1.78);
+      }
+      .user-info img {
+        width: 28px;
+        height: 28px;
+      }
+      .control-btn {
+        padding: 8px;
+      }
+    }
+
+    @media (max-height: 550px) {
+      .right-controls {
+        bottom: 50px;
+      }
+      .overlay {
+        padding: 0.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="/dashboard" class="dashboard-btn">Dashboard</a>
+
+  <div class="reels-container">
+    {% for dop in dops %}
+    <div class="reel">
+      <div class="video-box" onclick="togglePlayPause('{{ dop.dops_id }}')">
+        <video autoplay loop playsinline id="video-{{ dop.dops_id }}" loading="lazy">
+          <source src="{{ dop.dops | replace('/upload/', '/upload/q_auto/') }}" type="video/mp4" />
+        </video>
+
+        <div class="right-controls">
+          <button class="control-btn mute-btn" data-id="{{ dop.dops_id }}">🔈</button>
+          <button class="control-btn" onclick="window.location.href='/dopcomments/{{ dop.dops_id }}'">🗯️</button>
+        </div>
+
+        <div class="overlay">
+          <a href="/profile/{{user.user_id}}" style="text-decoration: none ; color: white;"><div class="user-info">
+            <img src="{{ dop.user.dp }}" alt="Profile Picture">
+            <strong>{{ dop.user.name }}</strong>
+          </div></a>
+          
+          <div class="caption">{{ dop.dops_caption }}</div>
+          <div class="comments">
+            <a href="/dopcomments/{{ dop.dops_id }}">Comment</a>
+            {% for comment in comments %}
+              {% if comment.dops_id == dop.dops_id %}
+              
+                <div><a href="/profile/{{comment.user.user_id}}" style="text-decoration: none;color: white"><strong>{{ comment.user.name }}</strong></a>: {{ comment.comment_text }}</div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <script>
+    function togglePlayPause(videoId) {
+      const video = document.getElementById("video-" + videoId);
+      video.paused ? video.play() : video.pause();
+    }
+
+    document.querySelectorAll(".mute-btn").forEach(button => {
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const video = document.getElementById("video-" + button.dataset.id);
+        video.muted = !video.muted;
+        button.textContent = video.muted ? "🔈" : "🔇";
+      });
+    });
+    const reels = document.querySelectorAll(".reel");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const video = entry.target.querySelector("video");
+      if (video) {
+        if (entry.isIntersecting) {
+          video.play();
+        } else {
+          video.pause();
+        }
+      }
+    });
+  }, { threshold: 0.75 }); // triggers when 75% of the reel is visible
+
+  reels.forEach(reel => observer.observe(reel));
+  </script>
+</body>
+</html>

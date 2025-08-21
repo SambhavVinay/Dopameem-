@@ -185,7 +185,7 @@
 
   <div class="reel-container">
     <div class="video-box" onclick="togglePlayPause()">
-      <video id="dopVideo" loop autoplay muted playsinline>
+      <video id="dopVideo" loop autoplay  playsinline>
         <source src="{{ dops.dops }}" type="video/mp4" loading="lazy">
         Your browser does not support the video tag.
       </video>
@@ -202,7 +202,7 @@
           {% for comment in comments %}
             <div><strong>{{ comment.user.name }}</strong>: {{ comment.comment_text }}</div>
           {% else %}
-            <div><em>No comments yet. Be the first 💖</em></div>
+            <div><em>No comments yet. Be the first</em></div>
           {% endfor %}
         </div>
       </div>

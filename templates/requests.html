@@ -76,7 +76,7 @@
       padding: 12px 0;
       border-bottom: 1px solid #eee;
       gap: 10px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap; /* keep PC-like layout */
     }
 
     li:last-child {
@@ -90,7 +90,8 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      flex: 1;
+      flex: 1;      /* stretch/shrink */
+      min-width: 0; /* prevent overflow */
     }
 
     .username img {
@@ -98,6 +99,7 @@
       height: 35px;
       border-radius: 50%;
       object-fit: cover;
+      flex-shrink: 0; /* profile pic never shrinks */
     }
 
     .status {
@@ -126,6 +128,7 @@
       font-weight: 500;
       transition: 0.2s ease-in-out;
       flex-shrink: 0;
+      white-space: nowrap; /* prevent button text wrapping */
     }
     .btn:hover {
       background-color: var(--blue-dark);
@@ -145,15 +148,11 @@
       .container {
         margin: 10px;
         padding: 15px;
+        width: 100%;    /* stretch full */
+        max-width: none;
       }
       li {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .btn {
-        width: 100%;
-        text-align: center;
-        margin-top: 6px;
+        gap: 6px;
       }
     }
   </style>

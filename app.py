@@ -523,10 +523,30 @@ def deleterequests(id):
 
 @app.route("/deletefollowers/<int:id>")
 def deletefollowers(id):
-    followers = Followers.query.filter_by(id=id).first()
-    db.session.delete(followers)
-    db.session.commit()
-    return render_template("followers.html")
+    # Get the follower relation
+    follower_relation = Followers.query.get_or_404(id)
+
+    # Get both sides of the relationship
+    follower_id = follower_relation.follower_id
+    following_id = follower_relation.following_id
+
+    # Delete both directions (A→B and B→A)
+    reverse_relation = Followers.query.filter_by(
+        follower_id=following_id,
+        following_id=follower_id
+    ).first()
+
+    try:
+        db.session.delete(follower_relation)
+        if reverse_relation:
+            db.session.delete(reverse_relation)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        return f"Error removing follower: {e}"
+
+    return redirect("/profile")
+
 
 
 @app.route("/all_requests")
@@ -633,4 +653,4 @@ def database():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    #app.run(debug=True)

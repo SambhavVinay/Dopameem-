@@ -206,7 +206,7 @@
     {% for dop in dops %}
     <div class="reel">
       <div class="video-box" onclick="togglePlayPause('{{ dop.dops_id }}')">
-        <video autoplay loop muted playsinline id="video-{{ dop.dops_id }}" loading="lazy">
+        <video autoplay loop playsinline id="video-{{ dop.dops_id }}" loading="lazy">
           <source src="{{ dop.dops | replace('/upload/', '/upload/q_auto/') }}" type="video/mp4" />
         </video>
 

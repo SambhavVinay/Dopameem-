@@ -205,13 +205,13 @@
     {% for dop in dops %}
     <div class="reel">
       <div class="video-box" onclick="togglePlayPause('{{ dop.dops_id }}')">
-        <!-- FIX: added muted -->
+        <!-- ✅ No muted attribute -->
         <video autoplay loop playsinline id="video-{{ dop.dops_id }}" loading="lazy">
           <source src="{{ dop.dops | replace('/upload/', '/upload/q_auto/') }}" type="video/mp4" />
         </video>
 
         <div class="right-controls">
-          <button class="control-btn mute-btn" data-id="{{ dop.dops_id }}">🔈</button>
+          <button class="control-btn mute-btn" data-id="{{ dop.dops_id }}">🔇</button>
           <button class="control-btn" onclick="window.location.href='/dopcomments/{{ dop.dops_id }}'">🗯️</button>
         </div>
 
@@ -242,51 +242,48 @@
   </div>
 
   <script>
-  // Toggle play/pause
-  function togglePlayPause(videoId) {
-    const video = document.getElementById("video-" + videoId);
-    video.paused ? video.play() : video.pause();
-  }
+    // Toggle play/pause
+    function togglePlayPause(videoId) {
+      const video = document.getElementById("video-" + videoId);
+      video.paused ? video.play() : video.pause();
+    }
 
-  // Mute/unmute toggle
-  document.querySelectorAll(".mute-btn").forEach(button => {
-    button.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const video = document.getElementById("video-" + button.dataset.id);
-      video.muted = !video.muted;
-      button.textContent = video.muted ? "🔈" : "🔇";
-    });
-  });
-
-  // IntersectionObserver for auto play/pause
-  const reels = document.querySelectorAll(".reel");
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const video = entry.target.querySelector("video");
-      if (video) {
-        if (entry.isIntersecting) {
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      }
-    });
-  }, { threshold: 0.75 });
-
-  reels.forEach(reel => observer.observe(reel));
-
-  // Force autoplay, try unmuted first
-  window.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll("video").forEach(v => {
-      v.muted = false;   // 🔊 try unmuted
-      v.play().catch(() => {
-        // If autoplay with sound fails, fallback muted
-        v.muted = true;
-        v.play().catch(() => {});
+    // Mute/unmute toggle
+    document.querySelectorAll(".mute-btn").forEach(button => {
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const video = document.getElementById("video-" + button.dataset.id);
+        video.muted = !video.muted;
+        button.textContent = video.muted ? "🔈" : "🔇";
       });
     });
-  });
-</script>
 
+    // IntersectionObserver for auto play/pause
+    const reels = document.querySelectorAll(".reel");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const video = entry.target.querySelector("video");
+        if (video) {
+          if (entry.isIntersecting) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        }
+      });
+    }, { threshold: 0.75 });
+
+    reels.forEach(reel => observer.observe(reel));
+
+    // ✅ Force autoplay with sound ON by default
+    window.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll("video").forEach(v => {
+        v.muted = false;   // make sure unmuted
+        v.play().catch(err => {
+          console.log("Autoplay with sound blocked:", err);
+        });
+      });
+    });
+  </script>
 </body>
 </html>

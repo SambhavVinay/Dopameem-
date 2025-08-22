@@ -335,7 +335,7 @@ def login():
         except Exception as e:
             print("Email failed:", e)
 
-        return redirect("/dashboard")
+        return redirect("/gooners")
 
 
     if request.method == "POST":
@@ -653,4 +653,4 @@ def database():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    #app.run(debug=True)
+    app.run(debug=True)

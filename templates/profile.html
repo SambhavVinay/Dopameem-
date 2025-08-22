@@ -4,110 +4,61 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>{{ user.user_name }} • Instagram</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
-:root {
-  --font-xs: clamp(10px,1.5vw,12px);
-  --font-sm: clamp(12px,1.8vw,14px);
-  --font-base: clamp(14px,2vw,16px);
-  --font-lg: clamp(16px,2.5vw,20px);
-  --font-xl: clamp(20px,3vw,28px);
-  --color-bg: #fafafa;
-  --color-text: #262626;
-  --color-btn: #efefef;
-  --color-btn-hover: #e4e4e4;
-  --color-blue: #0095f6;
-  --color-blue-hover: #007fd1;
-  --color-danger: #ed4956;
-  --color-danger-hover: #d63b47;
-}
-
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
-body { background-color: var(--color-bg); color: var(--color-text); }
-a { text-decoration:none; color: inherit; }
-
-.container { max-width: 960px; margin: auto; padding: 20px; }
-
-/* Header */
-.profile-header { display: flex; flex-wrap: wrap; gap: 20px; padding-bottom: 30px; border-bottom: 1px solid #dbdbdb; position: relative; }
-.profile-pic {
-  flex: 0 0 clamp(100px,20vw,150px);
-  aspect-ratio: 1 / 1; /* force square */
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid #dbdbdb;
-}
-
-.profile-pic img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-
-.profile-info { flex:1; min-width: 220px; display:flex; flex-direction:column; justify-content:center; }
-.username-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-.username-row h2 { font-size: var(--font-xl); font-weight:500; }
-.verified-badge { width: 20px; height:20px; }
-
-.action-buttons { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
-.btn { padding:6px 12px; font-size: var(--font-sm); font-weight:600; background-color: var(--color-btn); border:1px solid #dbdbdb; border-radius:8px; cursor:pointer; transition: all 0.2s ease; }
-.btn:hover { background-color: var(--color-btn-hover); }
-.btn.blue { background-color: var(--color-blue); color:#fff; border:none; }
-.btn.blue:hover { background-color: var(--color-blue-hover); }
-
-.stats { display:flex; gap:20px; font-size: var(--font-base); flex-wrap:wrap; }
-.stats span { font-weight:600; }
-
-.bio { margin-top:10px; font-size: var(--font-sm); }
-.bio .name { font-weight:600; }
-
-.logout-btn { position:absolute; top:0; right:0; margin:10px; }
-
-/* Tabs */
-.tabs { display:flex; gap: clamp(20px,5vw,60px); border-top:1px solid #dbdbdb; margin-top:20px; padding-bottom:8px; overflow-x:auto; font-size: var(--font-sm); font-weight:600; white-space:nowrap; }
-.tabs div { display:flex; align-items:center; gap:6px; padding:10px 0; cursor:pointer; }
-
-/* Grid */
-.grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap:10px; margin-top:20px; }
-.post-item img, .dop-card video { width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:10px; transition: all 0.2s ease; }
-.post-item img:hover, .dop-card video:hover { transform: scale(1.02); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-.post-item, .dop-card { position:relative; }
-.delete-btn { position:absolute; top:8px; right:8px; background-color: var(--color-danger); color:#fff; padding:4px 8px; font-size:10px; border-radius:6px; text-transform:uppercase; transition:0.2s; }
-.delete-btn:hover { background-color: var(--color-danger-hover); }
-
-/* Logout Overlay */
-#logoutOverlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter: blur(2px); justify-content:center; align-items:center; z-index:1000; }
-#logoutOverlay .logout-box { background:rgba(255,255,255,0.95); padding:30px; border-radius:16px; text-align:center; max-width:400px; box-shadow:0 8px 20px rgba(0,0,0,0.25); }
-#logoutOverlay .logout-box p { margin-bottom:15px; font-size: var(--font-base); color:#333; line-height:1.4; }
-#logoutOverlay .logout-box .btn { min-width:100px; }
-
-/* Dashboard button */
-.dashboard-btn { position:fixed; top:20px; left:20px; padding:6px 12px; font-size: var(--font-sm); font-weight:600; background-color: var(--color-btn); border:1px solid #dbdbdb; border-radius:8px; cursor:pointer; transition:0.2s; z-index:999; }
-.dashboard-btn:hover { background-color: var(--color-btn-hover); }
-
-/* Responsive */
-@media(max-width:735px){
-  .profile-header { flex-direction:column; align-items:center; text-align:center; }
-  .profile-info { align-items:center; }
-  .stats { justify-content:center; }
-  .action-buttons { justify-content:center; }
-}
+:root{--font-xs:clamp(10px,1.5vw,12px);--font-sm:clamp(12px,1.8vw,14px);--font-base:clamp(14px,2vw,16px);--font-lg:clamp(16px,2.5vw,20px);--font-xl:clamp(20px,3vw,28px);--color-bg:#fafafa;--color-text:#262626;--color-btn:#efefef;--color-btn-hover:#e4e4e4;--color-blue:#0095f6;--color-blue-hover:#007fd1;--color-danger:#ed4956;--color-danger-hover:#d63b47}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:var(--color-bg);color:var(--color-text)}
+a{text-decoration:none;color:inherit}
+.container{max-width:960px;margin:auto;padding:20px}
+.profile-header{display:flex;flex-wrap:wrap;gap:20px;padding-bottom:30px;border-bottom:1px solid #dbdbdb;position:relative}
+.profile-pic{flex:0 0 clamp(100px,20vw,150px);aspect-ratio:1/1;border-radius:50%;overflow:hidden;border:2px solid #dbdbdb}
+.profile-pic img{width:100%;height:100%;object-fit:cover;display:block}
+.profile-info{flex:1;min-width:220px;display:flex;flex-direction:column;justify-content:center}
+.username-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.username-row h2{font-size:var(--font-xl);font-weight:500}
+.verified-badge{width:20px;height:20px}
+.action-buttons{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.btn{padding:6px 12px;font-size:var(--font-sm);font-weight:600;background:var(--color-btn);border:1px solid #dbdbdb;border-radius:8px;cursor:pointer;transition:.2s}
+.btn:hover{background:var(--color-btn-hover)}
+.btn.blue{background:var(--color-blue);color:#fff;border:none}
+.btn.blue:hover{background:var(--color-blue-hover)}
+.stats{display:flex;gap:20px;font-size:var(--font-base);flex-wrap:wrap}
+.stats span{font-weight:600}
+.bio{margin-top:10px;font-size:var(--font-sm)}
+.bio .name{font-weight:600}
+.logout-btn{position:absolute;top:0;right:0;margin:10px}
+.tabs{display:flex;gap:clamp(20px,5vw,60px);border-top:1px solid #dbdbdb;margin-top:20px;padding-bottom:8px;overflow-x:auto;font-size:var(--font-sm);font-weight:600;white-space:nowrap}
+.tabs div{display:flex;align-items:center;gap:6px;padding:10px 0;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:20px}
+.post-item img,.dop-card video{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;transition:.2s;display:block}
+.post-item img:hover,.dop-card video:hover{transform:scale(1.02)}
+.post-item,.dop-card{position:relative}
+.delete-btn{position:absolute;top:8px;right:8px;background:var(--color-danger);color:#fff;padding:4px 8px;font-size:10px;border-radius:6px;text-transform:uppercase;transition:.2s}
+.delete-btn:hover{background:var(--color-danger-hover)}
+#logoutOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);backdrop-filter:blur(2px);justify-content:center;align-items:center;z-index:1000}
+#logoutOverlay .logout-box{background:rgba(255,255,255,.95);padding:30px;border-radius:16px;text-align:center;max-width:400px;box-shadow:0 6px 15px rgba(0,0,0,.2)}
+#logoutOverlay .logout-box p{margin-bottom:15px;font-size:var(--font-base);color:#333;line-height:1.4}
+#logoutOverlay .logout-box .btn{min-width:100px}
+.dashboard-btn{position:fixed;top:20px;left:20px;padding:6px 12px;font-size:var(--font-sm);font-weight:600;background:var(--color-btn);border:1px solid #dbdbdb;border-radius:8px;cursor:pointer;transition:.2s;z-index:999}
+.dashboard-btn:hover{background:var(--color-btn-hover)}
+@media(max-width:735px){.profile-header{flex-direction:column;align-items:center;text-align:center}.profile-info{align-items:center}.stats{justify-content:center}.action-buttons{justify-content:center}}
 </style>
 </head>
 <body>
 <a href="/dashboard" class="dashboard-btn">Dashboard</a>
-
 <div class="container">
-  <!-- Profile Header -->
   <div class="profile-header">
     <div class="profile-pic">
-      <a href="/dp"><img src="{{ user.dp }}" alt="{{ user.name }}"></a>
+      <a href="/dp"><img src="{{ user.dp }}" alt="{{ user.name }}" loading="lazy"></a>
     </div>
     <div class="profile-info">
       <div class="username-row">
         <h2>{{ user.name }}</h2>
-        <img class="verified-badge" src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg" alt="Verified">
+        <img class="verified-badge" src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg" alt="Verified" loading="lazy">
       </div>
       <div class="action-buttons">
         <a href="/all_requests" class="btn">Requests</a>
@@ -127,13 +78,11 @@ a { text-decoration:none; color: inherit; }
     </div>
   </div>
 
-  <!-- Tabs -->
   <div class="tabs">
     <div>📷 POSTS</div>
     <div>🎥 DOPS</div>
   </div>
 
-  <!-- Posts Grid -->
   <div class="grid">
     {% for post in posts %}
     <div class="post-item">
@@ -145,12 +94,11 @@ a { text-decoration:none; color: inherit; }
     {% endfor %}
   </div>
 
-  <!-- Dops Grid -->
   <div class="grid" style="margin-top:30px;">
     {% for dop in dops %}
     <div class="dop-card">
       <a href="/dops/{{ dop.dops_id }}">
-        <video autoplay loop muted playsinline loading="lazy">
+        <video autoplay loop muted playsinline preload="metadata">
           <source src="{{ dop.dops | replace('/upload/', '/upload/q_auto/') }}" type="video/mp4">
         </video>
       </a>
@@ -159,12 +107,11 @@ a { text-decoration:none; color: inherit; }
     {% endfor %}
   </div>
 
-  <!-- Logout Overlay -->
   <div id="logoutOverlay">
     <div class="logout-box">
       <p><strong>Are you sure you want to logout?</strong></p>
-      <p>Logging out will end your current session. You will need to login again to access your posts, dops, and profile. Make sure you have saved any unsaved changes before proceeding.</p>
-      <div style="display:flex; justify-content:space-between; gap:10px; margin-top:20px;">
+      <p>Logging out will end your current session. You will need to login again to access your posts, dops, and profile.</p>
+      <div style="display:flex;justify-content:space-between;gap:10px;margin-top:20px;">
         <button id="confirmLogout" class="btn blue">Yes, Logout</button>
         <button id="cancelLogout" class="btn">Cancel</button>
       </div>
@@ -172,15 +119,16 @@ a { text-decoration:none; color: inherit; }
   </div>
 </div>
 
-<script>
-  const logoutBtn = document.getElementById("logoutBtn");
-  const logoutOverlay = document.getElementById("logoutOverlay");
-  const confirmLogout = document.getElementById("confirmLogout");
-  const cancelLogout = document.getElementById("cancelLogout");
-
-  logoutBtn.addEventListener("click", () => logoutOverlay.style.display="flex");
-  cancelLogout.addEventListener("click", () => logoutOverlay.style.display="none");
-  confirmLogout.addEventListener("click", () => window.location.href="/logout");
+<script defer>
+document.addEventListener("DOMContentLoaded",()=>{
+  const logoutBtn=document.getElementById("logoutBtn"),
+        logoutOverlay=document.getElementById("logoutOverlay"),
+        confirmLogout=document.getElementById("confirmLogout"),
+        cancelLogout=document.getElementById("cancelLogout");
+  logoutBtn.addEventListener("click",()=>logoutOverlay.style.display="flex");
+  cancelLogout.addEventListener("click",()=>logoutOverlay.style.display="none");
+  confirmLogout.addEventListener("click",()=>window.location.href="/logout");
+});
 </script>
 </body>
 </html>

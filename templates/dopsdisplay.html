@@ -11,11 +11,8 @@
       --font-sm: clamp(0.75rem, 1vw, 0.95rem);
       --font-md: clamp(0.9rem, 1.3vw, 1.1rem);
       --font-lg: clamp(1.05rem, 1.6vw, 1.25rem);
-      --video-width: clamp(250px, 28vw, 320px);  /* narrower */
---video-height: calc(var(--video-width) * 16 / 9); /* 9:16 ratio */
-
-
-
+      --video-width: clamp(250px, 28vw, 320px);
+      --video-height: calc(var(--video-width) * 16 / 9);
     }
 
     * {
@@ -177,23 +174,15 @@
       background: rgba(255, 255, 255, 0.9);
     }
 
-
     @media (max-width: 480px) {
       :root {
         --video-width: 100%;
         --video-height: calc(var(--video-width) * 1.78);
       }
-
-
-
-
-
-
       .user-info img {
         width: 28px;
         height: 28px;
       }
-
       .control-btn {
         padding: 8px;
       }
@@ -216,6 +205,7 @@
     {% for dop in dops %}
     <div class="reel">
       <div class="video-box" onclick="togglePlayPause('{{ dop.dops_id }}')">
+        <!-- FIX: added muted -->
         <video autoplay loop playsinline id="video-{{ dop.dops_id }}" loading="lazy">
           <source src="{{ dop.dops | replace('/upload/', '/upload/q_auto/') }}" type="video/mp4" />
         </video>
@@ -226,22 +216,22 @@
         </div>
 
         <div class="overlay">
-          <a href="/profile/{{user.user_id}}" style="text-decoration: none ; color: white;"><div class="user-info">
-            <img src="{{ dop.user.dp }}" alt="Profile Picture">
-            <strong>{{ dop.user.name }}</strong>
-          </div></a>
-          
-
+          <a href="/profile/{{user.user_id}}" style="text-decoration: none; color: white;">
+            <div class="user-info">
+              <img src="{{ dop.user.dp }}" alt="Profile Picture">
+              <strong>{{ dop.user.name }}</strong>
+            </div>
+          </a>
           <div class="caption">{{ dop.dops_caption }}</div>
           <div class="comments">
             <a href="/dopcomments/{{ dop.dops_id }}">Comment</a>
             {% for comment in comments %}
               {% if comment.dops_id == dop.dops_id %}
-              
-                <div><a href="/profile/{{comment.user.user_id}}" style="text-decoration: none;color: white"><strong>{{ comment.user.name }}</strong></a>: {{ comment.comment_text }}</div>
-
-
-
+                <div>
+                  <a href="/profile/{{comment.user.user_id}}" style="text-decoration: none; color: white">
+                    <strong>{{ comment.user.name }}</strong>
+                  </a>: {{ comment.comment_text }}
+                </div>
               {% endif %}
             {% endfor %}
           </div>
@@ -252,11 +242,13 @@
   </div>
 
   <script>
+    // Toggle play/pause
     function togglePlayPause(videoId) {
       const video = document.getElementById("video-" + videoId);
       video.paused ? video.play() : video.pause();
     }
 
+    // Mute/unmute toggle
     document.querySelectorAll(".mute-btn").forEach(button => {
       button.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -265,24 +257,29 @@
         button.textContent = video.muted ? "🔈" : "🔇";
       });
     });
+
+    // IntersectionObserver for auto play/pause
     const reels = document.querySelectorAll(".reel");
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const video = entry.target.querySelector("video");
-      if (video) {
-        if (entry.isIntersecting) {
-          video.play();
-        } else {
-          video.pause();
-
-
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const video = entry.target.querySelector("video");
+        if (video) {
+          if (entry.isIntersecting) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
         }
-      }
-    });
-  }, { threshold: 0.75 }); // triggers when 75% of the reel is visible
+      });
+    }, { threshold: 0.75 });
 
-  reels.forEach(reel => observer.observe(reel));
+    reels.forEach(reel => observer.observe(reel));
+
+    // Force all videos muted + autoplay (for mobile autoplay)
+    document.querySelectorAll("video").forEach(v => {
+      v.muted = False;
+      v.play().catch(() => {});
+    });
   </script>
 </body>
 </html>

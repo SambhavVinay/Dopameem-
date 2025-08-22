@@ -14,6 +14,8 @@
       --video-width: clamp(250px, 28vw, 320px);  /* narrower */
 --video-height: calc(var(--video-width) * 16 / 9); /* 9:16 ratio */
 
+
+
     }
 
     * {
@@ -175,15 +177,23 @@
       background: rgba(255, 255, 255, 0.9);
     }
 
+
     @media (max-width: 480px) {
       :root {
         --video-width: 100%;
         --video-height: calc(var(--video-width) * 1.78);
       }
+
+
+
+
+
+
       .user-info img {
         width: 28px;
         height: 28px;
       }
+
       .control-btn {
         padding: 8px;
       }
@@ -221,6 +231,7 @@
             <strong>{{ dop.user.name }}</strong>
           </div></a>
           
+
           <div class="caption">{{ dop.dops_caption }}</div>
           <div class="comments">
             <a href="/dopcomments/{{ dop.dops_id }}">Comment</a>
@@ -228,6 +239,9 @@
               {% if comment.dops_id == dop.dops_id %}
               
                 <div><a href="/profile/{{comment.user.user_id}}" style="text-decoration: none;color: white"><strong>{{ comment.user.name }}</strong></a>: {{ comment.comment_text }}</div>
+
+
+
               {% endif %}
             {% endfor %}
           </div>
@@ -261,6 +275,8 @@
           video.play();
         } else {
           video.pause();
+
+
         }
       }
     });

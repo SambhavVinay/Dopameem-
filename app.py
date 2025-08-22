@@ -322,9 +322,9 @@ def welcome():
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    # Redirect already logged-in users
+    
     if "user_id" in session:
-        user_name = session.get("user_name")   # safe access from session
+        user_name = session.get("user_name")   
         message = f"{user_name} just logged in (already in session)"
         try:
             server = smtplib.SMTP("smtp.gmail.com", 587)
@@ -346,9 +346,9 @@ def login():
         if gooner:
             session["user_id"] = gooner.user_id
             session["user_name"] = gooner.user_name
-            session.permanent = True  # now session will persist
+            session.permanent = True 
 
-            # Send login email (optional, wrapped in try/except)
+            
             message = f"{user_name} just logged in"
             try:
                 server = smtplib.SMTP("smtp.gmail.com", 587)
@@ -359,7 +359,7 @@ def login():
             except Exception as e:
                 print("Email failed:", e)
 
-            # Redirect depending on profile setup
+            
             if gooner.name and gooner.DOB:
                 return redirect("/T&C")
             else:
@@ -385,21 +385,21 @@ def register():
         if existing_user:
             return redirect("/login")
         
-        # Create new user
+        
         new_gooner = Gooners(user_password=user_password, user_name=user_name)
         db.session.add(new_gooner)
         db.session.commit()
 
-        # Find Dopameme account
+        
         dopameme = Gooners.query.filter_by(name="TeamDopameme").first()
         if dopameme:
-            # Make Dopameme follow new user
+            
             db.session.add(Followers(
                 follower_id=dopameme.user_id,
                 following_id=new_gooner.user_id,
                 final_status="accepted"
             ))
-            # Make new user follow Dopameme
+            
             db.session.add(Followers(
                 follower_id=new_gooner.user_id,
                 following_id=dopameme.user_id,
@@ -407,7 +407,7 @@ def register():
             ))
             db.session.commit()
 
-        # Send emails
+        
         client_message = f"Dear {user_name}, Welcome to Dopameme, Post Away!"
         admin_message = f"Greetings BatMan, {user_name} has just taken part in the Dopameme initiative!"
         server = smtplib.SMTP("smtp.gmail.com", 587)
@@ -445,21 +445,21 @@ def dopsdisplay():
 
     user = Gooners.query.filter_by(user_id=user_id).first()
 
-    # Step 1: Users current user follows
+    
     follows = Followers.query.filter_by(follower_id=user_id, final_status="accepted").all()
     following_ids = {f.following_id for f in follows}
 
-    # Step 2: Users who follow current user
+    
     followers = Followers.query.filter_by(following_id=user_id, final_status="accepted").all()
     follower_ids = {f.follower_id for f in followers}
 
-    # Step 3: Mutual follow IDs
+
     mutual_follow_ids = following_ids & follower_ids
 
-    # Step 4: Allowed IDs = mutual follows + yourself
+    
     allowed_ids = list(mutual_follow_ids) + [user_id]
 
-    # Step 5: Filter Dops
+    
     dops = Dops.query.filter(Dops.user_id.in_(allowed_ids)).order_by(Dops.dops_id.desc()).all()
 
     comments = DopsComments.query.order_by(DopsComments.comment_id.desc()).all()
@@ -480,17 +480,18 @@ def addfollower(sender_id, receiver_id):
         server = smtplib.SMTP("smtp.gmail.com",587)
         server.starttls()
         server.login(EMAIL_USER,EMAIL_PASS)
-        server.sendmail(EMAIL_USER,{receiver.user_name},f"{sender.name} sent a follow request")
+        server.sendmail(EMAIL_USER,{receiver.user_name},f"{sender.name} sent a follow request, go to https://dopameem.onrender.com to accept/remove the request")
     return render_template("ReqSent.html")
 
 @app.route("/approvefollower/<int:sender_id>/<int:receiver_id>")
 def approvefollower(sender_id, receiver_id):
-    
     remove = Requests.query.filter_by(sender_id=sender_id, receiver_id=receiver_id).first_or_404()
 
+    sender = Gooners.query.get_or_404(sender_id)
+    receiver = Gooners.query.get_or_404(receiver_id)
+
     
-    follower1 = Followers.query.filter_by(follower_id=sender_id, following_id=receiver_id).first()
-    if not follower1:
+    if not Followers.query.filter_by(follower_id=sender_id, following_id=receiver_id).first():
         db.session.add(Followers(
             follower_id=sender_id,
             following_id=receiver_id,
@@ -498,8 +499,7 @@ def approvefollower(sender_id, receiver_id):
         ))
 
     
-    follower2 = Followers.query.filter_by(follower_id=receiver_id, following_id=sender_id).first()
-    if not follower2:
+    if not Followers.query.filter_by(follower_id=receiver_id, following_id=sender_id).first():
         db.session.add(Followers(
             follower_id=receiver_id,
             following_id=sender_id,
@@ -507,10 +507,21 @@ def approvefollower(sender_id, receiver_id):
         ))
 
     
+    server = smtplib.SMTP("smtp.gmail.com", 587)
+    server.starttls()
+    server.login(EMAIL_USER, EMAIL_PASS)
+    server.sendmail(
+        EMAIL_USER,
+        receiver.user_name,
+        f"Subject: Follow Request Accepted\n\n{receiver.name} accepted your follow request!, go to 'https://dopameem.onrender.com/profile' to accept!"
+    )
+    server.quit()
+
     db.session.delete(remove)
     db.session.commit()
 
     return redirect("/all_requests")
+
 
     
 
@@ -523,14 +534,13 @@ def deleterequests(id):
 
 @app.route("/deletefollowers/<int:id>")
 def deletefollowers(id):
-    # Get the follower relation
+    
     follower_relation = Followers.query.get_or_404(id)
 
-    # Get both sides of the relationship
     follower_id = follower_relation.follower_id
     following_id = follower_relation.following_id
 
-    # Delete both directions (A→B and B→A)
+    
     reverse_relation = Followers.query.filter_by(
         follower_id=following_id,
         following_id=follower_id
@@ -605,7 +615,7 @@ def delete(user_id):
         db.session.commit()
     except:
         return f"Failed to Delete Gooner id {user_id}"
-    return redirect("/database")
+    return redirect("/gaynga")
 
 @app.route("/dashboard")
 def dashboard():
@@ -613,21 +623,21 @@ def dashboard():
     if not user_id:
         return redirect("/login")
 
-    # Step 1: Get all users current user follows
+    
     follows = Followers.query.filter_by(follower_id=user_id, final_status="accepted").all()
     following_ids = {f.following_id for f in follows}
 
-    # Step 2: Get all users who follow the current user
+    
     followers = Followers.query.filter_by(following_id=user_id, final_status="accepted").all()
     follower_ids = {f.follower_id for f in followers}
 
-    # Step 3: Mutual follows = intersection
+    
     mutual_follow_ids = following_ids & follower_ids
 
-    # Step 4: Include yourself in the dashboard posts
+
     allowed_ids = list(mutual_follow_ids) + [user_id]
 
-    # Step 5: Filter posts & dops from allowed users
+    
     posts = Posts.query.filter(Posts.user_id.in_(allowed_ids)).order_by(Posts.post_id.desc()).all()
     dops = Dops.query.filter(Dops.user_id.in_(allowed_ids)).order_by(Dops.dops_id.desc()).all()
 
@@ -645,7 +655,7 @@ def gooners():
     present = Gooners.query.order_by(Gooners.dateadded.desc()).all()
     return render_template("present.html", present = present)
 
-@app.route("/database")
+@app.route("/gaynga")
 def database():
     new_gooner = Gooners.query.order_by(Gooners.dateadded.desc()).all()
     return render_template("Database.html", new_gooner=new_gooner)

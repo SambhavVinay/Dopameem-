@@ -76,7 +76,7 @@
       padding: 12px 0;
       border-bottom: 1px solid #eee;
       gap: 10px;
-      flex-wrap: nowrap; /* keep PC-like layout */
+      flex-wrap: nowrap;
     }
 
     li:last-child {
@@ -90,8 +90,8 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      flex: 1;      /* stretch/shrink */
-      min-width: 0; /* prevent overflow */
+      flex: 1;
+      min-width: 0;
     }
 
     .username img {
@@ -99,7 +99,7 @@
       height: 35px;
       border-radius: 50%;
       object-fit: cover;
-      flex-shrink: 0; /* profile pic never shrinks */
+      flex-shrink: 0;
     }
 
     .status {
@@ -128,7 +128,8 @@
       font-weight: 500;
       transition: 0.2s ease-in-out;
       flex-shrink: 0;
-      white-space: nowrap; /* prevent button text wrapping */
+      white-space: nowrap;
+      cursor: pointer;
     }
     .btn:hover {
       background-color: var(--blue-dark);
@@ -140,7 +141,35 @@
       color: var(--muted);
     }
 
-    /* Mobile adjustments */
+    /* Spinner Overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      display: none; /* hidden by default */
+    }
+
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #0095f6;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     @media (max-width: 480px) {
       body {
         padding: 10px;
@@ -148,7 +177,7 @@
       .container {
         margin: 10px;
         padding: 15px;
-        width: 100%;    /* stretch full */
+        width: 100%;
         max-width: none;
       }
       li {
@@ -176,7 +205,7 @@
             {% if req.status == "pending" %}
               <div style="display:flex; gap:6px; flex-wrap:wrap;">
                 <a href="/deleterequests/{{ req.id }}" class="btn">Remove</a>
-                <a href="/approvefollower/{{ req.sender_id }}/{{ req.receiver_id }}" class="btn">Accept</a>
+                <a href="/approvefollower/{{ req.sender_id }}/{{ req.receiver_id }}" class="btn accept-btn">Accept</a>
               </div>
             {% else %}
               <span class="status accepted">Accepted</span>
@@ -188,5 +217,20 @@
       <p>No follow requests found.</p>
     {% endif %}
   </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.accept-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const overlay = document.getElementById('overlay');
+        overlay.style.display = 'flex'; // show overlay
+        // let the link navigate after showing overlay
+      });
+    });
+  </script>
 </body>
 </html>

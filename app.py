@@ -391,7 +391,7 @@ def register():
         db.session.commit()
 
         
-        dopameme = Gooners.query.filter_by(name="TeamDopameme").first()
+        dopameme = Gooners.query.filter_by(name="Teamdopameme").first()
         if dopameme:
             
             db.session.add(Followers(
@@ -663,4 +663,4 @@ def database():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    #app.run(debug=True)

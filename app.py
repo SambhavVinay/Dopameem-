@@ -190,22 +190,26 @@ def post1():
     user_name = session.get("user_name")
     if not user_name:
         return redirect("/login")
+    
     if request.method == "POST":
-        file = request.files["post1"]
-        caption = request.form["caption"]
+        file = request.files.get("post1")
+        caption = request.form.get("caption", "")
+        
         if file:
-            result = cloudinary.uploader.upload(file, folder="goongram/posts")
+            result = cloudinary.uploader.upload(file, folder="goongram/posts", resource_type="auto")
             image_url = result['secure_url']
             
             user = Gooners.query.filter_by(user_name=user_name).first()
-            new_post = Posts(post = image_url, post_caption = caption,user_id = user.user_id)
+            if not user:
+                return "Error: user not found in DB (maybe session expired or DB reset). Please log in again.", 400
             
+            new_post = Posts(post=image_url, post_caption=caption, user_id=user.user_id)
             db.session.add(new_post)
             db.session.commit()
-
             return redirect("/profile")
-
+    
     return render_template("post.html")
+
 
 @app.route("/deletepost/<int:post_id>")
 def deletepost(post_id):

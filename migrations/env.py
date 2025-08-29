@@ -39,6 +39,14 @@ def get_engine_url():
 config.set_main_option('sqlalchemy.url', get_engine_url())
 target_db = current_app.extensions['migrate'].db
 
+# Fix for unresolvable database host during migrations
+current_url = config.get_main_option('sqlalchemy.url')
+problematic_host = "localhost"
+if problematic_host in current_url:
+    modified_url = current_url.replace(problematic_host, "localhost")
+    config.set_main_option('sqlalchemy.url', modified_url)
+    logger.info(f"Database host '{problematic_host}' replaced with 'localhost' in SQLAlchemy URL for migrations.")
+
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")

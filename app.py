@@ -484,7 +484,7 @@ def addfollower(sender_id, receiver_id):
         server = smtplib.SMTP("smtp.gmail.com",587)
         server.starttls()
         server.login(EMAIL_USER,EMAIL_PASS)
-        server.sendmail(EMAIL_USER,{receiver.user_name},f"{sender.name} sent a follow request, go to https://dopameem.onrender.com to accept/remove the request")
+        server.sendmail(EMAIL_USER,{receiver.user_name},f"{sender.name} sent a follow request")
     return render_template("ReqSent.html")
 
 @app.route("/approvefollower/<int:sender_id>/<int:receiver_id>")
@@ -516,8 +516,8 @@ def approvefollower(sender_id, receiver_id):
     server.login(EMAIL_USER, EMAIL_PASS)
     server.sendmail(
         EMAIL_USER,
-        receiver.user_name,
-        f"Subject: Follow Request Accepted\n\n{receiver.name} accepted your follow request!, go to 'https://dopameem.onrender.com/profile' to accept!"
+        sender.user_name,
+        f"Subject: Follow Request Accepted\n\n{receiver.name} accepted your follow request!, go to 'https://dopameem.onrender.com/profile' to view follower"
     )
     server.quit()
 

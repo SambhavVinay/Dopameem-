@@ -37,7 +37,7 @@ pipeline {
         stage('Cleanup') {
             steps {
                 echo 'Stopping Flask server...'
-                bat 'taskkill /IM python.exe /F || exit 0'
+                bat 'taskkill /IM python.exe /F || exit 0'    .
             }
         }
     }

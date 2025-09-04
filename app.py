@@ -667,30 +667,5 @@ def database():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-##    #app.run(debug=True)# Auto commit: 2025-09-04 09:43:17
-# Auto commit: 2025-09-04 09:43:31
-# Auto commit: 2025-09-04 09:46:31
-# Auto commit: 2025-09-04 09:48:36
-# Auto commit: 2025-09-04 09:48:39
-# Auto commit: 2025-09-04 09:48:43
-# Auto commit: 2025-09-04 09:48:46
-# Auto commit: 2025-09-04 09:48:49
-# Auto commit: 2025-09-04 10:04:21
-# Auto commit: 2025-09-04 10:22:15
-# Auto commit: 2025-09-04 10:22:15
-# Auto commit: 2025-09-04 10:22:16
-# Auto commit: 2025-09-04 10:22:16
-# Auto commit: 2025-09-04 10:22:17
-# Auto commit: 2025-09-04 10:22:17
-# Auto commit: 2025-09-04 10:22:18
-# Auto commit: 2025-09-04 10:22:18
-# Auto commit: 2025-09-04 10:22:18
-# Auto commit: 2025-09-04 10:22:19
-# Auto commit: 2025-09-04 10:22:20
-# Auto commit: 2025-09-04 10:22:21
-# Auto commit: 2025-09-04 10:22:21
-# Auto commit: 2025-09-04 10:22:22
-# Auto commit: 2025-09-04 10:22:22
-# Auto commit: 2025-09-04 10:22:22
-# Auto commit: 2025-09-04 10:22:39
-# Auto commit: 2025-09-04 23:10:23
+    #app.run(debug=True)
+# Auto commit: 2025-09-04 23:11:30

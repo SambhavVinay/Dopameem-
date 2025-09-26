@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request, render_template,session
+from flask import Flask, redirect, request, render_template,session,flash,bcrypt
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 import smtplib
@@ -324,54 +324,31 @@ def home():
 def welcome():
     return render_template("welcome.html")
 
-@app.route("/login", methods=["POST", "GET"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    
-    if "user_id" in session:
-        user_name = session.get("user_name")   
-        message = f"{user_name} just logged in (already in session)"
-        try:
-            server = smtplib.SMTP("smtp.gmail.com", 587)
-            server.starttls()
-            server.login(EMAIL_USER, EMAIL_PASS)
-            server.sendmail(EMAIL_USER, EMAIL_USER, message)
-            server.quit()
-        except Exception as e:
-            print("Email failed:", e)
-
-        return redirect("/gooners")
-
-
     if request.method == "POST":
-        user_name = request.form["user_name"]
-        user_password = request.form["user_password"]
-        
-        gooner = Gooners.query.filter_by(user_name=user_name, user_password=user_password).first()
-        if gooner:
-            session["user_id"] = gooner.user_id
-            session["user_name"] = gooner.user_name
-            session.permanent = True 
+        username = request.form["username"]
+        password = request.form["password"]
 
-            
-            message = f"{user_name} just logged in"
-            try:
-                server = smtplib.SMTP("smtp.gmail.com", 587)
-                server.starttls()
-                server.login(EMAIL_USER, EMAIL_PASS)
-                server.sendmail(EMAIL_USER, EMAIL_USER, message)
-                server.quit()
-            except Exception as e:
-                print("Email failed:", e)
+        user = Gooners.query.filter_by(username=username).first()
 
-            
-            if gooner.name and gooner.DOB:
+        if user and bcrypt.checkpw(password.encode("utf-8"), user.password.encode("utf-8")):
+            session["user_id"] = user.id
+
+            # Decide where to send the user after login
+            if user.name and user.DOB:
                 return redirect("/T&C")
-            else:
+            elif not user.name:
                 return redirect("/name")
+            elif not user.DOB:
+                return redirect("/DOB")
+            else:
+                return redirect("/gooners")
         else:
-            return "Invalid Credentials (or) User Not Registered !!!"
+            flash("Invalid username or password", "danger")
 
     return render_template("login.html")
+
 
 @app.route("/logout")
 def logout():

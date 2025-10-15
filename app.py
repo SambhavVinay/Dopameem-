@@ -373,7 +373,7 @@ def register():
         new_gooner = Gooners(user_password=user_password, user_name=user_name)
         db.session.add(new_gooner)
         db.session.commit()
-
+        
         
         dopameme = Gooners.query.filter_by(name="Teamdopameme").first()
         if dopameme:
@@ -391,11 +391,7 @@ def register():
             ))
             db.session.commit()
 
-        
-       
-
         return redirect("/login")
-
     return render_template("register.html")
 
 

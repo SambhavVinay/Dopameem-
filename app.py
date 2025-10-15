@@ -364,26 +364,22 @@ def register():
     if request.method == "POST":
         user_name = request.form["user_name"]
         user_password = request.form["user_password"]
-        
+
         existing_user = Gooners.query.filter_by(user_name=user_name).first()
         if existing_user:
             return redirect("/login")
-        
-        
+
         new_gooner = Gooners(user_password=user_password, user_name=user_name)
         db.session.add(new_gooner)
         db.session.commit()
-        
-        
-        dopameme = Gooners.query.filter_by(name="Teamdopameme").first()
+
+        dopameme = Gooners.query.filter_by(name="TeamDopameme").first()
         if dopameme:
-            
             db.session.add(Followers(
                 follower_id=dopameme.user_id,
                 following_id=new_gooner.user_id,
                 final_status="accepted"
             ))
-            
             db.session.add(Followers(
                 follower_id=new_gooner.user_id,
                 following_id=dopameme.user_id,
@@ -392,6 +388,7 @@ def register():
             db.session.commit()
 
         return redirect("/login")
+
     return render_template("register.html")
 
 

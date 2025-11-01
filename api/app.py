@@ -25,22 +25,15 @@ EMAIL_PASS = os.getenv("EMAIL_PASS")
 
 app = Flask(__name__)
 app.permanent_session_lifetime = timedelta(days=30)
-UPLOAD_FOLDER_POST = 'static/posts'
-UPLOAD_FOLDER_DOPS = 'static/dops'
-UPLOAD_FOLDER = 'static/dp'
+
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///site.db")
 
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['UPLOAD_FOLDER_POST'] = UPLOAD_FOLDER_POST
-app.config['UPLOAD_FOLDER_DOPS'] = UPLOAD_FOLDER_DOPS
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(UPLOAD_FOLDER_POST, exist_ok=True)
-os.makedirs(UPLOAD_FOLDER_DOPS, exist_ok=True)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 app.secret_key = os.getenv("SECRET_KEY", "fallback-secret")
 
+with app.app_context():
+    db.create_all()
 class Gooners(db.Model):
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_name = db.Column(db.String(100), nullable=False)
@@ -622,8 +615,6 @@ def database():
     return render_template("Database.html", new_gooner=new_gooner)
 
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
     app.run()
 
    

@@ -1,5 +1,8 @@
 flask
 flask_sqlalchemy
-pg8000
 sqlalchemy
+pg8000
+flask_migrate
 flask_cors
+cloudinary
+python-dotenv

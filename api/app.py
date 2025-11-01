@@ -30,6 +30,7 @@ UPLOAD_FOLDER_DOPS = 'static/dops'
 UPLOAD_FOLDER = 'static/dp'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///site.db")
 
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['UPLOAD_FOLDER_POST'] = UPLOAD_FOLDER_POST
 app.config['UPLOAD_FOLDER_DOPS'] = UPLOAD_FOLDER_DOPS
@@ -623,6 +624,6 @@ def database():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    #app.run(debug=True)
-    app = app
+    app.run()
 
+   

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Followers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue: #0095f6;
+            --blue-dark: #0077cc;
+            --border: #dbdbdb;
+            --muted: #888;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+            color: #000;
+        }
+
+        .dashboard-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background-color: var(--blue);
+            color: #fff;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: clamp(13px, 1.8vw, 14px);
+            font-weight: 500;
+            transition: 0.2s ease-in-out;
+            z-index: 1000;
+        }
+
+        .dashboard-btn:hover {
+            background-color: var(--blue-dark);
+        }
+
+        header {
+            background-color: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: 15px 20px;
+            font-size: clamp(18px, 2vw, 20px);
+            font-weight: 600;
+            color: #000;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            gap: 10px;
+            flex-wrap: nowrap; /* keep PC look */
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .username {
+            font-size: clamp(14px, 2vw, 16px);
+            font-weight: 500;
+            word-break: break-word;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 0; /* prevent overflow */
+        }
+
+        .username img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0; /* never shrink profile pic */
+        }
+
+        a.remove-btn {
+            background-color: var(--blue);
+            color: #fff;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: clamp(13px, 1.8vw, 14px);
+            font-weight: 500;
+            transition: 0.2s ease-in-out;
+            flex-shrink: 0;
+            white-space: nowrap; /* don’t let button break */
+        }
+
+        a.remove-btn:hover {
+            background-color: var(--blue-dark);
+        }
+
+        p {
+            text-align: center;
+            font-size: clamp(14px, 2vw, 16px);
+            color: var(--muted);
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+                width: 100%; 
+                max-width: none;
+            }
+            li {
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/dashboard" class="dashboard-btn">Dashboard</a>
+    <header>Followers</header>
+
+    <div class="container">
+        {% if followers %}
+            <ul>
+                {% for f in followers %}
+                    <li>
+                        <span class="username">
+                           <img src="{{ f.follower.dp }}" alt="{{ f.follower.name if f.follower.name else 'Unknown User' }}'s profile">
+                           {{ f.follower.name if f.follower.name else "Unknown User" }}
+                        </span>
+                        <a class="remove-btn" href="/deletefollowers/{{ f.id }}">Remove</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No followers found for this account.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

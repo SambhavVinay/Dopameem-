@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page_title if page_title else "Follow Requests" }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #0095f6;
+      --blue-dark: #0077cc;
+      --border: #dbdbdb;
+      --muted: #888;
+      --green: #2bb673;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    header {
+      font-size: clamp(18px, 2vw, 20px);
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .dashboard-btn {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      background-color: var(--blue);
+      color: #fff;
+      padding: 6px 12px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: clamp(13px, 1.8vw, 14px);
+      font-weight: 500;
+      transition: 0.2s ease-in-out;
+      z-index: 1000;
+    }
+    .dashboard-btn:hover {
+      background-color: var(--blue-dark);
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background-color: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+      gap: 10px;
+      flex-wrap: nowrap;
+    }
+
+    li:last-child {
+      border-bottom: none;
+    }
+
+    .username {
+      font-size: clamp(14px, 2vw, 16px);
+      font-weight: 500;
+      word-break: break-word;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .username img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .status {
+      font-size: clamp(12px, 1.8vw, 14px);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .status.pending {
+      background-color: rgba(0,149,246,0.1);
+      color: var(--blue);
+    }
+    .status.accepted {
+      background-color: rgba(43,182,115,0.1);
+      color: var(--green);
+    }
+
+    .btn {
+      background-color: var(--blue);
+      color: #fff;
+      padding: 6px 12px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: clamp(13px, 1.8vw, 14px);
+      font-weight: 500;
+      transition: 0.2s ease-in-out;
+      flex-shrink: 0;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: var(--blue-dark);
+    }
+
+    p {
+      text-align: center;
+      font-size: clamp(14px, 2vw, 16px);
+      color: var(--muted);
+    }
+
+    /* Spinner Overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      display: none; /* hidden by default */
+    }
+
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #0095f6;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      .container {
+        margin: 10px;
+        padding: 15px;
+        width: 100%;
+        max-width: none;
+      }
+      li {
+        gap: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="/dashboard" class="dashboard-btn">Dashboard</a>
+  <header>{{ page_title if page_title else "Follow Requests" }}</header>
+
+  <div class="container">
+    {% if requests %}
+      <ul>
+        {% for req in requests %}
+          <li>
+            <span class="username">
+              <img src="{{ req.sender.dp }}" alt="{{ req.sender.name }}'s profile">
+              {{ req.sender.name }}
+              <span class="status {% if req.status == 'pending' %}pending{% else %}accepted{% endif %}">
+                {{ req.status|title }}
+              </span>
+            </span>
+            {% if req.status == "pending" %}
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <a href="/deleterequests/{{ req.id }}" class="btn">Remove</a>
+                <a href="/approvefollower/{{ req.sender_id }}/{{ req.receiver_id }}" class="btn accept-btn">Accept</a>
+              </div>
+            {% else %}
+              <span class="status accepted">Accepted</span>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No follow requests found.</p>
+    {% endif %}
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.accept-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const overlay = document.getElementById('overlay');
+        overlay.style.display = 'flex'; // show overlay
+        // let the link navigate after showing overlay
+      });
+    });
+  </script>
+</body>
+</html>

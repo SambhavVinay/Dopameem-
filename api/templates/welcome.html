@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome - Dopameem</title>
+<!-- Poppins font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  .welcome-text {
+    text-align: center;
+    color: #8e8e8e; /* Light gray like Instagram placeholder */
+  }
+
+  .welcome-text h2 {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    font-weight: 400;
+  }
+
+  .welcome-text h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 600;
+  }
+
+  .button-container {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .go-button {
+    background-color: #0095f6;
+    color: white;
+    padding: 12px 28px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .go-button:hover {
+    background-color: #007ac4;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+  <div class="welcome-text">
+    <h2>Welcome to</h2>
+    <h1>Dopameme</h1>
+  </div>
+
+  <div class="button-container">
+    <form action="/gooners" method="get">
+      <button type="submit" class="go-button">Continue</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dopameme Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #fafafa;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #dbdbdb;
+      z-index: 1000;
+    }
+
+    .navbar h1 {
+      font-size: 1.8rem;
+      color: #262626;
+      margin: 0;
+    }
+
+    .navbar a {
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 600;
+      color: #0095f6;
+      font-size: 0.95rem;
+    }
+
+    .story-bar {
+      margin-top: 70px;
+      padding: 10px 15px;
+      display: flex;
+      overflow-x: auto;
+      border-bottom: 1px solid #dbdbdb;
+      background-color: white;
+    }
+
+    .story {
+      flex: 0 0 auto;
+      margin-right: 15px;
+      text-align: center;
+    }
+
+    .story img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid #c13584;
+      object-fit: cover;
+    }
+
+    .story span {
+      font-size: 0.75rem;
+      display: block;
+      margin-top: 5px;
+      color: #262626;
+    }
+
+    .feed {
+      max-width: 600px;
+      margin: 30px auto 60px;
+      padding: 0 15px;
+    }
+
+    .post {
+      background-color: white;
+      border: 1px solid #dbdbdb;
+      border-radius: 5px;
+      margin-bottom: 30px;
+      overflow: hidden;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+    }
+
+    .post-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .post-header .username {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #262626;
+    }
+
+    .post img.post-image {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      border-top: 1px solid #dbdbdb;
+      border-bottom: 1px solid #dbdbdb;
+    }
+
+    .post-actions {
+      padding: 10px 15px;
+      font-size: 1.2rem;
+      color: #262626;
+      display: flex;
+      gap: 20px;
+    }
+
+    .post-caption {
+      padding: 0 15px 12px;
+      font-size: 0.9rem;
+      color: #262626;
+    }
+
+    .post-caption strong {
+      margin-right: 5px;
+    }
+
+    .tagline {
+      text-align: center;
+      color: #888;
+      margin-bottom: 80px;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      .post-header img {
+        width: 32px;
+        height: 32px;
+      }
+
+      .story img {
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+    .caption {
+      font-size: 1rem;
+      color: #262626;
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+
+    .caption b {
+      font-weight: 600;
+      margin-right: 6px;
+    }
+
+    .comment-btn {
+      display: inline-block;
+      background-color: #4bd2ff;
+      color: #ffffff;
+      padding: 8px 16px;
+      font-weight: bold;
+      text-decoration: none;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: background-color 0.2s ease;
+    }
+
+    .comment-btn:hover {
+      background-color: #9ccbe1;
+      cursor: pointer;
+    }
+
+    .comment-row {
+      display: flex;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .comment-profile-pic {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+
+    .comment-text {
+      font-size: 0.9rem;
+      color: #262626;
+      line-height: 1.3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h1>Dopameme</h1>
+    <div>
+      <a href="/profile">Profile</a>
+      <a href="/search">Search</a>
+      <a href="/dopsdisplay">Dops</a>
+    </div>
+  </div>
+
+  <!-- Story Bar -->
+  <div class="story-bar">
+    {% for story in stories %}
+    <div class="story">
+      <img src="{{ story.dp | replace('/upload/', '/upload/f_auto,q_auto/') }}" loading="lazy" alt="{{ story.name }}">
+      <span>{{ story.name }}</span>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Feed -->
+  <div class="feed">
+    
+    {% if posts %}
+      {% for post in posts %}
+        {% set post_user = user | selectattr('user_id', 'equalto', post.user_id) | list | first %}
+        <div class="post">
+          <div class="post-header">
+            <img src="{{ post_user.dp | replace('/upload/', '/upload/f_auto,q_auto/') }}" loading="lazy" alt="Profile Picture">
+            <a href="/profile/{{ post_user.user_id }}">
+              <div class="username">{{ post_user.name }}</div>
+            </a>
+          </div>
+
+          {% if post.post.endswith('.mp4') or post.post.endswith('.webm') %}
+            <video controls loading="lazy" style="width:100%;">
+              <source src="{{ post.post | replace('/upload/', '/upload/q_auto/') }}" type="video/mp4">
+            </video>
+          {% else %}
+            <img src="{{ post.post | replace('/upload/', '/upload/f_auto,q_auto/') }}" class="post-image" loading="lazy" alt="Post">
+          {% endif %}
+
+          <div class="post-caption">
+            {% if post.post_caption %}
+            <div class="caption"><b>{{post_user.name}}</b> : {{post.post_caption}}</div>
+            {% endif %}
+            <br>
+            <a href="/comments/{{ post.post_id }}" class="comment-btn">Comment</a>
+          </div>
+
+          <!-- Comment section under each post -->
+          <div class="post-caption" style="margin-top: 10px;">
+            {% for comment in comments %}
+              {% if comment.post_id == post.post_id %}
+                <div class="comment-row">
+                  <img src="{{ comment.user.dp | replace('/upload/', '/upload/f_auto,q_auto/') }}" loading="lazy" class="comment-profile-pic">
+                  <div class="comment-text">
+                    <a href="/profile/{{comment.user.user_id}}" style="color: black"><strong>{{ comment.user.name }}</strong></a> {{ comment.comment_text }}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+        </div>
+      {% endfor %}
+    {% else %}
+      <p style="text-align: center; color: #888;">No posts to show yet.</p>
+    {% endif %}
+    
+  </div>
+
+  <div class="tagline">Welcome to your dashboard</div>
+
+</body>
+</html>

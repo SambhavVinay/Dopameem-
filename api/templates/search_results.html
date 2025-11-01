@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #fafafa;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            color: #262626;
+            font-size: 24px;
+        }
+
+        .results-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 900px;
+            width: 100%;
+            animation: fadeIn 1s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .profile-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            width: 250px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: 0.3s ease;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: cardFade 0.6s ease forwards;
+        }
+
+        .profile-card:nth-child(1) { animation-delay: 0.2s; }
+        .profile-card:nth-child(2) { animation-delay: 0.4s; }
+        .profile-card:nth-child(3) { animation-delay: 0.6s; }
+        .profile-card:nth-child(4) { animation-delay: 0.8s; }
+        .profile-card:nth-child(5) { animation-delay: 1s; }
+
+        @keyframes cardFade {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .profile-pic {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: #ddd;
+    margin: 0 auto 15px auto;
+    overflow: hidden;
+}
+
+.profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+
+        .name {
+            font-weight: bold;
+            font-size: 18px;
+            color: #000;
+        }
+
+        .username {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .view-btn {
+            text-decoration: none;
+            background-color: #0095f6;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        .view-btn:hover {
+            background-color: #0077cc;
+        }
+
+        .links {
+            margin-top: 40px;
+            font-size: 14px;
+        }
+
+        .links a {
+            text-decoration: none;
+            margin: 0 10px;
+            color: #0095f6;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .profile-card {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Search results for "{{ query }}"</h2>
+
+    <div class="results-container">
+        {% for user in search_name %}
+            <div class="profile-card">
+                <div class="profile-pic">
+    <img src="{{user.dp}}">
+</div>
+
+                <div class="name">{{ user.name }}</div>
+                <div class="username">@{{ user.user_name }}</div>
+                <a href="/profile/{{ user.user_id }}" class="view-btn">View Profile</a>
+            </div>
+        {% else %}
+            <p>No matching users found.</p>
+        {% endfor %}
+    </div>
+
+    <div class="links">
+        <a href="/search"> Search Again</a> | 
+        <a href="/dashboard"> Dashboard</a>
+    </div>
+     
+</body>
+</html>

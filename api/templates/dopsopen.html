@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dops • Reel View</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    
+    :root {
+      --font-xs: clamp(0.6rem, 0.85vw, 0.75rem);
+      --font-sm: clamp(0.75rem, 1vw, 0.9rem);
+      --font-md: clamp(0.9rem, 1.3vw, 1.05rem);
+      --font-lg: clamp(1.1rem, 2vw, 1.25rem);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      background-color: #000;
+      overflow: hidden;
+    }
+
+    .reel-container {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .video-box {
+  width: 100%;
+  max-width: 360px; /* was 420px */
+  aspect-ratio: 9 / 16;
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  background-color: black;
+  transform: scale(0.96); /* subtle zoom-out */
+}
+
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 0.8rem;
+      width: 100%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent 80%);
+      color: white;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .caption {
+      font-size: var(--font-sm);
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+    }
+
+    .comments {
+      font-size: var(--font-xs);
+      max-height: 80px;
+      overflow-y: auto;
+    }
+
+    .comments a {
+      display: inline-block;
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+      font-size: var(--font-xs);
+      text-decoration: none;
+      color: #000;
+      background: rgba(255, 255, 255, 0.75);
+      padding: 4px 10px;
+      border-radius: 05px;
+      pointer-events: all;
+      transition: background 0.2s ease;
+    }
+
+    .comments a:hover {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .comments div {
+      margin-bottom: 0.2rem;
+      line-height: 1.3;
+    }
+
+    .right-controls {
+      position: absolute;
+      right: 10px;
+      bottom: 90px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 2;
+      pointer-events: auto;
+    }
+
+    .control-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: white;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: var(--font-md);
+      pointer-events: all;
+      transition: transform 0.2s, background 0.3s ease;
+    }
+
+    .control-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.1);
+    }
+
+    .control-btn:active {
+      transform: scale(0.95);
+    }
+
+    .back-btn {
+      opacity: 0.5;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: white;
+      padding: 8px 18px;
+      border-radius: 05px;
+      font-size: var(--font-sm);
+      font-weight: 500;
+      text-decoration: none;
+      color: rgb(0, 0, 0);
+      z-index: 999;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: background 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: #e2e2e2;
+    }
+
+    /* Scrollbar styling for comments */
+    .comments::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .comments::-webkit-scrollbar-thumb {
+      background-color: rgba(255,255,255,0.3);
+      border-radius: 10px;
+    }
+
+    @media (max-width: 480px) {
+      .back-btn {
+        top: 12px;
+        left: 12px;
+        padding: 6px 14px;
+      }
+
+      .control-btn {
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="/profile/{{ dops.user_id }}" class="back-btn">Profile</a>
+
+  <div class="reel-container">
+    <div class="video-box" onclick="togglePlayPause()">
+      <video id="dopVideo" loop autoplay  playsinline>
+        <source src="{{ dops.dops }}" type="video/mp4" loading="lazy">
+        Your browser does not support the video tag.
+      </video>
+
+      <div class="right-controls">
+        <button class="control-btn" id="muteBtn" onclick="toggleMute(event)">🔈</button>
+        <button class="control-btn" onclick="window.location.href='/dopcomments/{{ dops.dops_id }}'">💬</button>
+      </div>
+      
+      <div class="overlay">
+        <div class="caption">{{ dops.dops_caption }}</div>
+        <div class="comments">
+          <a href="/dopcomments/{{ dops.dops_id }}">Comment</a>
+          {% for comment in comments %}
+            <div><strong>{{ comment.user.name }}</strong>: {{ comment.comment_text }}</div>
+          {% else %}
+            <div><em>No comments yet. Be the first</em></div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const video = document.getElementById("dopVideo");
+    const muteBtn = document.getElementById("muteBtn");
+
+    function togglePlayPause() {
+      if (video.paused) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    }
+
+    function toggleMute(event) {
+      event.stopPropagation();
+      video.muted = !video.muted;
+      muteBtn.textContent = video.muted ? "🔈" : "🔇";
+    }
+  </script>
+
+</body>
+</html>

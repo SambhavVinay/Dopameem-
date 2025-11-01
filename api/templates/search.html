@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dopameme | Search</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #fafafa;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .search-wrapper {
+      width: 100%;
+      max-width: 400px;
+      margin-top: 60px;
+      padding: 0 16px;
+    }
+
+    .page-title {
+  font-size: 28px;
+  font-weight: 500;
+  text-align: center;
+  color: #8e8e8e;
+  margin-bottom: 20px;
+  letter-spacing: -0.3px;
+}
+
+
+    .search-box {
+      background-color: #fff;
+      border: 1px solid #dbdbdb;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 14px;
+      border: 1px solid #dbdbdb;
+      border-radius: 8px;
+      background-color: #fafafa;
+      margin-bottom: 10px;
+    }
+
+    .search-input:focus {
+      outline: none;
+      background-color: #fff;
+      border-color: #a0cfff;
+    }
+
+    .search-button {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      background-color: #3897f0;
+      color: white;
+      font-weight: 500;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-bottom: 10px;
+    }
+
+    .search-button:hover {
+      background-color: #318ce7;
+    }
+
+    .suggestions {
+      margin-top: 4px;
+      border-top: 1px solid #eee;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+
+    .suggestion-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .suggestion-item:hover {
+      background-color: #f5f5f5;
+    }
+
+    .suggestion-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #262626;
+    }
+
+    .user-username {
+      font-size: 13px;
+      color: #8e8e8e;
+    }
+
+    .back-link {
+      margin-top: 20px;
+      text-align: center;
+      display: block;
+      color: #00376b;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .back-link:hover {
+      color: #2653a3;
+    }
+
+    @media (max-width: 500px) {
+      .page-title {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="search-wrapper">
+  <div class="page-title">Search Users</div>
+  <div class="search-box">
+    <form method="POST" action="/search" autocomplete="off">
+      <input
+        type="text"
+        id="searchInput"
+        name="name"
+        class="search-input"
+        placeholder="Search"
+      />
+      <div class="suggestions" id="suggestions"></div>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+  </div>
+  <a class="back-link" href="/dashboard">Back to Dashboard</a>
+</div>
+
+  <script>
+    const input = document.getElementById("searchInput");
+    const suggestionsBox = document.getElementById("suggestions");
+
+    input.addEventListener("input", () => {
+      const query = input.value.trim();
+      if (!query) {
+        suggestionsBox.innerHTML = "";
+        return;
+      }
+
+      fetch(`/suggest?query=${encodeURIComponent(query)}`)
+        .then((response) => response.json())
+        .then((data) => {
+          suggestionsBox.innerHTML = "";
+          if (data.length === 0) {
+            suggestionsBox.innerHTML = "<div class='suggestion-item'>No results found</div>";
+            return;
+          }
+
+          data.forEach((user) => {
+            const item = document.createElement("div");
+            item.classList.add("suggestion-item");
+
+            const text = document.createElement("div");
+            text.classList.add("suggestion-text");
+            text.innerHTML = `
+              <span class="user-name">${user.name}</span>
+              <span class="user-username">@${user.user_name}</span>
+            `;
+
+            item.appendChild(text);
+            item.onclick = () => {
+              input.value = user.name;
+              suggestionsBox.innerHTML = "";
+            };
+
+            suggestionsBox.appendChild(item);
+          });
+        })
+        .catch((err) => {
+          console.error("Fetch error:", err);
+          suggestionsBox.innerHTML = "<div class='suggestion-item'>Error loading suggestions</div>";
+        });
+    });
+  </script>
+</body>
+</html>

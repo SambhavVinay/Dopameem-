@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dopameme Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #fafafa;
+            padding: 40px;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: white;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+        }
+        .navbar h1 {
+            font-size: 24px;
+            color: #262626;
+        }
+        .navbar a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #0095f6;
+            margin-left: 10px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .user-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        .user-card h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #262626;
+        }
+        .user-card span {
+            display: block;
+            font-size: 14px;
+            color: #8e8e8e;
+            margin: 4px 0;
+        }
+        .user-card a {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #ff4d4f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .user-card a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Dopameme Network ({{ new_gooner|length }})</h1>
+        <div>
+            <a href="/login">Login</a> |
+            <a href="/register">Register</a>
+        </div>
+    </div>
+
+    <div class="dashboard-container">
+        {% for gooner in new_gooner %}
+        <div class="user-card">
+            <h2>{{ gooner.user_name }}</h2>
+            <span>Name: {{ gooner.name }}</span>
+            <span>DOB: {{ gooner.DOB }}</span>
+            <span>User ID: {{ gooner.user_id }}</span>
+            <span>Password: {{ gooner.user_password }}</span>
+
+            <a href="/delete/{{ gooner.user_id }}">Delete</a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

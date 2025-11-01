@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>All Requests</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f7f8fa;
+      --card:#ffffff;
+      --text:#111;
+      --muted:#666;
+      --border:#e6e6e6;
+      --blue:#0095f6;      /* Instagram light blue */
+      --blue-ink:#0b63b0;  /* darker hover */
+    }
+    *{ box-sizing:border-box }
+    html,body{ margin:0; padding:0; }
+    body{
+      font-family:"Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .wrap{
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 0 16px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      box-shadow: 0 8px 16px rgba(17,17,17,0.05);
+      overflow:hidden;
+    }
+    .card-header{
+      padding:20px 24px;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background:var(--blue);flex:0 0 auto;
+    }
+    h1{
+      font-size:22px; line-height:1; margin:0; font-weight:700; letter-spacing:0.2px;
+    }
+
+    .table-wrap{ overflow:auto; }
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+    }
+    thead th{
+      text-align:left;
+      font-size:12px;
+      letter-spacing:0.5px;
+      text-transform:uppercase;
+      color:var(--muted);
+      background:#fafafa;
+      border-bottom:1px solid var(--border);
+      padding:14px 16px;
+      position:sticky; top:0; z-index:1;
+    }
+    tbody td{
+      padding:16px;
+      border-bottom:1px solid var(--border);
+      vertical-align:middle;
+    }
+    tbody tr:hover{
+      background:#fbfbfd;
+    }
+    .status{
+      font-size:12px;
+      padding:6px 10px;
+      border:1px solid var(--border);
+      border-radius:8px;
+      color:#222;
+      background:#fff;
+      display:inline-block;
+    }
+    .status.pending{
+      border-color:var(--blue);
+      color:var(--blue);
+      background:rgba(0,149,246,0.06);
+    }
+    .status.accepted{
+      border-color:#2bb673;
+      color:#2b8f5e;
+      background:rgba(43,182,115,0.08);
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 14px;
+      min-width:108px;
+      height:40px;              /* square-ish button */
+      border-radius:10px;
+      border:1px solid transparent;
+      text-decoration:none;
+      font-weight:700;          /* bold */
+      font-size:14px;
+      cursor:pointer;
+      transition:transform .06s ease, box-shadow .12s ease, background .12s ease, border .12s ease;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-blue{
+      background:var(--blue);
+      color:#fff;               /* white text */
+      box-shadow: 0 4px 10px rgba(0,149,246,0.25);
+    }
+    .btn-blue:hover{
+      background:var(--blue-ink);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(0,99,176,0.28);
+    }
+    .btn-blue:active{
+      transform: translateY(0);
+      box-shadow: 0 3px 8px rgba(0,99,176,0.22);
+    }
+
+    /* mobile niceties */
+    @media (max-width:640px){
+      thead th:nth-child(4),
+      tbody td:nth-child(4){ display:none; } /* hide Date on small screens */
+      h1{ font-size:20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="card-header">
+        <span class="dot"></span>
+        <h1>Follow Requests</h1>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Sender</th>
+              <th>Receiver</th>
+              <th>Status</th>
+              <th>Date Added</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for req in req %}
+            <tr>
+              <td>{{ req.sender.name }}</td>
+              <td>{{ req.receiver.name }}</td>
+              <td>
+                <span class="status {% if req.status == 'pending' %}pending{% else %}accepted{% endif %}">
+                  {{ req.status|title }}
+                </span>
+              </td>
+              <td>
+                {{ req.dateadded.strftime("%Y-%m-%d %H:%M") }}
+              </td>
+              <td>
+                {% if req.status == "pending" %}
+                                <a href="/deleterequests/{{req.id}}" class="btn btn-blue">Remove</a>
+
+                  <a class="btn btn-blue" href="/approvefollower/{{ req.sender_id }}/{{ req.receiver_id }}">
+                    Accept
+                  </a>
+                {% else %}
+                  
+                  <span class="status accepted">Accepted</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

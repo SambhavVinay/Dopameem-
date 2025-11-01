@@ -40,7 +40,7 @@ mysql-connector-python==9.3.0
 mysqlclient==2.2.7
 openai==1.97.0
 packaging==25.0
-psycopg2-binary==2.9.10
+psycopg2
 pydantic==2.11.7
 pydantic_core==2.33.2
 PyMySQL==1.1.1

@@ -28,7 +28,7 @@ app.permanent_session_lifetime = timedelta(days=30)
 UPLOAD_FOLDER_POST = 'static/posts'
 UPLOAD_FOLDER_DOPS = 'static/dops'
 UPLOAD_FOLDER = 'static/dp'
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://neondb_owner:npg_wMC9LjGT6spf@ep-delicate-butterfly-ah9o9zyq-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql+pg8000://neondb_owner:npg_wMC9LjGT6spf@ep-delicate-butterfly-ah9o9zyq-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require"
 
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER

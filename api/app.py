@@ -28,7 +28,10 @@ app.permanent_session_lifetime = timedelta(days=30)
 UPLOAD_FOLDER_POST = 'static/posts'
 UPLOAD_FOLDER_DOPS = 'static/dops'
 UPLOAD_FOLDER = 'static/dp'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL').replace(
+    "postgresql://", "postgresql+pg8000://"
+)
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['UPLOAD_FOLDER_POST'] = UPLOAD_FOLDER_POST
 app.config['UPLOAD_FOLDER_DOPS'] = UPLOAD_FOLDER_DOPS

@@ -620,8 +620,8 @@ def database():
     new_gooner = Gooners.query.order_by(Gooners.dateadded.desc()).all()
     return render_template("Database.html", new_gooner=new_gooner)
 
-#if __name__ == "__main__":
-   # with app.app_context():
-       # db.create_all()
-    #app.run(debug=True)
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+    app.run(debug=True)
 
